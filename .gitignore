@@ -34,3 +34,8 @@ yarn-error.log*
 .vercel
 
 .eslintcache
+
+# graphql-let
+__generated__
+*.graphql.d.ts
+*.graphqls.d.ts
