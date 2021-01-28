@@ -35,9 +35,9 @@ describe('Index', () => {
     expect(container.firstChild).toMatchInlineSnapshot(`
       <div>
         <h1
-          class="pages__Title-of3loo-0 jvuHSB"
+          class="pages__Title-of3loo-0 ktWwWq"
         >
-          My page Biatch
+          My page
         </h1>
         <span>
           Signed in as 

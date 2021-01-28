@@ -9,6 +9,7 @@
     "start": "next start",
     "codegen": "graphql-let",
     "test": "yarn codegen && jest",
+    "test:watch": "yarn codegen && jest --watch",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
