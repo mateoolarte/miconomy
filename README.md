@@ -1,6 +1,6 @@
 # Miconomy App
 
-[![Codeship Status for mateoolarte/miconomy-app](https://app.codeship.com/projects/859467d1-628d-436d-85f8-ad041ad59623/status?branch=master)](https://app.codeship.com/projects/425070)
+[![Codeship Status for mateoolarte/miconomy-app](https://app.codeship.com/projects/859467d1-628d-436d-85f8-ad041ad59623/status?branch=stg)](https://app.codeship.com/projects/425070)
 
 Here you can find the frontend app. Built with NextJS & Graphql
 
