@@ -8,7 +8,7 @@ import {
 import { initializeApollo } from '../lib/apollo';
 
 const Title = styled.h1`
-  color: magenta;
+  color: blue;
   font-size: 50px;
 `;
 
@@ -48,7 +48,7 @@ const Index = () => {
 
   return (
     <div>
-      <Title>My page Biatch</Title>
+      <Title>My page</Title>
       <span>
         Signed in as {viewer.name} and status: {viewer.status}.
       </span>
