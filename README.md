@@ -1,13 +1,7 @@
-# Finance App
+# Miconomy App
 
-## Getting Started
+Here you can find the frontend app. Built with NextJS & Graphql
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+-

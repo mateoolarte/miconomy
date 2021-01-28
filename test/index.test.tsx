@@ -32,6 +32,31 @@ describe('Index', () => {
         <Index />
       </MockedProvider>
     );
-    expect(container.firstChild).toMatchInlineSnapshot();
+    expect(container.firstChild).toMatchInlineSnapshot(`
+      <div>
+        <h1
+          class="pages__Title-of3loo-0 jvuHSB"
+        >
+          My page Biatch
+        </h1>
+        <span>
+          Signed in as 
+          Baa
+           and status: 
+          Healthy
+          .
+        </span>
+        <div>
+          <input
+            placeholder="your new name..."
+            type="text"
+          />
+          <input
+            type="button"
+            value="change"
+          />
+        </div>
+      </div>
+    `);
   });
 });
