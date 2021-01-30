@@ -38,3 +38,9 @@ yarn build
 ```bash
 yarn start
 ```
+
+### Run tests
+
+```bash
+yarn test
+```
