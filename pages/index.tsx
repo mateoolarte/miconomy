@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import { useState } from 'react';
 import {
   useViewerQuery,
@@ -6,11 +5,6 @@ import {
   ViewerDocument,
 } from '../lib/viewer.graphql';
 import { initializeApollo } from '../lib/apollo';
-
-const Title = styled.h1`
-  color: blue;
-  font-size: 50px;
-`;
 
 const Index = () => {
   const { viewer } = useViewerQuery().data;
@@ -48,7 +42,6 @@ const Index = () => {
 
   return (
     <div>
-      <Title>My page</Title>
       <span>
         Signed in as {viewer.name} and status: {viewer.status}.
       </span>
@@ -58,7 +51,12 @@ const Index = () => {
           placeholder="your new name..."
           onChange={e => setNewName(e.target.value)}
         />
-        <input type="button" value="change" onClick={onChangeName} />
+        <input
+          type="button"
+          value="change"
+          onClick={onChangeName}
+          className="py-2 px-4 font-semibold rounded-lg shadow-md text-white bg-green-500 hover:bg-green-700"
+        />
       </div>
     </div>
   );
