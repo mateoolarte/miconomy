@@ -34,11 +34,6 @@ describe('Index', () => {
     );
     expect(container.firstChild).toMatchInlineSnapshot(`
       <div>
-        <h1
-          class="pages__Title-of3loo-0 ktWwWq"
-        >
-          My page
-        </h1>
         <span>
           Signed in as 
           Baa
@@ -52,6 +47,7 @@ describe('Index', () => {
             type="text"
           />
           <input
+            class="py-2 px-4 font-semibold rounded-lg shadow-md text-white bg-green-500 hover:bg-green-700"
             type="button"
             value="change"
           />
