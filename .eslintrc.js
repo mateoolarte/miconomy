@@ -7,7 +7,7 @@ module.exports = {
     node: true,
     es6: true,
     commonjs: true,
-    jest: true
+    jest: true,
   },
   parser: '@typescript-eslint/parser',
   extends: [
@@ -18,7 +18,7 @@ module.exports = {
     'plugin:jsx-a11y/recommended',
     'plugin:react-hooks/recommended',
   ],
-  plugins: ['react', 'jsx-a11y', '@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'react', 'jsx-a11y'],
   parserOptions: {
     ecmaVersion: 2019,
     sourceType: 'module',
@@ -28,17 +28,20 @@ module.exports = {
   },
   settings: {
     react: {
-      version: "latest",
+      version: 'latest',
     },
   },
   rules: {
-    "react/react-in-jsx-scope": "off",
-    "@typescript-eslint/ban-types": "off",
-    "@typescript-eslint/no-var-requires": "off",
-    "jsx-a11y/anchor-is-valid": [ "error", {
-      "components": [ "Link" ],
-      "specialLink": [ "hrefLeft", "hrefRight" ],
-      "aspects": [ "invalidHref", "preferButton" ]
-    }]
-  }
+    'react/react-in-jsx-scope': 'off',
+    '@typescript-eslint/ban-types': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
+    'jsx-a11y/anchor-is-valid': [
+      'error',
+      {
+        components: ['Link'],
+        specialLink: ['hrefLeft', 'hrefRight'],
+        aspects: ['invalidHref', 'preferButton'],
+      },
+    ],
+  },
 };

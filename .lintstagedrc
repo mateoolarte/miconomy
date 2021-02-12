@@ -1,6 +1,6 @@
 {
   "*.{js,jsx,ts,tsx}": "eslint --cache --fix",
-  "*.{js,jsx,json,ts,tsx,md,mdx,yml,yaml,scss}": "prettier --write",
+  "*.{js,jsx,json,ts,tsx,md,mdx,yml,yaml}": "prettier --write",
   "*.{ts, tsx}": "stylelint --syntax=css-in-js",
-  "*.test.{ts, tsx}": "jest"
+  "*.test.{ts, tsx}": "yarn test"
 }

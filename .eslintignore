@@ -1,9 +1,11 @@
 **/node_modules/**
-**/test/**/*.js
+**/__tests__/**/*.ts
+**/__tests__/**/*.tsx
 **/*.d.ts
 **/.vscode
 **/package-lock.json
 **/yarn.lock
 
-/build/**
+**/__generated__/**
+**/.next/**
 /coverage/
