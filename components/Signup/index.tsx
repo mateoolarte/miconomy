@@ -6,7 +6,7 @@ import Input from '../ui/Input';
 import Anchor from '../ui/Anchor';
 import Alert from '../ui/Alert';
 
-export default function Login(): ReactElement {
+export default function Signup(): ReactElement {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({
@@ -57,7 +57,7 @@ export default function Login(): ReactElement {
     >
       {errors.message && <Alert color="red" message={errors.message} />}
 
-      <h1 className="text-4xl mb-8 font-bold text-center">Ingresar</h1>
+      <h1 className="text-4xl mb-8 font-bold text-center">Crea tu cuenta</h1>
       <Input
         type="email"
         label="Correo electrónico"
@@ -79,21 +79,16 @@ export default function Login(): ReactElement {
         showPlainPassword
         required
       />
-      <Anchor
-        link="/recuperar-contrasena"
-        text="¿Olvidaste tu contraseña?"
-        className="self-start"
-      />
       <button
         type="submit"
         className="w-auto self-center mb-4 bg-green-500 text-gray-50 py-2.5 px-8 rounded font-bold text-lg transition-colors hover:bg-green-600 hover:shadow disabled:opacity-50"
         disabled={hasErrors || !validateEmail(email) || password.length <= 7}
       >
-        Ingresar
+        Crear cuenta
       </button>
       <Anchor
-        link="/registro"
-        text="¿No tienes cuenta?"
+        link="/ingresar"
+        text="¿Ya tienes cuenta?"
         className="self-center"
       />
     </form>
