@@ -47,6 +47,7 @@ const Index = () => {
       </span>
       <div>
         <input
+          data-cy="email-field"
           type="text"
           placeholder="your new name..."
           onChange={e => setNewName(e.target.value)}
@@ -54,6 +55,7 @@ const Index = () => {
         <input
           type="button"
           value="change"
+          data-cy="login-btn"
           onClick={onChangeName}
           className="py-2 px-4 font-semibold rounded-lg shadow-md text-white bg-green-500 hover:bg-green-700"
         />
