@@ -12,7 +12,9 @@ export default function Alert({
 }: AlertProps): ReactElement {
   const className = classnames(
     'flex items-center fixed max-w-md top-4 right-28 py-2 pl-4 pr-3 rounded text-gray-50',
-    `bg-${color}-500`
+    { 'bg-red-500': color === 'red' },
+    { 'bg-yellow-500': color === 'yellow' },
+    { 'bg-green-500': color === 'green' }
   );
 
   return (
