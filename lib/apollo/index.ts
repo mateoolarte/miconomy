@@ -19,8 +19,6 @@ let apolloClient: ApolloClient<NormalizedCacheObject> = null;
 function createApolloClient() {
   const httpLink = new HttpLink({
     uri: apiURL,
-    credentials:
-      process.env.NODE_ENV === 'development' ? 'same-origin' : 'include',
   });
 
   const authLink = setContext((_, { headers }) => {
