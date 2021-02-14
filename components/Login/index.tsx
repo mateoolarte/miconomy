@@ -1,18 +1,48 @@
 import { useState, ReactElement } from 'react';
+import { useMutation } from '@apollo/client';
+import { useRouter } from 'next/router';
 
 import { validateEmail } from '../../utils/validateEmail';
+import { setCookie } from '../../utils/cookies';
+
+import { checkAuth } from '../../utils/checkAuth';
+import { USER_TOKEN_KEY } from '../../utils/constants';
+
+import { LOGIN } from './graphql/login';
 
 import Input from '../ui/Input';
 import Anchor from '../ui/Anchor';
 import Alert from '../ui/Alert';
 
 export default function Login(): ReactElement {
+  const router = useRouter();
+  const isAuth = checkAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({
     email: '',
     password: '',
     message: '',
+  });
+  const [loginAction] = useMutation(LOGIN, {
+    onCompleted(data) {
+      const loginResponse = data?.login;
+      const { message, status, token } = loginResponse;
+
+      if (status === 202) {
+        const timeToExpire = 120;
+
+        setCookie(USER_TOKEN_KEY, token, timeToExpire);
+        router.push('/');
+      }
+
+      if (status === 404) {
+        setErrors({
+          ...errors,
+          message,
+        });
+      }
+    },
   });
   const hasErrors = errors.email !== '' || errors.password !== '';
 
@@ -44,18 +74,38 @@ export default function Login(): ReactElement {
     }
   }
 
+  function handleCloseAlert() {
+    setErrors({
+      ...errors,
+      message: '',
+    });
+  }
+
   function handleForm(e) {
     e.preventDefault();
 
-    console.log('Form');
+    loginAction({
+      variables: {
+        email,
+        password,
+      },
+    });
   }
+
+  if (isAuth) router.push('/');
 
   return (
     <form
       onSubmit={handleForm}
       className="flex flex-col mt-12 w-11/12 md:max-w-xl mx-auto"
     >
-      {errors.message && <Alert color="red" message={errors.message} />}
+      {errors.message && (
+        <Alert
+          color="red"
+          message={errors.message}
+          handleClose={handleCloseAlert}
+        />
+      )}
 
       <h1 className="text-4xl mb-8 font-bold text-center">Ingresar</h1>
       <Input

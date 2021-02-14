@@ -34,24 +34,7 @@ describe('Index', () => {
     );
     expect(container.firstChild).toMatchInlineSnapshot(`
       <div>
-        <span>
-          Signed in as 
-          Baa
-           and status: 
-          Healthy
-          .
-        </span>
-        <div>
-          <input
-            placeholder="your new name..."
-            type="text"
-          />
-          <input
-            class="py-2 px-4 font-semibold rounded-lg shadow-md text-white bg-green-500 hover:bg-green-700"
-            type="button"
-            value="change"
-          />
-        </div>
+        Miconomy app
       </div>
     `);
   });
