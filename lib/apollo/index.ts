@@ -10,14 +10,11 @@ export interface ResolverContext {
   req?: IncomingMessage;
   res?: ServerResponse;
 }
-
-const apiURL = process.env.NEXT_PUBLIC_API_URL;
-
 let apolloClient: ApolloClient<NormalizedCacheObject> = null;
 
 function createApolloClient() {
   const httpLink = new HttpLink({
-    uri: apiURL,
+    uri: process.env.NEXT_PUBLIC_API_URL,
   });
 
   const authLink = setContext((_, { headers }) => {
