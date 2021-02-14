@@ -4,7 +4,7 @@ const cookies = new Cookies();
 
 export function setCookie(
   name: string,
-  value: string,
+  value: string | object,
   expireTime: number
 ): void {
   cookies.set(name, value, { maxAge: expireTime });

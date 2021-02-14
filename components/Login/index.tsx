@@ -30,7 +30,7 @@ export default function Login(): ReactElement {
       const { message, status, token } = loginResponse;
 
       if (status === 202) {
-        const timeToExpire = 120;
+        const timeToExpire = 60 * 60 * 24 * 26;
 
         setCookie(USER_TOKEN_KEY, token, timeToExpire);
         router.push('/');
