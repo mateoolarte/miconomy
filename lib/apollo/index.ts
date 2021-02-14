@@ -5,20 +5,16 @@ import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 import type { NormalizedCacheObject } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { checkAuth } from '../../utils/checkAuth';
-import process from 'process';
 
 export interface ResolverContext {
   req?: IncomingMessage;
   res?: ServerResponse;
 }
-
-const apiURL = process.env.NEXT_PUBLIC_API_URL;
-
 let apolloClient: ApolloClient<NormalizedCacheObject> = null;
 
 function createApolloClient() {
   const httpLink = new HttpLink({
-    uri: apiURL,
+    uri: process.env.NEXT_PUBLIC_API_URL,
   });
 
   const authLink = setContext((_, { headers }) => {
