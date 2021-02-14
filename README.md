@@ -59,3 +59,17 @@ yarn test
 ```bash
 yarn test:watch
 ```
+### Run cypress
+* run it on its own window
+```bash
+yarn cypress:open
+```
+* these end to end tests can also be openes on the terminal directly
+```
+yarn cypress:run
+```
+### Run storybook
+
+```bash
+yarn storybook
+```
