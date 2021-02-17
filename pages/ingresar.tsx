@@ -1,13 +1,18 @@
 import { ReactElement } from 'react';
+import Cookies from 'universal-cookie';
+
+import { USER_TOKEN_KEY } from '../utils/constants';
+
 import Login from '../components/Login';
-import { checkAuth } from '../utils/checkAuth';
 
 export default function LoginPage(): ReactElement {
   return <Login />;
 }
 
 export async function getServerSideProps(context) {
-  const isAuth = checkAuth(context.req.headers.cookie);
+  const cookies = context.req.headers.cookie;
+  const cookie = new Cookies(cookies);
+  const isAuth = cookie.get(USER_TOKEN_KEY) !== undefined;
 
   if (isAuth) {
     context.res.writeHead(302, {
@@ -17,6 +22,6 @@ export async function getServerSideProps(context) {
   }
 
   return {
-    props: {}, // will be passed to the page component as props
+    props: {},
   };
 }

@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import { validateEmail } from '../../utils/validateEmail';
 import { setCookie } from '../../utils/cookies';
 
-import { checkAuth } from '../../utils/checkAuth';
 import { USER_TOKEN_KEY } from '../../utils/constants';
 
 import { LOGIN } from './graphql/login';
@@ -16,7 +15,6 @@ import Alert from '../ui/Alert';
 
 export default function Login(): ReactElement {
   const router = useRouter();
-  const isAuth = checkAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({
@@ -26,14 +24,19 @@ export default function Login(): ReactElement {
   });
   const [loginAction] = useMutation(LOGIN, {
     onCompleted(data) {
-      const loginResponse = data?.login;
-      const { message, status, token } = loginResponse;
+      const response = data?.login;
+      const { message, status, token } = response;
 
       if (status === 202) {
         const timeToExpire = 60 * 60 * 24 * 26;
 
         setCookie(USER_TOKEN_KEY, token, timeToExpire);
-        router.push('/');
+        router.push({
+          pathname: '/',
+          query: {
+            message,
+          },
+        });
       }
 
       if (status === 404) {
@@ -91,8 +94,6 @@ export default function Login(): ReactElement {
       },
     });
   }
-
-  if (isAuth) router.push('/');
 
   return (
     <form

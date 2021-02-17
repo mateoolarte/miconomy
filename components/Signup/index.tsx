@@ -1,18 +1,51 @@
 import { useState, ReactElement } from 'react';
+import { useMutation } from '@apollo/client';
+import { useRouter } from 'next/router';
 
 import { validateEmail } from '../../utils/validateEmail';
+import { setCookie } from '../../utils/cookies';
+
+import { USER_TOKEN_KEY } from '../../utils/constants';
+
+import { SIGNUP } from './graphql/signup';
 
 import Input from '../ui/Input';
 import Anchor from '../ui/Anchor';
 import Alert from '../ui/Alert';
 
 export default function Signup(): ReactElement {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({
     email: '',
     password: '',
     message: '',
+  });
+  const [signupAction] = useMutation(SIGNUP, {
+    onCompleted(data) {
+      const response = data?.signup;
+      const { message, status, token } = response;
+
+      if (status === 202) {
+        const timeToExpire = 60 * 60 * 24 * 26;
+
+        setCookie(USER_TOKEN_KEY, token, timeToExpire);
+        router.push({
+          pathname: '/',
+          query: {
+            message,
+          },
+        });
+      }
+
+      if (status === 404) {
+        setErrors({
+          ...errors,
+          message,
+        });
+      }
+    },
   });
   const hasErrors = errors.email !== '' || errors.password !== '';
 
@@ -44,10 +77,22 @@ export default function Signup(): ReactElement {
     }
   }
 
+  function handleCloseAlert() {
+    setErrors({
+      ...errors,
+      message: '',
+    });
+  }
+
   function handleForm(e) {
     e.preventDefault();
 
-    console.log('Form');
+    signupAction({
+      variables: {
+        email,
+        password,
+      },
+    });
   }
 
   return (
@@ -55,7 +100,13 @@ export default function Signup(): ReactElement {
       onSubmit={handleForm}
       className="flex flex-col mt-12 w-11/12 md:max-w-xl mx-auto"
     >
-      {errors.message && <Alert color="red" message={errors.message} />}
+      {errors.message && (
+        <Alert
+          color="red"
+          message={errors.message}
+          handleClose={handleCloseAlert}
+        />
+      )}
 
       <h1 className="text-4xl mb-8 font-bold text-center">Crea tu cuenta</h1>
       <Input
