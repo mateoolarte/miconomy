@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import Alert from '../ui/Alert';
+import Alert from '.';
 
 export default {
   component: Alert,
@@ -14,7 +14,7 @@ const Template = args => <Alert {...args} />;
 export const Default = Template.bind({});
 Default.args = {
   color: 'red',
-  message: 'Error Message',
+  message: 'Alert Message',
   handleClose: () => {
     console.log('handle close');
   },
