@@ -4,7 +4,7 @@ type SizeOptions = 'small' | 'medium' | 'large';
 
 export interface ButtonProps {
   type: TypeOptions;
-  children: object;
+  children: object | string;
   disabled?: boolean;
   fullWidth?: boolean;
   className: string;
