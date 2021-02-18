@@ -23,7 +23,7 @@ export default function Signup(): ReactElement {
     password: '',
     message: '',
   });
-  const [signupAction] = useMutation(SIGNUP, {
+  const [signupAction, { loading }] = useMutation(SIGNUP, {
     onCompleted(data) {
       const response = data?.signup;
       const { message, status, token } = response;
@@ -136,7 +136,9 @@ export default function Signup(): ReactElement {
         className="self-center mb-4"
         color="green"
         size="medium"
-        disabled={hasErrors || !validateEmail(email) || password.length <= 7}
+        disabled={
+          hasErrors || !validateEmail(email) || password.length <= 7 || loading
+        }
       >
         Crear cuenta
       </Button>

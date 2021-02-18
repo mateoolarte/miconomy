@@ -23,7 +23,7 @@ export default function Login(): ReactElement {
     password: '',
     message: '',
   });
-  const [loginAction] = useMutation(LOGIN, {
+  const [loginAction, { loading }] = useMutation(LOGIN, {
     onCompleted(data) {
       const response = data?.login;
       const { message, status, token } = response;
@@ -136,7 +136,9 @@ export default function Login(): ReactElement {
         className="self-center mb-4"
         color="green"
         size="medium"
-        disabled={hasErrors || !validateEmail(email) || password.length <= 7}
+        disabled={
+          hasErrors || !validateEmail(email) || password.length <= 7 || loading
+        }
       >
         Ingresar
       </Button>
