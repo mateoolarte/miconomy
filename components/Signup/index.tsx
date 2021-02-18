@@ -12,6 +12,7 @@ import { SIGNUP } from './graphql/signup';
 import Input from '../ui/Input';
 import Anchor from '../ui/Anchor';
 import Alert from '../ui/Alert';
+import Button from '../ui/Button';
 
 export default function Signup(): ReactElement {
   const router = useRouter();
@@ -130,13 +131,15 @@ export default function Signup(): ReactElement {
         showPlainPassword
         required
       />
-      <button
+      <Button
         type="submit"
-        className="w-auto self-center mb-4 bg-green-500 text-gray-50 py-2.5 px-8 rounded font-bold text-lg transition-colors hover:bg-green-600 hover:shadow disabled:opacity-50"
+        className="self-center mb-4"
+        color="green"
+        size="medium"
         disabled={hasErrors || !validateEmail(email) || password.length <= 7}
       >
         Crear cuenta
-      </button>
+      </Button>
       <Anchor
         link="/ingresar"
         text="¿Ya tienes cuenta?"
