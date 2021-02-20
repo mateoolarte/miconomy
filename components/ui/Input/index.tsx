@@ -25,6 +25,13 @@ export default function Input({
     'border-gray-400': !errorMessage,
     'pr-12': hasEyeActivated,
   });
+  const classNamesBtnPass = classnames(
+    'absolute right-4 z-10 w-6 h-6 outline-none',
+    {
+      'top-10': label,
+      'top-2.5': !label,
+    }
+  );
 
   return (
     <div className={`input-${type} flex flex-col mb-3 relative ${className}`}>
@@ -46,7 +53,7 @@ export default function Input({
         <button
           type="button"
           onClick={() => setIsPlainPassword(!isPlainPassword)}
-          className="absolute top-10 right-4 z-10 w-6 h-6 outline-none"
+          className={classNamesBtnPass}
         >
           {isPlainPassword ? (
             <EyeOpen className="text-gray-500 cursor-pointer" />
