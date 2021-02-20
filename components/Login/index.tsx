@@ -143,7 +143,7 @@ export default function Login(): ReactElement {
         Ingresar
       </Button>
       <Anchor
-        link="/registro"
+        link="/signup"
         text="¿No tienes cuenta?"
         className="self-center"
       />

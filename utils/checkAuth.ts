@@ -15,7 +15,7 @@ export function checkAuth(context?: any, redirectTo?: string): void | boolean {
 
   if (context && !isAuth) {
     context.res.writeHead(302, {
-      Location: redirectTo || '/ingresar',
+      Location: redirectTo || '/login',
     });
     context.res.end();
   }

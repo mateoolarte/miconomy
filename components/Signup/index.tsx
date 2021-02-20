@@ -142,11 +142,7 @@ export default function Signup(): ReactElement {
       >
         Crear cuenta
       </Button>
-      <Anchor
-        link="/ingresar"
-        text="¿Ya tienes cuenta?"
-        className="self-center"
-      />
+      <Anchor link="/login" text="¿Ya tienes cuenta?" className="self-center" />
     </form>
   );
 }
