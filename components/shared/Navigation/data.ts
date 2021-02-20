@@ -8,25 +8,25 @@ const items = [
   {
     id: 2,
     title: 'Mes actual',
-    link: '/mes-actual',
+    link: '/current-month',
     Icon: '',
   },
   {
     id: 3,
     title: 'Presupuestos',
-    link: '/presupuestos',
+    link: '/budgets',
     Icon: '',
   },
   {
     id: 4,
     title: 'Ahorros',
-    link: '/ahorros',
+    link: '/savings',
     Icon: '',
   },
   {
     id: 5,
     title: 'Perfil',
-    link: '/perfil',
+    link: '/profile',
     Icon: '',
   },
 ];
