@@ -1,4 +1,5 @@
 import { ReactElement } from 'react';
+
 import Layout from '../shared/Layout';
 import OverviewDesktop from './OverviewDesktop';
 import OverviewMobile from './OverviewMobile';
@@ -12,7 +13,8 @@ export default function MonthlyView(): ReactElement {
 
       <p className="mb-2">Resumen del mes</p>
 
-      <OverviewDesktop />
+      {/* <OverviewDesktop /> */}
+      <OverviewMobile />
     </Layout>
   );
 }

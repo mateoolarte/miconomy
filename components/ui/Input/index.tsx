@@ -1,5 +1,4 @@
-import { ReactElement } from 'react';
-import { useState } from 'react';
+import { ReactElement, useState } from 'react';
 import classnames from 'classnames';
 
 import EyeOpen from '../icons/EyeOpen';
