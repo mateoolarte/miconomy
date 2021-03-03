@@ -7,6 +7,7 @@ import useWindowSize from '../../hooks/useWindowSize';
 import Layout from '../shared/Layout';
 import OverviewDesktop from './OverviewDesktop';
 import OverviewMobile from './OverviewMobile';
+import Categories from './Categories';
 
 export default function MonthlyView(): ReactElement {
   const viewport = useWindowSize();
@@ -21,6 +22,8 @@ export default function MonthlyView(): ReactElement {
       <p className="mb-2">Resumen del mes</p>
 
       {width < TABLET_SCREEN_SIZE ? <OverviewMobile /> : <OverviewDesktop />}
+
+      <Categories />
     </Layout>
   );
 }
