@@ -10,7 +10,7 @@ export default function Navigation(): ReactElement {
   const { pathname } = router;
 
   return (
-    <nav className="w-full fixed bottom-0 left-0 py-1 md:py-2 shadow-md-reverse lg:shadow-none lg:py-0 lg:static lg:w-3/4">
+    <nav className="w-full fixed bottom-0 left-0 z-10 py-1 bg-white md:py-2 shadow-md-reverse lg:shadow-none lg:py-0 lg:static lg:z-0 lg:w-3/4">
       <ul className="flex items-center justify-evenly lg:justify-end">
         {items.map(({ id, title, link, Icon }) => {
           const classNameLink = classnames(

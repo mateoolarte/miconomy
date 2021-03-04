@@ -12,7 +12,9 @@ export default function Layout({
     <main>
       {!noHeader && <Header />}
       <section
-        className={`w-11/12 md:max-w-7xl mx-auto ${className ? className : ''}`}
+        className={`w-11/12 md:max-w-7xl mx-auto mb-24 ${
+          className ? className : ''
+        }`}
       >
         {children}
       </section>
