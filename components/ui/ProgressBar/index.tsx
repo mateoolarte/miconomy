@@ -4,12 +4,18 @@ import classnames from 'classnames';
 import { ProgressBarProps } from './interfaces';
 
 export default function ProgressBar({ color }: ProgressBarProps): ReactElement {
+  const classNameBox = classnames('rounded-sm mb-4 bg-gray-300', {
+    'bg-gray-300': color === 'green' || color === 'yellow',
+    'bg-gray-400': color === 'red',
+  });
   const classNameBar = classnames('w-9/12 py-2 rounded-sm', {
     'bg-green-500': color === 'green',
+    'bg-red-500': color === 'red',
+    'bg-yellow-500': color === 'yellow',
   });
 
   return (
-    <div className="bg-gray-300 rounded-sm mb-4">
+    <div className={classNameBox}>
       <div className={classNameBar}></div>
     </div>
   );
