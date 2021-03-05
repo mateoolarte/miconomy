@@ -11,7 +11,7 @@ export default function Modal({
   children,
 }: ModalProps): ReactElement {
   const className = classnames(
-    'absolute w-screen h-screen top-0 left-0 bg-gray-600 bg-opacity-50 flex justify-center items-end lg:items-center',
+    'fixed z-20 w-screen h-screen top-0 left-0 bg-gray-600 bg-opacity-50 flex justify-center items-end lg:items-center',
     {
       hidden: !isActive,
       block: isActive,

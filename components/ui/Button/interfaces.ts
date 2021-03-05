@@ -1,5 +1,5 @@
 type TypeOptions = 'submit' | 'button';
-type ColorOptions = 'green';
+type ColorOptions = 'green' | 'blue';
 type SizeOptions = 'small' | 'medium' | 'large';
 
 export interface ButtonProps {
@@ -7,7 +7,8 @@ export interface ButtonProps {
   children: object | string;
   disabled?: boolean;
   fullWidth?: boolean;
-  className: string;
+  className?: string;
   color: ColorOptions;
   size: SizeOptions;
+  onClick?: any;
 }

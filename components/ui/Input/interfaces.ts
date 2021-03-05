@@ -1,8 +1,8 @@
 export interface InputProps {
   type: string;
   label?: string;
-  value: string;
-  onChange?: any;
+  value: string | number;
+  onChange: any;
   onBlur?: any;
   className?: string;
   errorMessage: string;

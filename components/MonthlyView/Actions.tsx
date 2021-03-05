@@ -1,42 +1,68 @@
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
+
+import Button from '../ui/Button';
+import IncomeModal from './IncomeModal';
+import CategoryModal from './CategoryModal';
 
 export default function Actions(): ReactElement {
+  const [toggleIncomeModal, setToggleIncomeModal] = useState(false);
+  const [toggleCategoryModal, setToggleCategoryModal] = useState(false);
+  const [toggleExpenseModal, setToggleExpenseModal] = useState(false);
+
+  const buttons = [
+    {
+      id: 1,
+      title: 'Agregar ingreso',
+      onClick: handleOpenIncome,
+    },
+    {
+      id: 2,
+      title: 'Agregar categoría',
+      onClick: handleOpenCategory,
+    },
+    {
+      id: 3,
+      title: 'Agregar gasto',
+      onClick: handleOpenExpense,
+    },
+  ];
+
   function handleOpenIncome() {
-    return null;
+    setToggleIncomeModal(true);
   }
 
   function handleOpenCategory() {
-    return null;
+    setToggleCategoryModal(true);
   }
 
   function handleOpenExpense() {
-    return null;
+    setToggleExpenseModal(true);
   }
 
   return (
     <div className="flex flex-wrap mb-4">
+      <IncomeModal
+        toggleIncomeModal={toggleIncomeModal}
+        setToggleIncomeModal={setToggleIncomeModal}
+      />
+      <CategoryModal
+        toggleCategoryModal={toggleCategoryModal}
+        setToggleCategoryModal={setToggleCategoryModal}
+      />
       <p className="mb-2 w-full">Acciones</p>
-      <button
-        type="button"
-        onClick={handleOpenIncome}
-        className="px-6 py-2 mb-2 md:mb-0 md:mr-2 rounded bg-blue-500 hover:bg-blue-600 text-white md:text-lg w-full md:w-auto"
-      >
-        Agregar ingreso
-      </button>
-      <button
-        type="button"
-        onClick={handleOpenCategory}
-        className="px-6 py-2 mb-2 md:mb-0 md:mr-2 rounded bg-blue-500 hover:bg-blue-600 text-white md:text-lg w-full md:w-auto"
-      >
-        Agregar categoría
-      </button>
-      <button
-        type="button"
-        onClick={handleOpenExpense}
-        className="px-6 py-2 rounded bg-blue-500 hover:bg-blue-600 text-white md:text-lg w-full md:w-auto"
-      >
-        Agregar gasto
-      </button>
+      {buttons.map(({ id, title, onClick }) => (
+        <Button
+          key={id}
+          type="button"
+          onClick={onClick}
+          color="blue"
+          size="small"
+          fullWidth
+          className="mb-2 md:mb-0 md:mr-2 md:w-auto"
+        >
+          {title}
+        </Button>
+      ))}
     </div>
   );
 }
