@@ -3,6 +3,7 @@ import { ReactElement, useState } from 'react';
 import Button from '../ui/Button';
 import IncomeModal from './IncomeModal';
 import CategoryModal from './CategoryModal';
+import ExpenseModal from './ExpenseModal';
 
 export default function Actions(): ReactElement {
   const [toggleIncomeModal, setToggleIncomeModal] = useState(false);
@@ -12,18 +13,18 @@ export default function Actions(): ReactElement {
   const buttons = [
     {
       id: 1,
+      title: 'Agregar gasto',
+      onClick: handleOpenExpense,
+    },
+    {
+      id: 2,
       title: 'Agregar ingreso',
       onClick: handleOpenIncome,
     },
     {
-      id: 2,
+      id: 3,
       title: 'Agregar categoría',
       onClick: handleOpenCategory,
-    },
-    {
-      id: 3,
-      title: 'Agregar gasto',
-      onClick: handleOpenExpense,
     },
   ];
 
@@ -48,6 +49,10 @@ export default function Actions(): ReactElement {
       <CategoryModal
         toggleCategoryModal={toggleCategoryModal}
         setToggleCategoryModal={setToggleCategoryModal}
+      />
+      <ExpenseModal
+        toggleExpenseModal={toggleExpenseModal}
+        setToggleExpenseModal={setToggleExpenseModal}
       />
       <p className="mb-2 w-full">Acciones</p>
       {buttons.map(({ id, title, onClick }) => (

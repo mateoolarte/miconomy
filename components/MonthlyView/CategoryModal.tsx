@@ -66,6 +66,7 @@ export default function CategoryModal({
           value={category}
           options={categories}
           onBlur={e => setCategory(e.target.value)}
+          required
         />
 
         {!toggleNewCategory && (
@@ -83,12 +84,13 @@ export default function CategoryModal({
         )}
 
         {toggleNewCategory && (
-          <div className="flex items-end justify-between max-w-xs mx-auto">
+          <div className="flex items-end justify-between max-w-full lg:max-w-xs lg:mx-auto">
             <Input
               type="text"
               label="Nueva categoría"
               value={newCategoryValue}
               errorMessage=""
+              className="w-11/12 mr-4 lg:w-auto"
               onChange={e => setNewCategoryValue(e.target.value)}
             />
             <Button
