@@ -2,7 +2,7 @@ import { useState, ReactElement,useEffect } from 'react';
 
 import { useMutation,useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
-import { getCookie } from '../../utils/cookies';
+import { getCookie,deleteCookie } from '../../utils/cookies';
 import { USER_TOKEN_KEY } from '../../utils/constants';
 import { USER } from '../../graphql/queries/user';
 import { DEL_USER } from '../../graphql/mutations/deleteUser';
@@ -51,6 +51,7 @@ export default function Login(props): ReactElement {
     )
     const [deleteAccount]= useMutation(DEL_USER, {
         onCompleted(data){
+            deleteCookie(USER_TOKEN_KEY)
             alert("User deleted successfully")
             router.push({
                 pathname: '/login',
@@ -140,7 +141,7 @@ export default function Login(props): ReactElement {
         <button
         onClick={updateUser}
         className="w-auto no-underline px-8 py-2 self-center md:self-end rounded-md border bg-indigo-500 hover:bg-indigo-200 text-white "
-        >Actualizar</button>
+        >Actualizar Contraseña</button>
 
         <button
         onClick={()=>{setShowAlert(true)}}
