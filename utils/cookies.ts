@@ -13,3 +13,7 @@ export function setCookie(
 export function getCookie(name: string): string | undefined {
   return cookies.get(name);
 }
+
+export function deleteCookie(name: string):void{
+  cookies.remove(name);
+}
