@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { IconProps } from './interfaces';
 
-export default function Calendar({ className }: IconProps): ReactElement {
+export default function MetricsIcon({ className }: IconProps): ReactElement {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -14,7 +14,13 @@ export default function Calendar({ className }: IconProps): ReactElement {
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={1}
-        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+        d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"
+      />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1}
+        d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"
       />
     </svg>
   );
