@@ -9,6 +9,7 @@ import OverviewDesktop from './OverviewDesktop';
 import OverviewMobile from './OverviewMobile';
 import Categories from './Categories';
 import Actions from './Actions';
+import EmptyView from './EmptyView';
 
 export default function MonthlyView(): ReactElement {
   const viewport = useWindowSize();
@@ -20,13 +21,23 @@ export default function MonthlyView(): ReactElement {
         Marzo 2021
       </h2>
 
-      <p className="mb-2">Resumen del mes</p>
+      {true && <EmptyView />}
 
-      {width < TABLET_SCREEN_SIZE ? <OverviewMobile /> : <OverviewDesktop />}
+      {false && (
+        <>
+          <p className="mb-2">Resumen del mes</p>
 
-      <Actions />
+          {width < TABLET_SCREEN_SIZE ? (
+            <OverviewMobile />
+          ) : (
+            <OverviewDesktop />
+          )}
 
-      <Categories />
+          <Actions />
+
+          <Categories />
+        </>
+      )}
     </Layout>
   );
 }
