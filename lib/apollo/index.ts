@@ -18,12 +18,12 @@ function createApolloClient() {
   });
 
   const authLink = setContext((_, { headers }) => {
-    const token = checkAuth();
+    const { token } = checkAuth();
 
     return {
       headers: {
         ...headers,
-        authorization: token ? `Bearer ${token}` : '',
+        Authorization: token ? `Bearer ${token}` : '',
       },
     };
   });

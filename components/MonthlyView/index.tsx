@@ -1,41 +1,41 @@
 import { ReactElement } from 'react';
 
-import { TABLET_SCREEN_SIZE } from '../../utils/constants';
-
-import useWindowSize from '../../hooks/useWindowSize';
+import { useGetMonthDates } from './hooks/useGetMonthDates';
+import { useGetUserMonth } from './hooks/useGetUserMonth';
 
 import Layout from '../shared/Layout';
-import OverviewDesktop from './OverviewDesktop';
-import OverviewMobile from './OverviewMobile';
+import { Overview } from './Overview';
 import Categories from './Categories';
 import Actions from './Actions';
 import EmptyView from './EmptyView';
 
 export default function MonthlyView(): ReactElement {
-  const viewport = useWindowSize();
-  const { width } = viewport;
+  const { monthName, currentMonth } = useGetMonthDates();
+  const { loading, error, data } = useGetUserMonth(currentMonth);
+  const status = data?.status;
+  const categories = data?.categories;
+
+  if (error) {
+    return <p>{error.message}</p>;
+  }
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <Layout className="relative">
-      <h2 className="font-bold text-xl mb:text-2xl mb-4 text-center md:text-left">
-        Marzo 2021
-      </h2>
+      {status === 204 && <EmptyView />}
 
-      {true && <EmptyView />}
-
-      {false && (
+      {status === 200 && (
         <>
-          <p className="mb-2">Resumen del mes</p>
+          <h2 className="font-bold text-xl mb:text-2xl mb-4 text-center md:text-left">
+            {monthName}
+          </h2>
 
-          {width < TABLET_SCREEN_SIZE ? (
-            <OverviewMobile />
-          ) : (
-            <OverviewDesktop />
-          )}
-
+          <Overview />
           <Actions />
-
-          <Categories />
+          <Categories categories={categories} />
         </>
       )}
     </Layout>

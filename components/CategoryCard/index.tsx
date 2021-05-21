@@ -4,45 +4,68 @@ import classnames from 'classnames';
 import Anchor from '../ui/Anchor';
 import ProgressBar from '../ui/ProgressBar';
 
-const STATE_HEALTHY = 'healthy';
-const STATE_POOR = 'poor';
-const STATE_WARNING = 'warning';
+const STATE_HEALTHY = 50;
+const STATE_POOR = 90;
+const STATE_WARNING = 51;
 
-function getStateColor(state) {
+function getStatusColor(status) {
   let color = null;
 
-  switch (state) {
-    case STATE_HEALTHY:
-      color = 'green';
-      break;
-    case STATE_POOR:
-      color = 'red';
-      break;
-    case STATE_WARNING:
-      color = 'yellow';
-      break;
-  }
+  if (status <= STATE_HEALTHY) color = 'green';
+  if (status >= STATE_POOR) color = 'red';
+  if (status >= STATE_WARNING && status < STATE_POOR) color = 'yellow';
 
   return color;
 }
 
-export default function CategoryCard(): ReactElement {
-  const state = 'healthy' || 'warning' || 'poor';
+function getCategoryBudget(accum, currentValue) {
+  return (accum += currentValue.itemBudget);
+}
+
+function getTotalExpenses(accum, currentValue) {
+  return (
+    accum +
+    currentValue.expense.reduce((accumE, currentValueE) => {
+      return accumE + currentValueE.value;
+    }, 0)
+  );
+}
+
+interface Props {
+  id: number;
+  category: {
+    id: number;
+    isActive: boolean;
+    name: string;
+  };
+  items: any;
+}
+
+export default function CategoryCard({ category, items }: Props): ReactElement {
+  const budget = items.reduce(getCategoryBudget, 0);
+  const totalExpenses = items.reduce(getTotalExpenses, 0);
+  const healhtyStatus =
+    totalExpenses && budget ? (totalExpenses / budget) * 100 : 0;
 
   const classNames = classnames('p-4', {
-    'bg-gray-100': state === STATE_HEALTHY,
-    'bg-red-200': state === STATE_POOR,
-    'bg-yellow-200': state === STATE_WARNING,
+    'bg-gray-100': healhtyStatus === 0 || healhtyStatus <= STATE_HEALTHY,
+    'bg-red-200': healhtyStatus >= STATE_POOR,
+    'bg-yellow-200':
+      healhtyStatus >= STATE_WARNING && healhtyStatus < STATE_POOR,
   });
 
   return (
     <div className={classNames}>
-      <h3 className="font-semibold">Entretenimiento</h3>
-      <p>Presupuesto: $150.000</p>
-      <p className="mb-4">Gasto actual: $62.000</p>
-      <ProgressBar color={getStateColor(state)} />
+      <h3 className="font-semibold">{category.name}</h3>
+      <p>Presupuesto: {budget}</p>
+      <p className="mb-4">Gasto actual: {totalExpenses}</p>
+      <ProgressBar color={getStatusColor(healhtyStatus)} />
       <div className="text-right">
-        <Anchor link="/income" text="Ver más" color={getStateColor(state)} />
+        <Anchor
+          link="/income"
+          text="Ver más"
+          color={getStatusColor(healhtyStatus)}
+        />
       </div>
     </div>
   );
