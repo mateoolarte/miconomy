@@ -9,6 +9,8 @@ export interface SelectProps {
   required?: boolean;
   options: Array<OptionsType>;
   onBlur?: any;
+  onChange?: any;
   value: string;
   errorMessage?: string;
+  defaultOption?: string;
 }

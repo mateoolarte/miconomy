@@ -8,8 +8,10 @@ export default function Select({
   required,
   options,
   onBlur,
+  onChange,
   value,
   errorMessage,
+  defaultOption,
 }: SelectProps): ReactElement {
   const classNamesSelect = classnames('border rounded mb-2', {
     'border-red-400': errorMessage,
@@ -22,10 +24,11 @@ export default function Select({
       <select
         required={required}
         onBlur={onBlur}
-        defaultValue={value}
+        onChange={onChange}
+        value={value}
         className={classNamesSelect}
       >
-        <option value="">Selecciona una categoría</option>
+        <option value="">{defaultOption}</option>
         {options.map(({ id, label, value }) => (
           <option key={id} value={value}>
             {label}

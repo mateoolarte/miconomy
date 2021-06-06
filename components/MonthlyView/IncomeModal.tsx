@@ -1,4 +1,7 @@
 import { ReactElement, useState } from 'react';
+import { useMutation } from '@apollo/client';
+
+import { ADD_INCOME } from './graphql/addIncome';
 
 import Modal from '../ui/Modal';
 import Input from '../ui/Input';
@@ -8,21 +11,72 @@ import Button from '../ui/Button';
 export interface IncomeModalProps {
   toggleIncomeModal: boolean;
   setToggleIncomeModal: any;
+  userMonthId: number;
 }
 
 export default function IncomeModal({
   toggleIncomeModal,
   setToggleIncomeModal,
+  userMonthId,
 }: IncomeModalProps): ReactElement {
   const [value, setValue] = useState(0);
   const [description, setDescription] = useState('');
+  const [errors, setErrors] = useState({});
+  const isValid = value === 0 || description === '' || errors['description'];
+  const [addIncome] = useMutation(ADD_INCOME);
+
+  function resetState() {
+    setToggleIncomeModal(false);
+    setValue(0);
+    setDescription('');
+    setErrors({});
+  }
+
+  function handleValue(e) {
+    const value = Number(e.target.value);
+
+    if (value <= 0) {
+      setErrors({
+        ...errors,
+        value: 'El valor debe ser mayor a cero',
+      });
+    }
+
+    if (value > 0) {
+      setErrors({
+        ...errors,
+        value: '',
+      });
+    }
+
+    setValue(value);
+  }
+
+  function handleDescription(e) {
+    const value = e.target.value;
+
+    if (value.length <= 3) {
+      setErrors({
+        ...errors,
+        description: 'La descripción debe tener más de 3 caracteres',
+      });
+    }
+
+    if (value.length > 3) {
+      setErrors({
+        ...errors,
+        description: '',
+      });
+    }
+
+    setDescription(value);
+  }
 
   function handleIncome(e) {
     e.preventDefault();
 
-    setToggleIncomeModal(false);
-    setValue(0);
-    setDescription('');
+    addIncome({ variables: { userMonthId, value, description } });
+    resetState();
   }
 
   return (
@@ -36,22 +90,18 @@ export default function IncomeModal({
           type="number"
           label="Valor"
           value={value}
-          errorMessage=""
-          onChange={e => setValue(e.target.value)}
+          errorMessage={errors['value']}
+          onChange={handleValue}
         />
         <Textarea
           label="Descripción"
           required
           value={description}
-          onChange={e => setDescription(e.target.value)}
+          errorMessage={errors['description']}
+          onChange={handleDescription}
         />
         <div className="text-center">
-          <Button
-            type="submit"
-            color="green"
-            size="medium"
-            disabled={value === 0 || description === ''}
-          >
+          <Button type="submit" color="green" size="medium" disabled={isValid}>
             Agregar
           </Button>
         </div>

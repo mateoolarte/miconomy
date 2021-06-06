@@ -29,6 +29,7 @@ export default function Textarea({
         onChange={onChange}
         className={classNamesTextarea}
       />
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
     </div>
   );
 }

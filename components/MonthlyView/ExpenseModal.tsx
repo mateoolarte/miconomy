@@ -1,4 +1,9 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useState, useEffect } from 'react';
+import { useMutation } from '@apollo/client';
+
+import { ADD_EXPENSE } from './graphql/addExpense';
+
+import { useGetUserMonthCategories } from './hooks/useGetUserMonthCategories';
 
 import Modal from '../ui/Modal';
 import Input from '../ui/Input';
@@ -6,50 +11,41 @@ import Select from '../ui/Select';
 import Button from '../ui/Button';
 import Textarea from '../ui/Textarea';
 
-export interface ExpenseModalProps {
+interface Props {
   toggleExpenseModal: boolean;
   setToggleExpenseModal: any;
+  userMonthId: number;
 }
-
-const categories = [
-  {
-    id: 1,
-    label: 'Entretenimiento',
-    value: 'entretenimiento',
-  },
-  {
-    id: 2,
-    label: 'Comida',
-    value: 'comida',
-  },
-  {
-    id: 3,
-    label: 'Viajes',
-    value: 'viajes',
-  },
-];
-
-const items = [
-  {
-    id: 1,
-    label: 'Gasolina',
-    value: 'gasolina',
-  },
-  {
-    id: 2,
-    label: 'Almuerzo',
-    value: 'almuerzo',
-  },
-];
 
 export default function ExpenseModal({
   toggleExpenseModal,
   setToggleExpenseModal,
-}: ExpenseModalProps): ReactElement {
-  const [category, setCategory] = useState('');
-  const [item, setItem] = useState('');
+  userMonthId,
+}: Props): ReactElement {
+  const { loading, error, data } = useGetUserMonthCategories(userMonthId);
+  const [categories, setCategories] = useState([]);
+  const [items, setItems] = useState([]);
+  const [categoryId, setCategory] = useState(null);
+  const [itemId, setItem] = useState(null);
   const [value, setValue] = useState(0);
   const [description, setDescription] = useState('');
+  const [errors, setErrors] = useState({});
+  const isValid =
+    !categoryId || !itemId || !value || !description || errors['description'];
+
+  const [addExpense] = useMutation(ADD_EXPENSE);
+
+  useEffect(() => {
+    const parsedCategories = data?.map(item => {
+      return {
+        id: item.id,
+        label: item.category.name,
+        value: item.id,
+      };
+    });
+
+    setCategories(parsedCategories || []);
+  }, [data]);
 
   function resetState() {
     setToggleExpenseModal(false);
@@ -57,12 +53,86 @@ export default function ExpenseModal({
     setItem('');
     setValue(0);
     setDescription('');
+    setErrors({});
+  }
+
+  function handleCategories(e) {
+    const value = Number(e.target.value);
+
+    setCategory(value);
+
+    const getCategoryItems = data?.find(item => item.id === value)?.items;
+    const parsedItems = getCategoryItems?.map(item => {
+      return {
+        id: item.id,
+        label: item.description,
+        value: item.id,
+      };
+    });
+
+    setItems(parsedItems || []);
+  }
+
+  function handleItem(e) {
+    const value = Number(e.target.value);
+
+    setItem(value);
+  }
+
+  function handleValue(e) {
+    const value = Number(e.target.value);
+
+    if (value <= 0) {
+      setErrors({
+        ...errors,
+        value: 'El valor debe ser mayor a cero',
+      });
+    }
+
+    if (value > 0) {
+      setErrors({
+        ...errors,
+        value: '',
+      });
+    }
+
+    setValue(value);
+  }
+
+  function handleDescription(e) {
+    const value = e.target.value;
+
+    if (value.length <= 3) {
+      setErrors({
+        ...errors,
+        description: 'La descripción debe tener más de 3 caracteres',
+      });
+    }
+
+    if (value.length > 3) {
+      setErrors({
+        ...errors,
+        description: '',
+      });
+    }
+
+    setDescription(value);
   }
 
   function handleExpense(e) {
     e.preventDefault();
 
+    addExpense({ variables: { itemId, value, description } });
+
     resetState();
+  }
+
+  if (error) {
+    return <p>{error.message}</p>;
+  }
+
+  if (loading) {
+    return <p>Loading...</p>;
   }
 
   return (
@@ -73,47 +143,45 @@ export default function ExpenseModal({
       <form onSubmit={handleExpense}>
         <h3 className="text-center font-semibold mb-4">Agregar gasto</h3>
         <Select
-          value={category}
+          value={categoryId}
           options={categories}
-          onBlur={e => setCategory(e.target.value)}
+          onChange={handleCategories}
+          defaultOption="Selecciona una categoría"
           required
         />
 
-        {category && (
+        {categoryId && (
           <Select
-            value={item}
+            value={itemId}
             options={items}
-            onBlur={e => setItem(e.target.value)}
+            onChange={handleItem}
+            defaultOption="Selecciona un item"
             required
           />
         )}
 
-        {category && item && (
+        {categoryId && itemId && (
           <>
             <Input
               type="number"
               label="Valor"
               value={value}
-              errorMessage=""
-              onChange={e => setValue(e.target.value)}
+              errorMessage={errors['value']}
+              onChange={handleValue}
               required
             />
             <Textarea
               label="Descripción"
               value={description}
+              errorMessage={errors['description']}
               required
-              onChange={e => setDescription(e.target.value)}
+              onChange={handleDescription}
             />
           </>
         )}
 
         <div className="text-center">
-          <Button
-            type="submit"
-            color="green"
-            size="medium"
-            disabled={!category || !item || !value || !description}
-          >
+          <Button type="submit" color="green" size="medium" disabled={isValid}>
             Agregar
           </Button>
         </div>

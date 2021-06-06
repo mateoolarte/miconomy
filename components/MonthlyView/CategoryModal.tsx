@@ -1,4 +1,10 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useState, useEffect } from 'react';
+import { useMutation } from '@apollo/client';
+
+import { ADD_CATEGORY } from '../../graphql/mutations/addCategory';
+import { ADD_USER_MONTH_CATEGORY } from './graphql/addUserMonthCategory';
+
+import { useGetUserCategories } from '../../hooks/useGetUserCategories';
 
 import Modal from '../ui/Modal';
 import Input from '../ui/Input';
@@ -8,51 +14,105 @@ import Button from '../ui/Button';
 export interface CategoryModalProps {
   toggleCategoryModal: boolean;
   setToggleCategoryModal: any;
+  userMonthId: number;
 }
-
-const categories = [
-  {
-    id: 1,
-    label: 'Entretenimiento',
-    value: 'entretenimiento',
-  },
-  {
-    id: 2,
-    label: 'Comida',
-    value: 'comida',
-  },
-  {
-    id: 3,
-    label: 'Viajes',
-    value: 'viajes',
-  },
-];
 
 export default function CategoryModal({
   toggleCategoryModal,
   setToggleCategoryModal,
+  userMonthId,
 }: CategoryModalProps): ReactElement {
-  const [category, setCategory] = useState('');
+  const { loading, error, data } = useGetUserCategories();
+  const [categories, setCategories] = useState([]);
+  const [categoryId, setCategoryId] = useState(null);
   const [toggleNewCategory, setToggleNewCategory] = useState(false);
   const [newCategoryValue, setNewCategoryValue] = useState('');
+  const [errors, setErrors] = useState({});
+
+  const [addCategory] = useMutation(ADD_CATEGORY, {
+    onCompleted(data) {
+      const dataNewCategory = data?.addCategory;
+
+      setCategories([
+        ...categories,
+        {
+          id: dataNewCategory.id,
+          value: dataNewCategory.id,
+          label: dataNewCategory.name,
+        },
+      ]);
+      setCategoryId(dataNewCategory.id);
+      setToggleNewCategory(false);
+    },
+  });
+  const [addUserMonthCategory] = useMutation(ADD_USER_MONTH_CATEGORY, {
+    onCompleted() {
+      resetState();
+    },
+  });
+
+  useEffect(() => {
+    const parsedCategories = data?.categories?.map(item => {
+      return {
+        id: item.id,
+        label: item.name,
+        value: item.id,
+      };
+    });
+    setCategories(parsedCategories || []);
+  }, [data]);
 
   function resetState() {
     setToggleCategoryModal(false);
-    setCategory('');
+    setCategoryId(null);
     setToggleNewCategory(false);
     setNewCategoryValue('');
   }
 
-  function handleIncome(e) {
+  function handleSelectCategory(e) {
+    const value = Number(e.target.value);
+
+    setCategoryId(value);
+  }
+
+  function handleNewCategoryValue(e) {
+    const value = e.target.value;
+
+    if (value.length <= 3) {
+      setErrors({
+        ...errors,
+        newCategoryValue: 'El valor debe tener más de 3 caracteres',
+      });
+    }
+
+    if (value.length > 3) {
+      setErrors({
+        ...errors,
+        newCategoryValue: '',
+      });
+    }
+
+    setNewCategoryValue(value);
+  }
+
+  function handleCategory(e) {
     e.preventDefault();
 
-    resetState();
+    addUserMonthCategory({ variables: { categoryId, userMonthId } });
   }
 
   function handleNewCategory(e) {
     e.preventDefault();
 
-    setToggleNewCategory(false);
+    addCategory({ variables: { name: newCategoryValue } });
+  }
+
+  if (error) {
+    return <p>{error.message}</p>;
+  }
+
+  if (loading) {
+    return <p>Loading...</p>;
   }
 
   return (
@@ -60,12 +120,13 @@ export default function CategoryModal({
       isActive={toggleCategoryModal}
       handleClose={() => setToggleCategoryModal(false)}
     >
-      <form onSubmit={handleIncome}>
+      <form onSubmit={handleCategory}>
         <h3 className="text-center font-semibold mb-4">Agregar categoría</h3>
         <Select
-          value={category}
+          value={categoryId}
           options={categories}
-          onBlur={e => setCategory(e.target.value)}
+          defaultOption="Selecciona una categoría"
+          onChange={handleSelectCategory}
           required
         />
 
@@ -89,9 +150,9 @@ export default function CategoryModal({
               type="text"
               label="Nueva categoría"
               value={newCategoryValue}
-              errorMessage=""
+              errorMessage={errors['newCategoryValue']}
               className="w-11/12 mr-4 lg:w-auto"
-              onChange={e => setNewCategoryValue(e.target.value)}
+              onChange={handleNewCategoryValue}
             />
             <Button
               type="button"
@@ -110,7 +171,7 @@ export default function CategoryModal({
             type="submit"
             color="green"
             size="medium"
-            disabled={category === ''}
+            disabled={!categoryId}
           >
             Agregar
           </Button>

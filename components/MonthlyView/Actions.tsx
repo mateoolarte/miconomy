@@ -5,7 +5,11 @@ import IncomeModal from './IncomeModal';
 import CategoryModal from './CategoryModal';
 import ExpenseModal from './ExpenseModal';
 
-export default function Actions(): ReactElement {
+interface Props {
+  userMonthId: number;
+}
+
+export default function Actions({ userMonthId }: Props): ReactElement {
   const [toggleIncomeModal, setToggleIncomeModal] = useState(false);
   const [toggleCategoryModal, setToggleCategoryModal] = useState(false);
   const [toggleExpenseModal, setToggleExpenseModal] = useState(false);
@@ -45,14 +49,17 @@ export default function Actions(): ReactElement {
       <IncomeModal
         toggleIncomeModal={toggleIncomeModal}
         setToggleIncomeModal={setToggleIncomeModal}
+        userMonthId={userMonthId}
       />
       <CategoryModal
         toggleCategoryModal={toggleCategoryModal}
         setToggleCategoryModal={setToggleCategoryModal}
+        userMonthId={userMonthId}
       />
       <ExpenseModal
         toggleExpenseModal={toggleExpenseModal}
         setToggleExpenseModal={setToggleExpenseModal}
+        userMonthId={userMonthId}
       />
       <p className="mb-2 w-full">Acciones</p>
       {buttons.map(({ id, title, onClick }) => (

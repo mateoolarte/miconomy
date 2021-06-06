@@ -1,6 +1,6 @@
 # Miconomy App
 
-Here you can find the frontend app. Built with NextJS & GraphQL
+Here you can find the web app. Built with NextJS & GraphQL
 
 ## Features
 

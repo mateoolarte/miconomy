@@ -14,6 +14,8 @@ export default function MonthlyView(): ReactElement {
   const { loading, error, data } = useGetUserMonth(currentMonth);
   const status = data?.status;
   const categories = data?.categories;
+  const savings = data?.savingCategories?.userMonthSavingItems;
+  const userMonthId = data?.id;
 
   if (error) {
     return <p>{error.message}</p>;
@@ -34,8 +36,8 @@ export default function MonthlyView(): ReactElement {
           </h2>
 
           <Overview />
-          <Actions />
-          <Categories categories={categories} />
+          <Actions userMonthId={userMonthId} />
+          <Categories categories={categories} savings={savings} />
         </>
       )}
     </Layout>
