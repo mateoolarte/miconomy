@@ -10,8 +10,8 @@ import Actions from './Actions';
 import EmptyView from './EmptyView';
 
 export default function MonthlyView(): ReactElement {
-  const { monthName, currentMonth } = useGetMonthDates();
-  const { loading, error, data } = useGetUserMonth(currentMonth);
+  const { monthName, currentMonth, currentYear } = useGetMonthDates();
+  const { loading, error, data } = useGetUserMonth(currentMonth, currentYear);
   const status = data?.status;
   const categories = data?.categories;
   const savings = data?.savingCategories?.userMonthSavingItems;

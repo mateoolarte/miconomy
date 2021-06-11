@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GET_USER_MONTH = gql`
-  query getUserMonth($month: String!) {
-    getUserMonth(month: $month) {
+  query getUserMonth($month: Int!, $year: Int!) {
+    getUserMonth(month: $month, year: $year) {
       id
       status
       error
