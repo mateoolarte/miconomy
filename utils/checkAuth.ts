@@ -8,15 +8,17 @@ interface AuthRes {
 }
 
 export function checkAuth(context?: any, redirectTo?: string): AuthRes {
-  let isAuth;
-  let token;
+  let isAuth: boolean;
+  let token: string;
   const cookies = context?.req?.headers?.cookie;
 
   if (cookies) {
+    // server side
     const cookie = new Cookies(cookies);
     isAuth = cookie.get(USER_TOKEN_KEY) !== undefined;
     token = cookie.get(USER_TOKEN_KEY);
   } else {
+    // client side
     isAuth = getCookie(USER_TOKEN_KEY) !== undefined;
     token = getCookie(USER_TOKEN_KEY);
   }

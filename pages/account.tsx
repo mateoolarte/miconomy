@@ -1,9 +1,6 @@
-import { ReactElement } from 'react'; 
-import Account from '../components/Account';
+import { ReactElement } from 'react';
+import { Account } from '../containers/Account';
 
-
-export default function Dashboard(): ReactElement {
-    return (<div>
-            <Account/>
-        </div>);
+export default function AccountPage(): ReactElement {
+  return <Account />;
 }

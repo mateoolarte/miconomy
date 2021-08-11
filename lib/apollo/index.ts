@@ -11,10 +11,11 @@ export interface ResolverContext {
   res?: ServerResponse;
 }
 let apolloClient: ApolloClient<NormalizedCacheObject> = null;
+const DEFAULT_API_URL = 'http://localhost:4000/graphql';
 
 function createApolloClient() {
   const httpLink = new HttpLink({
-    uri: process.env.NEXT_PUBLIC_API_URL,
+    uri: process.env.NEXT_PUBLIC_API_URL || DEFAULT_API_URL,
   });
 
   const authLink = setContext((_, { headers }) => {

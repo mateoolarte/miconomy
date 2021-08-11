@@ -1,9 +1,9 @@
 import { ReactElement } from 'react';
 import { checkAuth } from '../utils/checkAuth';
-import Dashboard from '../components/Dashboard';
+import { Dashboard } from '../containers/Dashboard';
 
 export default function Index(): ReactElement {
-  return <Dashboard></Dashboard>;
+  return <Dashboard />;
 }
 
 export async function getServerSideProps(context) {

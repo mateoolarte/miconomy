@@ -3,7 +3,7 @@ import Cookies from 'universal-cookie';
 
 import { USER_TOKEN_KEY } from '../utils/constants';
 
-import Signup from '../components/Signup';
+import { Signup } from '../components/Signup';
 
 export default function SignupPage(): ReactElement {
   return <Signup />;
