@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 
 import items from './data';
 
-export default function Navigation(): ReactElement {
+export function Navigation(): ReactElement {
   const router = useRouter();
   const { pathname } = router;
 

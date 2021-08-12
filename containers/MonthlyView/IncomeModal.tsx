@@ -3,10 +3,10 @@ import { useMutation } from '@apollo/client';
 
 import { ADD_INCOME } from './graphql/addIncome';
 
-import Modal from '../../components/ui/Modal';
-import Input from '../../components/ui/Input';
-import Textarea from '../../components/ui/Textarea';
-import Button from '../../components/ui/Button';
+import { Modal } from '../../components/ui/Modal';
+import { Input } from '../../components/ui/Input';
+import { Textarea } from '../../components/ui/Textarea';
+import { Button } from '../../components/ui/Button';
 
 export interface IncomeModalProps {
   toggleIncomeModal: boolean;

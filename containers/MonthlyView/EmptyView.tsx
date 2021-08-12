@@ -1,7 +1,7 @@
 import { ReactElement, useState } from 'react';
 
-import Select from '../../components/ui/Select';
-import Button from '../../components/ui/Button';
+import { Select } from '../../components/ui/Select';
+import { Button } from '../../components/ui/Button';
 
 const options = [
   {

@@ -8,7 +8,7 @@ import { USER } from '../../graphql/queries/user';
 import { DEL_USER } from '../../graphql/mutations/deleteUser';
 import { CHANGE_PASS } from '../../graphql/mutations/changePassword';
 
-import Input from '../../components/ui/Input';
+import { Input } from '../../components/ui/Input';
 import Logout from '../../components/ui/icons/Logout';
 
 export function Account(): ReactElement {

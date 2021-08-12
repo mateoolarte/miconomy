@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import Link from 'next/link';
 
-import Navigation from '../Navigation';
+import { Navigation } from '../Navigation';
 
 export function Logo(): ReactElement {
   return (
@@ -15,7 +15,7 @@ export function Logo(): ReactElement {
   );
 }
 
-export default function Header(): ReactElement {
+export function Header(): ReactElement {
   return (
     <header className="shadow-md py-2 lg:py-4 mb-4 mb:mb-8">
       <div className="w-11/12 max-w-7xl mx-auto flex items-center">

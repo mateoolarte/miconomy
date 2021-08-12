@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 
-import Anchor from '../../components/ui/Anchor';
+import { Anchor } from '../../components/ui/Anchor';
 
 function getTotalSavings(accum, currentValue) {
   return (accum += currentValue.value);

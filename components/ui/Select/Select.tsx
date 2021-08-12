@@ -1,9 +1,24 @@
 import { ReactElement } from 'react';
 import classnames from 'classnames';
 
-import { SelectProps } from './interfaces';
+type OptionsType = {
+  id: number;
+  label: string;
+  value: string;
+};
 
-export default function Select({
+interface SelectProps {
+  label?: string;
+  required?: boolean;
+  options: Array<OptionsType>;
+  onBlur?: any;
+  onChange?: any;
+  value: string;
+  errorMessage?: string;
+  defaultOption?: string;
+}
+
+export function Select({
   label,
   required,
   options,

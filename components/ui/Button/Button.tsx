@@ -1,8 +1,22 @@
 import { ReactElement } from 'react';
 import classnames from 'classnames';
-import { ButtonProps } from './interfaces';
 
-export default function Button({
+type TypeOptions = 'submit' | 'button';
+type ColorOptions = 'green' | 'blue';
+type SizeOptions = 'small' | 'medium' | 'large';
+
+interface ButtonProps {
+  type: TypeOptions;
+  children: object | string;
+  disabled?: boolean;
+  fullWidth?: boolean;
+  className?: string;
+  color: ColorOptions;
+  size: SizeOptions;
+  onClick?: any;
+}
+
+export function Button({
   type,
   children,
   disabled,

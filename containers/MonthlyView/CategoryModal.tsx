@@ -6,10 +6,10 @@ import { ADD_USER_MONTH_CATEGORY } from './graphql/addUserMonthCategory';
 
 import { useGetUserCategories } from '../../hooks/useGetUserCategories';
 
-import Modal from '../../components/ui/Modal';
-import Input from '../../components/ui/Input';
-import Select from '../../components/ui/Select';
-import Button from '../../components/ui/Button';
+import { Modal } from '../../components/ui/Modal';
+import { Input } from '../../components/ui/Input';
+import { Select } from '../../components/ui/Select';
+import { Button } from '../../components/ui/Button';
 
 export interface CategoryModalProps {
   toggleCategoryModal: boolean;

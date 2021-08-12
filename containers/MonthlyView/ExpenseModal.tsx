@@ -5,11 +5,11 @@ import { ADD_EXPENSE } from './graphql/addExpense';
 
 import { useGetUserMonthCategories } from './hooks/useGetUserMonthCategories';
 
-import Modal from '../../components/ui/Modal';
-import Input from '../../components/ui/Input';
-import Select from '../../components/ui/Select';
-import Button from '../../components/ui/Button';
-import Textarea from '../../components/ui/Textarea';
+import { Modal } from '../../components/ui/Modal';
+import { Input } from '../../components/ui/Input';
+import { Select } from '../../components/ui/Select';
+import { Button } from '../../components/ui/Button';
+import { Textarea } from '../../components/ui/Textarea';
 
 interface Props {
   toggleExpenseModal: boolean;

@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
 import { Feature } from '../../components/Feature';
-import Layout from '../../components/shared/Layout';
+import { Layout } from '../../components/shared/Layout';
 import MonthChart from './MonthChart';
-import ListRow from '../../components/ui/ListRow';
+import { ListRow } from '../../components/ui/ListRow';
 import {
   CategoriesWrapper,
   DashboardWrapper,

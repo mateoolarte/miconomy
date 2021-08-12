@@ -3,9 +3,13 @@ import classnames from 'classnames';
 
 import Delete from '../icons/Delete';
 
-import { ModalProps } from './interfaces';
+interface ModalProps {
+  isActive: boolean;
+  handleClose: any;
+  children: object | string;
+}
 
-export default function Modal({
+export function Modal({
   isActive,
   handleClose,
   children,

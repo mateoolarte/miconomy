@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
 import classnames from 'classnames';
 
-import Anchor from '../ui/Anchor';
-import ProgressBar from '../ui/ProgressBar';
+import { Anchor } from '../ui/Anchor';
+import { ProgressBar } from '../ui/ProgressBar';
 
 const STATE_HEALTHY = 50;
 const STATE_POOR = 90;

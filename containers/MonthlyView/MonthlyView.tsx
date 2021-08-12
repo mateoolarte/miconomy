@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 import { useGetMonthDates } from './hooks/useGetMonthDates';
 import { useGetUserMonth } from './hooks/useGetUserMonth';
 
-import Layout from '../../components/shared/Layout';
+import { Layout } from '../../components/shared/Layout';
 import { Overview } from './Overview';
 import Categories from './Categories';
 import Actions from './Actions';

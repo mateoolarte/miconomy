@@ -1,9 +1,13 @@
 import { ReactElement } from 'react';
 import classnames from 'classnames';
 
-import { ProgressBarProps } from './interfaces';
+type ColorOptions = 'green' | 'red' | 'yellow';
 
-export default function ProgressBar({ color }: ProgressBarProps): ReactElement {
+interface ProgressBarProps {
+  color: ColorOptions;
+}
+
+export function ProgressBar({ color }: ProgressBarProps): ReactElement {
   const classNameBox = classnames('rounded-sm mb-4 bg-gray-300', {
     'bg-gray-300': color === 'green' || color === 'yellow',
     'bg-gray-400': color === 'red',

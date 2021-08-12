@@ -9,10 +9,10 @@ import { USER_TOKEN_KEY } from '../../utils/constants';
 
 import { LOGIN } from './graphql/login.mutation';
 
-import Input from '../../components/ui/Input';
-import Anchor from '../../components/ui/Anchor';
-import Alert from '../../components/ui/Alert';
-import Button from '../../components/ui/Button';
+import { Input } from '../../components/ui/Input';
+import { Anchor } from '../../components/ui/Anchor';
+import { Alert } from '../../components/ui/Alert';
+import { Button } from '../../components/ui/Button';
 
 export function Login(): ReactElement {
   const router = useRouter();

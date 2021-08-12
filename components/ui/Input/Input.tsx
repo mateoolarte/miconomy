@@ -4,9 +4,19 @@ import classnames from 'classnames';
 import EyeOpen from '../icons/EyeOpen';
 import EyeClose from '../icons/EyeClose';
 
-import { InputProps } from './interfaces';
+interface InputProps {
+  type: string;
+  label?: string;
+  value: string | number;
+  onChange: any;
+  onBlur?: any;
+  className?: string;
+  errorMessage: string;
+  showPlainPassword?: boolean;
+  required?: boolean;
+}
 
-export default function Input({
+export function Input({
   type,
   label,
   value,

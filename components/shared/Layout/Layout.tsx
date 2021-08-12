@@ -1,9 +1,14 @@
 import { ReactElement } from 'react';
-import Header from '../Header';
+import { Header } from '../Header';
 
-import { LayoutProps } from './interfaces';
+interface LayoutProps {
+  noHeader?: boolean;
+  children: object | string;
+  className?: string;
+  wrapperClassName?: string;
+}
 
-export default function Layout({
+export function Layout({
   noHeader,
   children,
   className,

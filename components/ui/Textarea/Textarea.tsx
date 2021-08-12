@@ -1,9 +1,15 @@
 import { ReactElement } from 'react';
 import classnames from 'classnames';
 
-import { TextareaProps } from './interfaces';
+interface TextareaProps {
+  label?: string;
+  required?: boolean;
+  value: string;
+  onChange?: any;
+  errorMessage?: string;
+}
 
-export default function Textarea({
+export function Textarea({
   label,
   required,
   value,

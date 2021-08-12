@@ -1,6 +1,6 @@
 import { ReactElement, useState } from 'react';
 
-import Button from '../../components/ui/Button';
+import { Button } from '../../components/ui/Button';
 import IncomeModal from './IncomeModal';
 import CategoryModal from './CategoryModal';
 import ExpenseModal from './ExpenseModal';
