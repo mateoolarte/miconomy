@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Miconomy web app",
+      "skipFiles": ["<node_internals>/**"],
+      "port": 9229
+    }
+  ]
+}
