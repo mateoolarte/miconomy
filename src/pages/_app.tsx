@@ -1,6 +1,6 @@
 import { AppProps } from 'next/app';
 import { ApolloProvider } from '@apollo/client';
-import { useApollo } from '../lib/apollo';
+import { useApollo } from '../libs/apollo';
 import 'tailwindcss/tailwind.css';
 import '../styles/typography.css';
 
