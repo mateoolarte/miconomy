@@ -2,11 +2,9 @@
 .next
 
 coverage
-node_modules
-
 out
-build
 
-package.json
 package-lock.json
 yarn.lock
+
+**/*.d.ts

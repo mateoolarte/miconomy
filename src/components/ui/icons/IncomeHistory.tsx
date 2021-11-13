@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import { IconProps } from './interfaces';
 
 export default function IncomeHistoryIcon({
-  className
+  className,
 }: IconProps): ReactElement {
   return (
     <svg

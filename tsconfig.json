@@ -1,19 +1,21 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2021",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
     "skipLibCheck": true,
-    "strict": false,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
     "resolveJsonModule": true,
+    "rootDir": "src",
+    "noEmit": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "moduleResolution": "node",
+    "jsx": "preserve",
+    "incremental": true,
+    "allowJs": true,
+    "strict": false
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "coverage", ".next"]
+  "exclude": ["node_modules", "coverage", ".next", "src/cypress"]
 }

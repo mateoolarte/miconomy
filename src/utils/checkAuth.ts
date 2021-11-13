@@ -1,6 +1,6 @@
 import Cookies from 'universal-cookie';
-import { getCookie } from '../utils/cookies';
-import { USER_TOKEN_KEY } from '../utils/constants';
+import { getCookie } from './cookies';
+import { USER_TOKEN_KEY } from './constants';
 
 interface AuthRes {
   isAuth: boolean;

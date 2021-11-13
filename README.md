@@ -1,4 +1,4 @@
-# Miconomy App
+# Miconomy Web
 
 Here you can find the web app. Built with NextJS & GraphQL
 
@@ -60,11 +60,14 @@ yarn test:watch
 
 ### Run cypress
 
-* run it on its own window
+- run it on its own window
+
 ```bash
 yarn cypress:open
 ```
-* these end to end tests can also be openes on the terminal directly
+
+- these end to end tests can also be openes on the terminal directly
+
 ```
 yarn cypress:run
 ```
