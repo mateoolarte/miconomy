@@ -6,7 +6,7 @@ Here you can find the web app. Built with NextJS & GraphQL
 
 - Apollo client: A GraphQL client library
 - NextJS: React framework with SSR
-- TailwindCSS: Utility first CSS library
+- Styled components: CSS in JS library to manage styles
 - Typescript: Programming language with static typings
 - Jest: Test runner
 - Git hooks with Husky and Linted staged: To help checking test and formatters before a commit
@@ -70,10 +70,4 @@ yarn cypress:open
 
 ```
 yarn cypress:run
-```
-
-### Run storybook
-
-```bash
-yarn storybook
 ```

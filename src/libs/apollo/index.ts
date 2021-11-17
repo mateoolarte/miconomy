@@ -10,6 +10,7 @@ export interface ResolverContext {
   req?: IncomingMessage;
   res?: ServerResponse;
 }
+
 let apolloClient: ApolloClient<NormalizedCacheObject> = null;
 const DEFAULT_API_URL = 'http://localhost:4000/graphql';
 
