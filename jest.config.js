@@ -1,16 +1,13 @@
+const ignoredPattern = ['/.next/', '/node_modules/', '/cypress/'];
+
 module.exports = {
-  collectCoverageFrom: [
-    'components/**/*.{ts,tsx,js,jsx}',
-    'containers/**/*.{ts,tsx,js,jsx}',
-    'hooks/**/*.{ts,tsx,js,jsx}',
-    'utils/**/*.{ts,tsx,js,jsx}',
-  ],
-  coveragePathIgnorePatterns: ['/.next/', '/node_modules/'],
+  collectCoverageFrom: ['src/**/*.{ts,tsx,js,jsx}'],
+  coveragePathIgnorePatterns: ignoredPattern,
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  testPathIgnorePatterns: ['/node_modules/', '/.next/', '/cypress/'],
+  testPathIgnorePatterns: ignoredPattern,
   testEnvironment: 'jsdom',
   transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': '<rootDir>/node_modules/babel-jest',
+    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
   },
   transformIgnorePatterns: ['/node_modules/'],
   moduleDirectories: ['node_modules', 'utils'],

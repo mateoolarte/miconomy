@@ -15,6 +15,7 @@
 *.env*
 .eslintcache
 package-lock.json
+*.mp4
 
 # debug
 npm-debug.log*

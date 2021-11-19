@@ -1,7 +1,7 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import { useMemo } from 'react';
 import merge from 'deepmerge';
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
+import { ApolloClient, from, HttpLink, InMemoryCache } from '@apollo/client';
 import type { NormalizedCacheObject } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { checkAuth } from '../../utils/checkAuth';
@@ -14,26 +14,29 @@ export interface ResolverContext {
 let apolloClient: ApolloClient<NormalizedCacheObject> = null;
 const DEFAULT_API_URL = 'http://localhost:4000/graphql';
 
+const httpLink = new HttpLink({
+  uri: process.env.NEXT_PUBLIC_API_URL || DEFAULT_API_URL,
+});
+
+const authLink = setContext((_, { headers }) => {
+  const { token } = checkAuth();
+
+  return {
+    headers: {
+      ...headers,
+      Authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
+
+const cache = new InMemoryCache();
+const link = from([authLink, httpLink]);
+
 function createApolloClient() {
-  const httpLink = new HttpLink({
-    uri: process.env.NEXT_PUBLIC_API_URL || DEFAULT_API_URL,
-  });
-
-  const authLink = setContext((_, { headers }) => {
-    const { token } = checkAuth();
-
-    return {
-      headers: {
-        ...headers,
-        Authorization: token ? `Bearer ${token}` : '',
-      },
-    };
-  });
-
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link: authLink.concat(httpLink),
-    cache: new InMemoryCache(),
+    link,
+    cache,
   });
 }
 
