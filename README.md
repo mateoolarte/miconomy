@@ -52,10 +52,22 @@ yarn start
 yarn test
 ```
 
+### Run unit tests
+
+```bash
+yarn test:unit
+```
+
 ### Run watching tests
 
 ```bash
 yarn test:watch
+```
+
+### Run coverage tests
+
+```bash
+yarn test:coverage
 ```
 
 ### Run cypress
@@ -63,11 +75,29 @@ yarn test:watch
 - run it on its own window
 
 ```bash
-yarn cypress:open
+yarn cypress:watch
 ```
 
-- these end to end tests can also be openes on the terminal directly
+- these end to end tests can also be open on the terminal directly
 
-```
+```bash
 yarn cypress:run
+```
+
+### Run linter on js and ts files
+
+```bash
+yarn lint
+```
+
+### Run formatter
+
+```bash
+yarn fmt
+```
+
+### Run formatter and linter
+
+```bash
+yarn pretty
 ```
