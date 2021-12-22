@@ -16,6 +16,7 @@ import { Button } from '../../components/ui/Button';
 
 export function Login(): ReactElement {
   const router = useRouter();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({
@@ -23,32 +24,35 @@ export function Login(): ReactElement {
     password: '',
     message: '',
   });
+
   const [loginAction, { loading }] = useMutation(LOGIN, {
     onCompleted(data) {
       const response = data?.login;
-      const { message, status, token } = response;
+      const { token } = response;
 
-      if (status === 202) {
-        const timeToExpire = 60 * 60 * 24 * 26; // 26 days
+      const timeToExpire = 60 * 60 * 24 * 26; // 26 days
 
-        setCookie(USER_TOKEN_KEY, token, timeToExpire);
-        router.push({
-          pathname: '/',
-          query: {
-            message,
-          },
-        });
-      }
+      setCookie(USER_TOKEN_KEY, token, timeToExpire);
+      router.push({
+        pathname: '/',
+        query: {
+          message: 'Has ingresado correctamente',
+        },
+      });
+    },
+    onError(error) {
+      const { message } = error;
 
-      if (status === 404) {
-        setErrors({
-          ...errors,
-          message,
-        });
-      }
+      setErrors({
+        ...errors,
+        message,
+      });
     },
   });
+
   const hasErrors = errors.email !== '' || errors.password !== '';
+  const isFormValid =
+    hasErrors || !validateEmail(email) || password.length <= 7 || loading;
 
   function handleEmailValidation(value) {
     if (!validateEmail(value)) {
@@ -97,26 +101,18 @@ export function Login(): ReactElement {
   }
 
   return (
-    <form
-      onSubmit={handleForm}
-      className="flex flex-col mt-12 w-11/12 md:max-w-xl mx-auto"
-    >
+    <form onSubmit={handleForm}>
       {errors.message && (
-        <Alert
-          color="red"
-          message={errors.message}
-          handleClose={handleCloseAlert}
-        />
+        <Alert message={errors.message} handleClose={handleCloseAlert} />
       )}
 
-      <h1 className="text-4xl mb-8 font-bold text-center">Ingresar</h1>
+      <h1>Ingreso</h1>
       <Input
         type="email"
         label="Correo electrónico"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         onBlur={(e) => handleEmailValidation(e.target.value)}
-        className="w-full"
         errorMessage={errors.email}
         required
       />
@@ -126,27 +122,14 @@ export function Login(): ReactElement {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         onBlur={(e) => handlePasswordValidation(e.target.value)}
-        className="w-full"
         errorMessage={errors.password}
         showPlainPassword
         required
       />
-      <Button
-        type="submit"
-        className="self-center mb-4"
-        color="green"
-        size="medium"
-        disabled={
-          hasErrors || !validateEmail(email) || password.length <= 7 || loading
-        }
-      >
+      <Button type="submit" disabled={isFormValid}>
         Ingresar
       </Button>
-      <Anchor
-        link="/signup"
-        text="¿No tienes cuenta?"
-        className="self-center"
-      />
+      <Anchor link="/signup" text="¿No tienes cuenta?" />
     </form>
   );
 }
