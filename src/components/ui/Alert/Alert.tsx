@@ -1,33 +1,18 @@
 import { ReactElement } from 'react';
-import classnames from 'classnames';
 
 import Delete from '../icons/Delete';
 
-type AlertColors = 'red' | 'yellow' | 'green';
-
 interface AlertProps {
-  color: AlertColors;
   message: string;
   handleClose?: any;
 }
 
-export function Alert({
-  color,
-  message,
-  handleClose,
-}: AlertProps): ReactElement {
-  const className = classnames(
-    'flex items-center fixed max-w-md top-4 right-28 py-2 pl-4 pr-3 rounded text-gray-50',
-    { 'bg-red-500': color === 'red' },
-    { 'bg-yellow-500': color === 'yellow' },
-    { 'bg-green-500': color === 'green' }
-  );
-
+export function Alert({ message, handleClose }: AlertProps): ReactElement {
   return (
-    <div className={className}>
-      <p className="mr-3 w-11/12">{message}</p>
+    <div>
+      <p>{message}</p>
       {handleClose && (
-        <button type="button" onClick={handleClose} className="w-5 h-5">
+        <button type="button" onClick={handleClose}>
           <Delete />
         </button>
       )}

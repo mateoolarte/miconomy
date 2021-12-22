@@ -7,15 +7,16 @@ import { setCookie } from '../../utils/cookies';
 
 import { USER_TOKEN_KEY } from '../../utils/constants';
 
-import { SIGNUP } from './graphql/signup';
+import { SIGNUP } from './graphql/signup.mutation';
 
-import { Input } from '../ui/Input';
-import { Anchor } from '../ui/Anchor';
-import { Alert } from '../ui/Alert';
-import { Button } from '../ui/Button';
+import { Input } from '../../components/ui/Input';
+import { Anchor } from '../../components/ui/Anchor';
+import { Alert } from '../../components/ui/Alert';
+import { Button } from '../../components/ui/Button';
 
 export function Signup(): ReactElement {
   const router = useRouter();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({
@@ -23,32 +24,35 @@ export function Signup(): ReactElement {
     password: '',
     message: '',
   });
+
   const [signupAction, { loading }] = useMutation(SIGNUP, {
     onCompleted(data) {
       const response = data?.signup;
-      const { message, status, token } = response;
+      const { token } = response;
 
-      if (status === 202) {
-        const timeToExpire = 60 * 60 * 24 * 26;
+      const timeToExpire = 60 * 60 * 24 * 26; // 26 days
 
-        setCookie(USER_TOKEN_KEY, token, timeToExpire);
-        router.push({
-          pathname: '/',
-          query: {
-            message,
-          },
-        });
-      }
+      setCookie(USER_TOKEN_KEY, token, timeToExpire);
+      router.push({
+        pathname: '/',
+        query: {
+          message: 'Te registraste correctamente',
+        },
+      });
+    },
+    onError(error) {
+      const { message } = error;
 
-      if (status === 404) {
-        setErrors({
-          ...errors,
-          message,
-        });
-      }
+      setErrors({
+        ...errors,
+        message,
+      });
     },
   });
+
   const hasErrors = errors.email !== '' || errors.password !== '';
+  const isFormValid =
+    hasErrors || !validateEmail(email) || password.length <= 7 || loading;
 
   function handleEmailValidation(value) {
     if (!validateEmail(value)) {
@@ -97,26 +101,18 @@ export function Signup(): ReactElement {
   }
 
   return (
-    <form
-      onSubmit={handleForm}
-      className="flex flex-col mt-12 w-11/12 md:max-w-xl mx-auto"
-    >
+    <form onSubmit={handleForm}>
       {errors.message && (
-        <Alert
-          color="red"
-          message={errors.message}
-          handleClose={handleCloseAlert}
-        />
+        <Alert message={errors.message} handleClose={handleCloseAlert} />
       )}
 
-      <h1 className="text-4xl mb-8 font-bold text-center">Crea tu cuenta</h1>
+      <h1>Registro</h1>
       <Input
         type="email"
         label="Correo electrónico"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         onBlur={(e) => handleEmailValidation(e.target.value)}
-        className="w-full"
         errorMessage={errors.email}
         required
       />
@@ -126,23 +122,14 @@ export function Signup(): ReactElement {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         onBlur={(e) => handlePasswordValidation(e.target.value)}
-        className="w-full"
         errorMessage={errors.password}
         showPlainPassword
         required
       />
-      <Button
-        type="submit"
-        className="self-center mb-4"
-        color="green"
-        size="medium"
-        disabled={
-          hasErrors || !validateEmail(email) || password.length <= 7 || loading
-        }
-      >
-        Crear cuenta
+      <Button type="submit" disabled={isFormValid}>
+        Registrarme
       </Button>
-      <Anchor link="/login" text="¿Ya tienes cuenta?" className="self-center" />
+      <Anchor link="/login" text="¿Ya tienes cuenta?" />
     </form>
   );
 }
