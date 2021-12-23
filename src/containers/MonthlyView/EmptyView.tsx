@@ -36,14 +36,7 @@ export default function EmptyView(): ReactElement {
         value={currentBudget}
       />
 
-      <Button
-        type="submit"
-        disabled={!currentBudget}
-        fullWidth
-        color="green"
-        size="medium"
-        onClick={handleBudget}
-      >
+      <Button type="submit" disabled={!currentBudget} onClick={handleBudget}>
         Crear presupuesto
       </Button>
     </div>

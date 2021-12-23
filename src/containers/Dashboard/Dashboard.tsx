@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { Feature } from '../../components/Feature';
 import { Layout } from '../../components/shared/Layout';
-import MonthChart from './MonthChart';
+// import MonthChart from './MonthChart';
 import { ListRow } from '../../components/ui/ListRow';
 import {
   CategoriesWrapper,
@@ -30,7 +30,7 @@ export function Dashboard(): ReactElement {
             Resumen Marzo 2021
           </SummaryTitle>
           <div className="h-80 w-full">
-            <MonthChart data={MONTH_CHART_DATA}></MonthChart>
+            {/* <MonthChart data={MONTH_CHART_DATA}></MonthChart> */}
           </div>
           <div className="w-full m-auto px-2 shadow divide-y divide-gray-300 divide-opacity-50">
             {mainSummaryRows.map((row, i) => (

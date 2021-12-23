@@ -63,15 +63,7 @@ export default function Actions({ userMonthId }: Props): ReactElement {
       />
       <p className="mb-2 w-full">Acciones</p>
       {buttons.map(({ id, title, onClick }) => (
-        <Button
-          key={id}
-          type="button"
-          onClick={onClick}
-          color="blue"
-          size="small"
-          fullWidth
-          className="mb-2 md:mb-0 md:mr-2 md:w-auto"
-        >
+        <Button key={id} type="button" onClick={onClick}>
           {title}
         </Button>
       ))}

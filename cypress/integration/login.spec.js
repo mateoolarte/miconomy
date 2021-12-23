@@ -36,9 +36,7 @@ describe('login page', () => {
     cy.get(inputEmail).type('mateo@notexist.com');
     cy.get(inputPassword).type('12345678');
     cy.get(button).click();
-    cy.get('p')
-      .first()
-      .contains('Este usuario no existe');
+    cy.get('p').first().contains('Este usuario no existe');
   });
 
   it('should show an error when filling a wrong email', () => {
