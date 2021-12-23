@@ -42,6 +42,7 @@ export function Input({
         <button
           type="button"
           onClick={() => setIsPlainPassword(!isPlainPassword)}
+          aria-label="Mostrar contraseña"
         >
           {isPlainPassword ? <EyeOpen /> : <EyeClose />}
         </button>
