@@ -61,11 +61,7 @@ export function CategoryCard({ category, items }: Props): ReactElement {
       <p className="mb-4">Gasto actual: {totalExpenses}</p>
       <ProgressBar color={getStatusColor(healhtyStatus)} />
       <div className="text-right">
-        <Anchor
-          link="/income"
-          text="Ver más"
-          color={getStatusColor(healhtyStatus)}
-        />
+        <Anchor link="/income" text="Ver más" />
       </div>
     </div>
   );

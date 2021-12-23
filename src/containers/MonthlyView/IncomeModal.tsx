@@ -101,7 +101,7 @@ export default function IncomeModal({
           onChange={handleDescription}
         />
         <div className="text-center">
-          <Button type="submit" color="green" size="medium" disabled={isValid}>
+          <Button type="submit" disabled={isValid}>
             Agregar
           </Button>
         </div>

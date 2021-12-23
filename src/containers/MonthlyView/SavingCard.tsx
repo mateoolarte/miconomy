@@ -38,7 +38,7 @@ export default function SavingCard({ savings }: Props): ReactElement {
         </p>
       )}
       <div className="text-right absolute bottom-4 right-4">
-        <Anchor link="/savings" text="Ver más" color="green" />
+        <Anchor link="/savings" text="Ver más" />
       </div>
     </div>
   );

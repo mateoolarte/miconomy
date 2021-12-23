@@ -133,12 +133,7 @@ export default function CategoryModal({
         {!toggleNewCategory && (
           <div className="mb-6 text-center">
             <p className="mb-2">¿Deseas crear una nueva categoría?</p>
-            <Button
-              type="button"
-              color="blue"
-              size="small"
-              onClick={() => setToggleNewCategory(true)}
-            >
+            <Button type="button" onClick={() => setToggleNewCategory(true)}>
               Crear categoría
             </Button>
           </div>
@@ -151,28 +146,16 @@ export default function CategoryModal({
               label="Nueva categoría"
               value={newCategoryValue}
               errorMessage={errors['newCategoryValue']}
-              className="w-11/12 mr-4 lg:w-auto"
               onChange={handleNewCategoryValue}
             />
-            <Button
-              type="button"
-              color="blue"
-              size="small"
-              className="mb-5"
-              onClick={handleNewCategory}
-            >
+            <Button type="button" onClick={handleNewCategory}>
               Crear
             </Button>
           </div>
         )}
 
         <div className="text-center">
-          <Button
-            type="submit"
-            color="green"
-            size="medium"
-            disabled={!categoryId}
-          >
+          <Button type="submit" disabled={!categoryId}>
             Agregar
           </Button>
         </div>

@@ -115,7 +115,6 @@ export function Account(): ReactElement {
         type="text"
         label="Change Name"
         value={name}
-        className="w-full"
         errorMessage={null}
         onChange={(event) => {
           setName(event.target.value);
@@ -125,7 +124,6 @@ export function Account(): ReactElement {
         type="email"
         label="Change"
         value={email}
-        className="w-full"
         errorMessage={null}
         onChange={(event) => {
           setEmail(event.target.value);
@@ -135,7 +133,6 @@ export function Account(): ReactElement {
         type="password"
         label="Password"
         value={password}
-        className="w-full"
         errorMessage={null}
         showPlainPassword={true}
         onChange={(event) => {
