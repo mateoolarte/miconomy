@@ -9,7 +9,7 @@ interface InputProps {
   value: string | number;
   onChange: any;
   onBlur?: any;
-  errorMessage: string;
+  errorMessage?: string;
   showPlainPassword?: boolean;
   required?: boolean;
 }
