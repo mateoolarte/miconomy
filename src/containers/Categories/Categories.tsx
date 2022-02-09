@@ -1,11 +1,11 @@
 import { ReactElement, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 
-import { CATEGORIES } from '../../graphql/queries/categories';
-import { CREATE_CATEGORY } from '../../graphql/mutations/createCategory';
-import { UPDATE_CATEGORY } from '../../graphql/mutations/updateCategory';
+import { CATEGORIES } from './graphql/categories';
+import { CREATE_CATEGORY } from './graphql/createCategory';
+import { UPDATE_CATEGORY } from './graphql/updateCategory';
 
-import { Input } from '../../components/ui/Input';
+import { Input } from '../../ui/Input';
 
 const initialState = { new: false, edit: false };
 

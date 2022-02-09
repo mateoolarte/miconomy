@@ -7,12 +7,12 @@ import { setCookie } from '../../utils/cookies';
 
 import { USER_TOKEN_KEY } from '../../utils/constants';
 
-import { LOGIN } from './graphql/login.mutation';
+import { LOGIN } from './graphql/login';
 
-import { Input } from '../../components/ui/Input';
-import { Anchor } from '../../components/ui/Anchor';
-import { Alert } from '../../components/ui/Alert';
-import { Button } from '../../components/ui/Button';
+import { Input } from '../../ui/Input';
+import { Anchor } from '../../ui/Anchor';
+import { Alert } from '../../ui/Alert';
+import { Button } from '../../ui/Button';
 
 export function Login(): ReactElement {
   const router = useRouter();

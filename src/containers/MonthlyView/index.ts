@@ -1,1 +1,0 @@
-export { MonthlyView } from './MonthlyView';
