@@ -29,21 +29,21 @@ export function Categories(): ReactElement {
   }
 
   function handleActiveForm(type) {
-    setActiveForm({ ...activeForm, [type]: true });
+    setActiveForm({ ...initialState, [type]: true });
   }
 
   function handleInactiveForm(type) {
-    setActiveForm({ ...activeForm, [type]: false });
+    setActiveForm({ ...initialState, [type]: false });
   }
 
-  function handleEditCategory(e) {
+  function handleEdit(e) {
     e.preventDefault();
 
     updateCategory({ variables: { id, name } });
     resetState();
   }
 
-  function handleNewCategory(e) {
+  function handleNew(e) {
     e.preventDefault();
 
     createCategory({ variables: { name } });
@@ -62,9 +62,9 @@ export function Categories(): ReactElement {
             <button
               type="button"
               onClick={() => {
-                handleActiveForm('edit');
                 setName(category.name);
                 setId(category.id);
+                handleActiveForm('edit');
               }}
             >
               Editar
@@ -75,8 +75,8 @@ export function Categories(): ReactElement {
       <button
         type="button"
         onClick={() => {
-          handleActiveForm('new');
           setName('');
+          handleActiveForm('new');
         }}
       >
         Agregar categoría
@@ -84,9 +84,7 @@ export function Categories(): ReactElement {
       {(activeForm.new || activeForm.edit) && (
         <div>
           <h3>{activeForm.new ? 'Nueva categoría' : 'Editar categoría'}</h3>
-          <form
-            onSubmit={activeForm.new ? handleNewCategory : handleEditCategory}
-          >
+          <form onSubmit={activeForm.new ? handleNew : handleEdit}>
             <Input
               type="text"
               label="Nombre"
