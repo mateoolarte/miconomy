@@ -1,7 +1,7 @@
 import { ReactElement, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 
-import { CATEGORIES } from './graphql/categories';
+import { CATEGORIES } from '../../graphql/queries/categories';
 import { CREATE_CATEGORY } from './graphql/createCategory';
 import { UPDATE_CATEGORY } from './graphql/updateCategory';
 
