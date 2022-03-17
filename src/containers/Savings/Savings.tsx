@@ -1,7 +1,7 @@
 import { ReactElement, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 
-import { SAVINGS } from './graphql/savings';
+import { SAVINGS } from '../../graphql/queries/savings';
 import { UPDATE_SAVING } from './graphql/updateSaving';
 import { DELETE_SAVING } from './graphql/deleteSaving';
 import { CREATE_SAVING } from './graphql/createSaving';

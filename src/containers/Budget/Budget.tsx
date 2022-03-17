@@ -8,6 +8,7 @@ import { UPDATE_BUDGET } from './graphql/updateBudget';
 import { Input } from '../../ui/Input';
 
 import { CategoriesBudget } from './CategoriesBudget';
+import { SavingsBudget } from './SavingsBudget';
 
 const CATEGORIES_TAB = 'categories';
 const SAVINGS_TAB = 'savings';
@@ -72,6 +73,13 @@ export function Budget(): ReactElement {
       {activeTab === CATEGORIES_TAB && (
         <CategoriesBudget
           budgetCategories={data?.budget?.categories}
+          budget={data?.budget}
+        />
+      )}
+
+      {activeTab === SAVINGS_TAB && (
+        <SavingsBudget
+          budgetSavings={data?.budget?.savings}
           budget={data?.budget}
         />
       )}
