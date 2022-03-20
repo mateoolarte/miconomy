@@ -10,8 +10,7 @@ import { Input } from '../../ui/Input';
 import { CategoriesBudget } from './CategoriesBudget';
 import { SavingsBudget } from './SavingsBudget';
 
-const CATEGORIES_TAB = 'categories';
-const SAVINGS_TAB = 'savings';
+import { CATEGORIES_TAB, SAVINGS_TAB } from '../../utils/constants';
 
 export function Budget(): ReactElement {
   const router = useRouter();

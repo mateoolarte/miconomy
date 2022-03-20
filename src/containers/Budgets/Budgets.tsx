@@ -2,7 +2,7 @@ import { ReactElement, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import Link from 'next/link';
 
-import { BUDGETS } from './graphql/budgets';
+import { BUDGETS } from '../../graphql/queries/budgets';
 import { CREATE_BUDGET } from './graphql/createBudget';
 
 import { Input } from '../../ui/Input';
