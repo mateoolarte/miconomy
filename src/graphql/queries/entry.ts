@@ -15,6 +15,13 @@ export const ENTRY = gql`
           updatedAt
         }
       }
+      savings {
+        id
+        name
+        type
+        fee
+        sent
+      }
     }
   }
 `;

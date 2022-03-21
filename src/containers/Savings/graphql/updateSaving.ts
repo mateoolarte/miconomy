@@ -7,7 +7,6 @@ export const UPDATE_SAVING = gql`
       name
       value
       goal
-      fee
       type
     }
   }

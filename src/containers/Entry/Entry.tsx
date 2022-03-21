@@ -5,12 +5,10 @@ import { es } from 'date-fns/locale';
 import Link from 'next/link';
 
 import { BUDGETS } from '../../graphql/queries/budgets';
-import { ENTRY } from './graphql/entry';
+import { ENTRY } from '../../graphql/queries/entry';
 import { CREATE_ENTRY } from './graphql/createEntry';
 import { CREATE_EXPENSE } from './graphql/createExpense';
 import { CREATE_INCOME } from './graphql/createIncome';
-
-import { CATEGORIES_TAB, SAVINGS_TAB } from '../../utils/constants';
 
 import { Input } from '../../ui/Input';
 
@@ -41,7 +39,10 @@ export function Entry(): ReactElement {
   const [value, setValue] = useState(0);
   const [description, setDescription] = useState('');
   const [categoryId, setCategoryId] = useState(undefined);
-  const [activeTab, setActiveTab] = useState('categories');
+
+  const pendingSavings = data?.entry?.savings.filter(
+    (item) => !item.sent
+  ).length;
 
   function resetState() {
     setBudgetId(undefined);
@@ -89,10 +90,6 @@ export function Entry(): ReactElement {
 
     createIncome({ variables: { value, description, entryId } });
     resetState();
-  }
-
-  function handleTabs(type) {
-    setActiveTab(type);
   }
 
   if (loading) return <h2>Loading...</h2>;
@@ -193,51 +190,68 @@ export function Entry(): ReactElement {
         </form>
       )}
 
-      <ul>
-        <li>
-          <button type="button" onClick={() => handleTabs(CATEGORIES_TAB)}>
-            Categorías {activeTab === CATEGORIES_TAB && 'Activo'}
-          </button>
-        </li>
-        <li>
-          <button type="button" onClick={() => handleTabs(SAVINGS_TAB)}>
-            Ahorros {activeTab === SAVINGS_TAB && 'Activo'}
-          </button>
-        </li>
-      </ul>
+      <div>
+        <h3>Categorías</h3>
+        <ul>
+          {data?.entry?.categories.map((item) => {
+            const totalExpenses = item.expenses.reduce(
+              (prev, current) => prev + current.value,
+              0
+            );
+            const lastExpense = item.expenses[item.expenses.length - 1];
 
-      {activeTab === CATEGORIES_TAB && (
-        <div>
-          <h3>Categorías</h3>
-          <ul>
-            {data?.entry?.categories.map((item) => {
-              const totalExpenses = item.expenses.reduce(
-                (prev, current) => prev + current.value,
-                0
-              );
-              const lastExpense = item.expenses[item.expenses.length - 1];
-
-              return (
-                <li key={item.id}>
-                  <Link href={`/entry/categories/${item.id}`}>
-                    <a>
-                      <h4>{item.name}</h4>
-                      <p>Presupuesto: {item.amount}</p>
-                      <p>Gasto actual: {totalExpenses}</p>
+            return (
+              <li key={item.id}>
+                <Link href={`/entry/categories/${item.id}`}>
+                  <a>
+                    <h4>{item.name}</h4>
+                    <p>Presupuesto: {item.amount}</p>
+                    {totalExpenses > 0 && <p>Gasto actual: {totalExpenses}</p>}
+                    {lastExpense && (
                       <p>
-                        Último gasto: {lastExpense.description}{' '}
-                        {lastExpense.value}
+                        Último gasto: {lastExpense?.description}{' '}
+                        {lastExpense?.value}
                       </p>
-                    </a>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      )}
-
-      {activeTab === SAVINGS_TAB && <p>Ahorros</p>}
+                    )}
+                  </a>
+                </Link>
+              </li>
+            );
+          })}
+          {data?.entry?.savings.length > 0 && (
+            <li>
+              <Link href={`/savings`}>
+                <a>
+                  <h4>Ahorros</h4>
+                  {pendingSavings === 0 && (
+                    <p>
+                      ¡Felicitaciones! Has completado todos los ahorros de este
+                      mes
+                    </p>
+                  )}
+                  {pendingSavings > 0 && (
+                    <p>
+                      Tienes pendiente de enviar {pendingSavings}
+                      {pendingSavings > 1 ? ' abonos' : ' abono'}
+                    </p>
+                  )}
+                  {data?.entry?.savings
+                    .filter((item) => !item.sent)
+                    .map((item) => {
+                      return (
+                        <p key={item.id}>
+                          <strong>
+                            {item.name} {item.fee}
+                          </strong>
+                        </p>
+                      );
+                    })}
+                </a>
+              </Link>
+            </li>
+          )}
+        </ul>
+      </div>
     </section>
   );
 }

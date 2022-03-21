@@ -1,10 +1,12 @@
 import { ReactElement, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 
+import { ENTRY } from '../../graphql/queries/entry';
 import { SAVINGS } from '../../graphql/queries/savings';
 import { UPDATE_SAVING } from './graphql/updateSaving';
 import { DELETE_SAVING } from './graphql/deleteSaving';
 import { CREATE_SAVING } from './graphql/createSaving';
+import { SEND_SAVING } from './graphql/sendSaving';
 
 import { Input } from '../../ui/Input';
 
@@ -18,6 +20,9 @@ const initialState = {
 
 export function Savings(): ReactElement {
   // TODO: Integration of tooltip with information, see reference from Figma mockups
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth() + 1;
 
   const [activeForm, setActiveForm] = useState(initialState);
   const [id, setId] = useState(0);
@@ -28,6 +33,9 @@ export function Savings(): ReactElement {
   const [valueToAdd, setValueToAdd] = useState(0);
 
   const { loading, error, data } = useQuery(SAVINGS);
+  const { error: errorEntry, data: dataEntry } = useQuery(ENTRY, {
+    variables: { month, year },
+  });
   const [updateSaving] = useMutation(UPDATE_SAVING, {
     refetchQueries: [SAVINGS],
   });
@@ -36,6 +44,9 @@ export function Savings(): ReactElement {
   });
   const [createSaving] = useMutation(CREATE_SAVING, {
     refetchQueries: [SAVINGS],
+  });
+  const [sendSaving] = useMutation(SEND_SAVING, {
+    refetchQueries: [SAVINGS, ENTRY],
   });
 
   function resetState() {
@@ -95,11 +106,34 @@ export function Savings(): ReactElement {
     resetState();
   }
 
+  function handleSendSaving(id, value) {
+    sendSaving({ variables: { id, value, entryId: dataEntry?.entry?.id } });
+    resetState();
+  }
+
   if (loading) return <h2>Loading...</h2>;
   if (error) return <h2>Error! {error.message}</h2>;
+  if (errorEntry) return <h2>Error! {errorEntry.message}</h2>;
 
   return (
     <section>
+      {dataEntry?.entry?.savings
+        .filter((item) => !item.sent)
+        .map((item) => {
+          return (
+            <div key={item.id}>
+              Tienes pendiente enviar a tu ahorro mensual de {item.name} de{' '}
+              {item.fee}
+              <button
+                type="button"
+                onClick={() => handleSendSaving(item.id, item.fee)}
+              >
+                Enviar
+              </button>
+            </div>
+          );
+        })}
+
       {data?.savings.map((saving) => {
         return (
           <div key={saving.id}>

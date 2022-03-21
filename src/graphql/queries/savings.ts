@@ -7,7 +7,6 @@ export const SAVINGS = gql`
       name
       value
       goal
-      fee
       type
     }
   }
