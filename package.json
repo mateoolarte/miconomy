@@ -1,6 +1,38 @@
 {
   "name": "miconomy-web",
-  "version": "1.0.0",
+  "jest": {
+    "collectCoverageFrom": ["src/**/*.{ts,tsx,js,jsx}"],
+    "coveragePathIgnorePatterns": ["/.next/", "/node_modules", "/cypress/"],
+    "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"],
+    "testPathIgnorePatterns": ["/.next/", "/node_modules", "/cypress/"],
+    "testEnvironment": "jsdom",
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest", { "presets": ["next/babel"] }]
+    },
+    "transformIgnorePatterns": ["/node_modules/"],
+    "moduleDirectories": ["/node_modules/", "utils"]
+  },
+  "babel": {
+    "presets": ["next/babel"],
+    "plugins": [["styled-components", { "ssr": true }]]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "eslintConfig": {
+    "extends": ["next", "prettier"]
+  },
+  "browserslist": [
+    "defaults",
+    "not IE 11",
+    "maintained node versions"
+  ],
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint",
+    "*.{js,jsx,ts,tsx,json,md,mdx}": "prettier --write",
+    "*.{test,spec}.{ts,tsx,js,jsx}": "yarn test"
+  },
   "private": true,
   "scripts": {
     "dev": "next dev",
