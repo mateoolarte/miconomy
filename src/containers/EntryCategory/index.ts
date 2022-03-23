@@ -1,0 +1,1 @@
+export { EntryCategory } from './EntryCategory';

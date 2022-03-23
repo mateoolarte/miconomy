@@ -202,7 +202,7 @@ export function Entry(): ReactElement {
 
             return (
               <li key={item.id}>
-                <Link href={`/entry/categories/${item.id}`}>
+                <Link href={`/entry/categories/${item.id}?entryId=${entryId}`}>
                   <a>
                     <h4>{item.name}</h4>
                     <p>Presupuesto: {item.amount}</p>
