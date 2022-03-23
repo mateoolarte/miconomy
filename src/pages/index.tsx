@@ -1,9 +1,9 @@
-import { ReactElement } from 'react';
-
 import { checkAuth } from '../utils/checkAuth';
 
-export default function Index(): ReactElement {
-  return <h1>Hi world</h1>;
+import { Home } from '../containers/Home';
+
+export default function Index() {
+  return <Home />;
 }
 
 export async function getServerSideProps(context) {

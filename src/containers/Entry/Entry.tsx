@@ -6,9 +6,9 @@ import Link from 'next/link';
 
 import { BUDGETS } from '../../graphql/queries/budgets';
 import { ENTRY } from '../../graphql/queries/entry';
+import { CREATE_EXPENSE } from '../../graphql/mutations/createExpense';
+import { CREATE_INCOME } from '../../graphql/mutations/createIncome';
 import { CREATE_ENTRY } from './graphql/createEntry';
-import { CREATE_EXPENSE } from './graphql/createExpense';
-import { CREATE_INCOME } from './graphql/createIncome';
 
 import { Input } from '../../ui/Input';
 
