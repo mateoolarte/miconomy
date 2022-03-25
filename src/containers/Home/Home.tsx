@@ -31,6 +31,7 @@ export function Home(): ReactElement {
     data: balanceData,
   } = useQuery(BALANCE, {
     variables: { entryId },
+    skip: !entryId,
   });
   const [createExpense] = useMutation(CREATE_EXPENSE, {
     refetchQueries: [ENTRY],
