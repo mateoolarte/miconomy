@@ -14,6 +14,8 @@ import { Anchor } from '../../ui/Anchor';
 import { Alert } from '../../ui/Alert';
 import { Button } from '../../ui/Button';
 
+import { Heading, Title, Wrapper, AnchorWrapper } from './Login.styles';
+
 export function Login(): ReactElement {
   const router = useRouter();
 
@@ -52,7 +54,7 @@ export function Login(): ReactElement {
 
   const hasErrors = errors.email !== '' || errors.password !== '';
   const isFormValid =
-    hasErrors || !validateEmail(email) || password.length <= 7 || loading;
+    hasErrors || !validateEmail(email) || password.length <= 7;
 
   function handleEmailValidation(value) {
     if (!validateEmail(value)) {
@@ -101,12 +103,14 @@ export function Login(): ReactElement {
   }
 
   return (
-    <form onSubmit={handleForm}>
+    <Wrapper onSubmit={handleForm}>
       {errors.message && (
         <Alert message={errors.message} handleClose={handleCloseAlert} />
       )}
 
-      <h1>Ingreso</h1>
+      <Title>Miconomy</Title>
+
+      <Heading>Ingreso</Heading>
       <Input
         type="email"
         label="Correo electrónico"
@@ -126,10 +130,19 @@ export function Login(): ReactElement {
         showPlainPassword
         required
       />
-      <Button type="submit" disabled={isFormValid}>
+      <Button
+        type="submit"
+        disabled={isFormValid}
+        fullWidth
+        size="large"
+        style="primary"
+        loading={loading}
+      >
         Ingresar
       </Button>
-      <Anchor link="/signup" text="¿No tienes cuenta?" />
-    </form>
+      <AnchorWrapper>
+        <Anchor link="/signup" text="¿No tienes cuenta?" />
+      </AnchorWrapper>
+    </Wrapper>
   );
 }

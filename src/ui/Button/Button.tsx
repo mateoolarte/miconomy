@@ -1,4 +1,5 @@
 import { ReactElement } from 'react';
+import { Button as ButtonAnt } from 'antd';
 
 type TypeOptions = 'submit' | 'button';
 
@@ -7,6 +8,10 @@ interface ButtonProps {
   children: object | string;
   disabled?: boolean;
   onClick?: any;
+  fullWidth?: boolean;
+  size?: 'large' | 'middle' | 'small';
+  style?: 'primary' | 'ghost' | 'dashed' | 'link' | 'text' | 'default';
+  loading?: boolean;
 }
 
 export function Button({
@@ -14,10 +19,22 @@ export function Button({
   children,
   disabled,
   onClick,
+  fullWidth,
+  size,
+  style,
+  loading,
 }: ButtonProps): ReactElement {
   return (
-    <button type={type} disabled={disabled} onClick={onClick}>
+    <ButtonAnt
+      type={style}
+      htmlType={type}
+      disabled={disabled}
+      onClick={onClick}
+      block={fullWidth}
+      size={size}
+      loading={loading}
+    >
       {children}
-    </button>
+    </ButtonAnt>
   );
 }

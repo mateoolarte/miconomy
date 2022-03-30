@@ -1,7 +1,10 @@
 import { ReactElement, useState } from 'react';
+import { Input as InputAnt } from 'antd';
 
 import EyeOpen from '../icons/EyeOpen';
 import EyeClose from '../icons/EyeClose';
+
+import { Wrapper, Label, Error, ShowPassword } from './Input.styles';
 
 interface InputProps {
   type: string;
@@ -28,26 +31,31 @@ export function Input({
   const [isPlainPassword, setIsPlainPassword] = useState(false);
 
   return (
-    <div>
-      {label && <label htmlFor={label}>{label}</label>}
-      <input
+    <Wrapper>
+      {label && (
+        <Label htmlFor={label} error={errorMessage}>
+          {label}
+        </Label>
+      )}
+      <InputAnt
         type={hasEyeActivated && isPlainPassword ? 'text' : type}
         id={label}
         value={value}
         onChange={onChange}
         onBlur={onBlur}
         required={required}
+        status={errorMessage ? 'error' : undefined}
       />
       {hasEyeActivated && (
-        <button
+        <ShowPassword
           type="button"
           onClick={() => setIsPlainPassword(!isPlainPassword)}
           aria-label="Mostrar contraseña"
         >
           {isPlainPassword ? <EyeOpen /> : <EyeClose />}
-        </button>
+        </ShowPassword>
       )}
-      {errorMessage && <p>{errorMessage}</p>}
-    </div>
+      {errorMessage && <Error>{errorMessage}</Error>}
+    </Wrapper>
   );
 }
