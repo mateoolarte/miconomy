@@ -85,6 +85,7 @@
     "pretty": "yarn fmt && yarn lint"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@apollo/client": "^3.5.10",
     "antd": "^4.19.3",
     "date-fns": "^2.28.0",

@@ -11,6 +11,7 @@ import { CREATE_INCOME } from '../../graphql/mutations/createIncome';
 import { CREATE_ENTRY } from './graphql/createEntry';
 
 import { Input } from '../../ui/Input';
+import { Layout } from '../../ui/Layout';
 
 export function Entry(): ReactElement {
   const currentDate = new Date();
@@ -97,7 +98,7 @@ export function Entry(): ReactElement {
 
   if (!entryId) {
     return (
-      <section>
+      <Layout>
         <div>
           Proximo mes a crear {currentMonth} {year}
         </div>
@@ -116,12 +117,12 @@ export function Entry(): ReactElement {
           </select>
           <button type="submit">Crear mes</button>
         </form>
-      </section>
+      </Layout>
     );
   }
 
   return (
-    <section>
+    <Layout>
       <div>
         Mes actual {currentMonth} {year}
       </div>
@@ -252,6 +253,6 @@ export function Entry(): ReactElement {
           )}
         </ul>
       </div>
-    </section>
+    </Layout>
   );
 }
