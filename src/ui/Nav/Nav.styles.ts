@@ -1,17 +1,20 @@
-import styled, { createGlobalStyle } from 'styled-components';
+import styled from 'styled-components';
 
 export const Wrapper = styled.nav`
   position: fixed;
+  z-index: 1;
   bottom: 0;
   left: 0;
   width: 100%;
   border-radius: 0.3rem 0.3rem 0 0;
   box-shadow: 0px -3px 6px rgba(226, 232, 240, 0.8);
+  background-color: #fff;
 `;
 
 export const List = styled.ul`
   display: flex;
   column-gap: 1.5rem;
+  justify-content: space-between;
   margin: 0;
   padding: 0.5rem 1rem;
   list-style-type: none;
@@ -82,11 +85,5 @@ export const ItemSecondaryBtn = styled.button`
   svg {
     width: 1.4rem;
     height: 1.4rem;
-  }
-`;
-
-export const PopOverStyles = createGlobalStyle`
-  .popover-primary {
-    top: 490px !important;
   }
 `;

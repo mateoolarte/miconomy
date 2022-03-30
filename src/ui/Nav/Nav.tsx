@@ -19,7 +19,6 @@ import {
   ItemPrimaryBtn,
   ItemSecondary,
   ItemSecondaryBtn,
-  PopOverStyles,
 } from './Nav.styles';
 
 export function Nav() {
@@ -38,7 +37,6 @@ export function Nav() {
 
   return (
     <Wrapper>
-      <PopOverStyles />
       <List>
         <Item>
           <Link href="/">
