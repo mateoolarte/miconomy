@@ -105,7 +105,11 @@ export function Login(): ReactElement {
   return (
     <Wrapper onSubmit={handleForm}>
       {errors.message && (
-        <Alert message={errors.message} handleClose={handleCloseAlert} />
+        <Alert
+          message={errors.message}
+          handleClose={handleCloseAlert}
+          type="error"
+        />
       )}
 
       <Title>Miconomy</Title>

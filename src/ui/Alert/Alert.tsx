@@ -1,21 +1,18 @@
 import { ReactElement } from 'react';
-
-import Delete from '../icons/Delete';
+import { Alert as AlertAnt } from 'antd';
 
 interface AlertProps {
   message: string;
   handleClose?: any;
+  type?: 'success' | 'info' | 'warning' | 'error';
 }
 
-export function Alert({ message, handleClose }: AlertProps): ReactElement {
+export function Alert({
+  message,
+  handleClose,
+  type,
+}: AlertProps): ReactElement {
   return (
-    <div>
-      <p>{message}</p>
-      {handleClose && (
-        <button type="button" onClick={handleClose}>
-          <Delete />
-        </button>
-      )}
-    </div>
+    <AlertAnt message={message} onClose={handleClose} type={type} closable />
   );
 }

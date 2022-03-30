@@ -14,6 +14,8 @@ import { Anchor } from '../../ui/Anchor';
 import { Alert } from '../../ui/Alert';
 import { Button } from '../../ui/Button';
 
+import { Heading, Title, Wrapper, AnchorWrapper } from './Signup.styles';
+
 export function Signup(): ReactElement {
   const router = useRouter();
 
@@ -47,6 +49,8 @@ export function Signup(): ReactElement {
         ...errors,
         message,
       });
+      setEmail('');
+      setPassword('');
     },
   });
 
@@ -101,12 +105,18 @@ export function Signup(): ReactElement {
   }
 
   return (
-    <form onSubmit={handleForm}>
+    <Wrapper onSubmit={handleForm}>
       {errors.message && (
-        <Alert message={errors.message} handleClose={handleCloseAlert} />
+        <Alert
+          message={errors.message}
+          handleClose={handleCloseAlert}
+          type="error"
+        />
       )}
 
-      <h1>Registro</h1>
+      <Title>Miconomy</Title>
+
+      <Heading>Registro</Heading>
       <Input
         type="email"
         label="Correo electrónico"
@@ -126,10 +136,19 @@ export function Signup(): ReactElement {
         showPlainPassword
         required
       />
-      <Button type="submit" disabled={isFormValid}>
+      <Button
+        type="submit"
+        disabled={isFormValid}
+        fullWidth
+        size="large"
+        style="primary"
+        loading={loading}
+      >
         Registrarme
       </Button>
-      <Anchor link="/login" text="¿Ya tienes cuenta?" />
-    </form>
+      <AnchorWrapper>
+        <Anchor link="/login" text="¿Ya tienes cuenta?" />
+      </AnchorWrapper>
+    </Wrapper>
   );
 }
