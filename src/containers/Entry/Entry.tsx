@@ -98,7 +98,14 @@ export function Entry(): ReactElement {
           Proximo mes a crear {currentMonth} {year}
         </div>
 
-        {budgetsData?.budgets && (
+        {(!budgetsData?.budgets || budgetsData?.budgets.length === 0) && (
+          <div>
+            <h1>Aún no has creado ningún presupuesto</h1>
+            <Link href="/budgets">Haz clic acá para crear uno</Link>
+          </div>
+        )}
+
+        {budgetsData?.budgets && budgetsData?.budgets.length > 0 && (
           <form onSubmit={handleEntry}>
             <p>Selecciona un presupuesto existente</p>
 
@@ -216,6 +223,7 @@ export function Entry(): ReactElement {
               </li>
             );
           })}
+
           {data?.entry?.savings.length > 0 && (
             <li>
               <Link href={`/savings`}>
