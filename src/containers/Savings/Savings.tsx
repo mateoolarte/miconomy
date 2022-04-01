@@ -9,6 +9,7 @@ import { CREATE_SAVING } from './graphql/createSaving';
 import { SEND_SAVING } from './graphql/sendSaving';
 
 import { Input } from '../../ui/Input';
+import { Layout } from '../../ui/Layout';
 
 const initialState = {
   edit: false,
@@ -116,7 +117,7 @@ export function Savings(): ReactElement {
   if (errorEntry) return <h2>Error! {errorEntry.message}</h2>;
 
   return (
-    <section>
+    <Layout>
       {dataEntry?.entry?.savings
         .filter((item) => !item.sent)
         .map((item) => {
@@ -312,6 +313,6 @@ export function Savings(): ReactElement {
           </form>
         </div>
       )}
-    </section>
+    </Layout>
   );
 }

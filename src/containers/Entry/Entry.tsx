@@ -11,6 +11,7 @@ import { CREATE_INCOME } from '../../graphql/mutations/createIncome';
 import { CREATE_ENTRY } from './graphql/createEntry';
 
 import { Input } from '../../ui/Input';
+import { Select } from '../../ui/Select';
 import { Layout } from '../../ui/Layout';
 
 export function Entry(): ReactElement {
@@ -34,24 +35,24 @@ export function Entry(): ReactElement {
     refetchQueries: [ENTRY],
   });
 
-  const [budgetId, setBudgetId] = useState(undefined);
+  const [budgetId, setBudgetId] = useState(0);
   const [expenseForm, setExpenseForm] = useState(false);
   const [incomeForm, setIncomeForm] = useState(false);
   const [value, setValue] = useState(0);
   const [description, setDescription] = useState('');
-  const [categoryId, setCategoryId] = useState(undefined);
+  const [categoryId, setCategoryId] = useState(0);
 
   const pendingSavings = data?.entry?.savings.filter(
     (item) => !item.sent
   ).length;
 
   function resetState() {
-    setBudgetId(undefined);
+    setBudgetId(0);
     setExpenseForm(false);
     setIncomeForm(false);
     setValue(0);
     setDescription('');
-    setCategoryId(undefined);
+    setCategoryId(0);
   }
 
   function handleBudget(e) {
@@ -105,16 +106,17 @@ export function Entry(): ReactElement {
 
         <form onSubmit={handleEntry}>
           <p>Selecciona un presupuesto existente</p>
-          <select onChange={handleBudget} value={budgetId}>
-            <option value="">Selecciona un presupuesto</option>
-            {budgetsData?.budgets.map((budget) => {
-              return (
-                <option key={budget.id} value={budget.id}>
-                  {budget.name}
-                </option>
-              );
-            })}
-          </select>
+          <Select
+            options={budgetsData?.budgets.map((item) => ({
+              value: item.id,
+              label: item.name,
+            }))}
+            onChange={handleBudget}
+            value={budgetId}
+            defaultValue={0}
+            emptyOptionText="Selecciona un presupuesto"
+            emptyOptionValue={0}
+          />
           <button type="submit">Crear mes</button>
         </form>
       </Layout>
@@ -139,19 +141,17 @@ export function Entry(): ReactElement {
       {expenseForm && (
         <form onSubmit={handleExpense}>
           <h3>Agregar gasto</h3>
-          <select
-            onChange={(e) => setCategoryId(Number(e.target.value))}
+          <Select
+            options={data?.entry?.categories.map((item) => ({
+              value: item.id,
+              label: item.name,
+            }))}
             value={categoryId}
-          >
-            <option value="">Selecciona una categoría</option>
-            {data?.entry?.categories.map((item) => {
-              return (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              );
-            })}
-          </select>
+            defaultValue={0}
+            emptyOptionText="Selecciona una categoría"
+            emptyOptionValue={0}
+            onChange={(value) => setCategoryId(Number(value))}
+          />
           <Input
             type="number"
             label="Valor"
