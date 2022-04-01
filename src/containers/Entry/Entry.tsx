@@ -55,12 +55,6 @@ export function Entry(): ReactElement {
     setCategoryId(0);
   }
 
-  function handleBudget(e) {
-    e.preventDefault();
-
-    setBudgetId(Number(e.target.value));
-  }
-
   function handleEntry(e) {
     e.preventDefault();
 
@@ -104,21 +98,24 @@ export function Entry(): ReactElement {
           Proximo mes a crear {currentMonth} {year}
         </div>
 
-        <form onSubmit={handleEntry}>
-          <p>Selecciona un presupuesto existente</p>
-          <Select
-            options={budgetsData?.budgets.map((item) => ({
-              value: item.id,
-              label: item.name,
-            }))}
-            onChange={handleBudget}
-            value={budgetId}
-            defaultValue={0}
-            emptyOptionText="Selecciona un presupuesto"
-            emptyOptionValue={0}
-          />
-          <button type="submit">Crear mes</button>
-        </form>
+        {budgetsData?.budgets && (
+          <form onSubmit={handleEntry}>
+            <p>Selecciona un presupuesto existente</p>
+
+            <Select
+              options={budgetsData.budgets.map((item) => ({
+                value: item.id,
+                label: item.name,
+              }))}
+              onChange={(value) => setBudgetId(Number(value))}
+              value={budgetId}
+              defaultValue={0}
+              emptyOptionText="Selecciona un presupuesto"
+              emptyOptionValue={0}
+            />
+            <button type="submit">Crear mes</button>
+          </form>
+        )}
       </Layout>
     );
   }
