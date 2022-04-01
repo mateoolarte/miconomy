@@ -25,7 +25,7 @@ export const Item = styled.li`
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: #000;
+    color: ${(props) => (props.isActive ? 'var(--ant-primary-color)' : '#000')};
   }
 
   svg {
@@ -86,4 +86,38 @@ export const ItemSecondaryBtn = styled.button`
     width: 1.4rem;
     height: 1.4rem;
   }
+`;
+
+export const PrimaryActionsList = styled.ul`
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+`;
+
+export const PrimaryActionsItem = styled.li`
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #cbd5e1;
+
+  &:last-child {
+    padding-top: 0.5rem;
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+`;
+
+export const PrimaryActionsBtn = styled.button`
+  display: flex;
+  align-items: center;
+  border: 0;
+  background: none;
+
+  svg {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+`;
+
+export const PrimaryActionsText = styled.span`
+  display: inline-block;
+  margin-left: 0.5rem;
 `;
