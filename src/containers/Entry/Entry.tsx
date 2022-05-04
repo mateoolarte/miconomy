@@ -13,6 +13,13 @@ import { CREATE_ENTRY } from './graphql/createEntry';
 import { Input } from '../../ui/Input';
 import { Select } from '../../ui/Select';
 import { Layout } from '../../ui/Layout';
+import { ButtonLink } from '../../ui/ButtonLink';
+
+import {
+  EmptyHeading,
+  EmptyBudgetContainer,
+  EmptyBudgetTitle,
+} from './Entry.styles';
 
 export function Entry(): ReactElement {
   const currentDate = new Date();
@@ -94,15 +101,22 @@ export function Entry(): ReactElement {
   if (!entryId) {
     return (
       <Layout>
-        <div>
-          Proximo mes a crear {currentMonth} {year}
-        </div>
+        <EmptyHeading>
+          Proximo mes a crear
+          <p>
+            {currentMonth} {year}
+          </p>
+        </EmptyHeading>
 
         {(!budgetsData?.budgets || budgetsData?.budgets.length === 0) && (
-          <div>
-            <h1>Aún no has creado ningún presupuesto</h1>
-            <Link href="/budgets">Haz clic acá para crear uno</Link>
-          </div>
+          <EmptyBudgetContainer>
+            <EmptyBudgetTitle>
+              Aún no has creado ningún presupuesto
+            </EmptyBudgetTitle>
+            <ButtonLink link="/budgets" fullwidth>
+              Haz clic acá para crear uno
+            </ButtonLink>
+          </EmptyBudgetContainer>
         )}
 
         {budgetsData?.budgets && budgetsData?.budgets.length > 0 && (

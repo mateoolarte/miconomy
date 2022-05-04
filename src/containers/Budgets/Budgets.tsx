@@ -6,6 +6,7 @@ import { BUDGETS } from '../../graphql/queries/budgets';
 import { CREATE_BUDGET } from './graphql/createBudget';
 
 import { Input } from '../../ui/Input';
+import { Layout } from '../../ui/Layout';
 
 export function Budgets(): ReactElement {
   const [activeForm, setActiveForm] = useState(false);
@@ -38,7 +39,7 @@ export function Budgets(): ReactElement {
   }
 
   return (
-    <section>
+    <Layout>
       {data?.budgets.map((budget) => {
         return (
           <div key={budget.id}>
@@ -75,6 +76,6 @@ export function Budgets(): ReactElement {
           </form>
         </div>
       )}
-    </section>
+    </Layout>
   );
 }

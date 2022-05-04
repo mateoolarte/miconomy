@@ -6,6 +6,7 @@ import { CREATE_CATEGORY } from './graphql/createCategory';
 import { UPDATE_CATEGORY } from './graphql/updateCategory';
 
 import { Input } from '../../ui/Input';
+import { Layout } from '../../ui/Layout';
 
 const initialState = { new: false, edit: false };
 
@@ -54,7 +55,7 @@ export function Categories(): ReactElement {
   if (error) return <h2>Error! {error.message}</h2>;
 
   return (
-    <section>
+    <Layout>
       {data?.categories.map((category) => {
         return (
           <div key={category.id}>
@@ -108,6 +109,6 @@ export function Categories(): ReactElement {
           </form>
         </div>
       )}
-    </section>
+    </Layout>
   );
 }

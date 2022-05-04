@@ -8,11 +8,41 @@ import { CREATE_INCOME } from '../../graphql/mutations/createIncome';
 import { BALANCE } from './graphql/balance';
 
 import { Input } from '../../ui/Input';
+import { Layout } from '../../ui/Layout';
+import { ButtonLink } from '../../ui/ButtonLink';
+
+import {
+  WalletOutlined,
+  CalendarOutlined,
+  DollarOutlined,
+  UnorderedListOutlined,
+} from '@ant-design/icons';
+
+import {
+  Heading,
+  ExploreContainer,
+  ExploreTitle,
+  ExploreOptions,
+  ExploreCard,
+  ExploreLink,
+} from './Home.styles';
 
 export function Home(): ReactElement {
   const currentDate = new Date();
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1;
+
+  const options = [
+    { id: 1, link: '/entry', label: 'Mes actual', Icon: CalendarOutlined },
+    { id: 2, link: '/savings', label: 'Ahorros', Icon: DollarOutlined },
+    { id: 3, link: '/budgets', label: 'Presupuestos', Icon: WalletOutlined },
+    {
+      id: 4,
+      link: '/categories',
+      label: 'Categorías',
+      Icon: UnorderedListOutlined,
+    },
+  ];
 
   const [expenseForm, setExpenseForm] = useState(false);
   const [incomeForm, setIncomeForm] = useState(false);
@@ -90,14 +120,16 @@ export function Home(): ReactElement {
   const available = totalIncomes - totalExpenses;
 
   return (
-    <section>
+    <Layout hideNav>
       {!entryId && (
-        <div>
-          <p>Aún no tienes un mes creado, empieza ahora y mide tus gastos</p>
-          <Link href="/entry">
-            <a>Crear mes</a>
-          </Link>
-        </div>
+        <>
+          <Heading>
+            Aún no tienes un mes creado, empieza ahora y mide tus gastos
+          </Heading>
+          <ButtonLink link="/entry" fullwidth>
+            Crear mes
+          </ButtonLink>
+        </>
       )}
 
       {entryId && (
@@ -176,29 +208,23 @@ export function Home(): ReactElement {
         </div>
       )}
 
-      <div>
-        <h2>Explora</h2>
-        <div>
-          <Link href="/entry">
-            <a>Mes actual</a>
-          </Link>
-        </div>
-        <div>
-          <Link href="/savings">
-            <a>Ahorros</a>
-          </Link>
-        </div>
-        <div>
-          <Link href="/budgets">
-            <a>Presupuestos</a>
-          </Link>
-        </div>
-        <div>
-          <Link href="/categories">
-            <a>Categorías</a>
-          </Link>
-        </div>
-      </div>
-    </section>
+      <ExploreContainer>
+        <ExploreTitle>Explora</ExploreTitle>
+        <ExploreOptions>
+          {options.map(({ id, link, label, Icon }) => {
+            return (
+              <ExploreCard key={id}>
+                <Link href={link} passHref>
+                  <ExploreLink>
+                    <Icon />
+                    {label}
+                  </ExploreLink>
+                </Link>
+              </ExploreCard>
+            );
+          })}
+        </ExploreOptions>
+      </ExploreContainer>
+    </Layout>
   );
 }
