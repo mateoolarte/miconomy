@@ -7,14 +7,15 @@ import { Container } from './Layout.styles';
 
 interface LayoutProps {
   children: ReactNode;
+  hideNav?: boolean;
 }
 
-export function Layout({ children }: LayoutProps) {
+export function Layout({ children, hideNav }: LayoutProps) {
   return (
     <section>
       <Header />
       <Container>{children}</Container>
-      <Nav />
+      {!hideNav && <Nav />}
     </section>
   );
 }

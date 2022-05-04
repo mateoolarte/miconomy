@@ -1,5 +1,5 @@
 import styled from 'styled-components';
 
 export const Container = styled.main`
-  padding-bottom: 100px;
+  padding: 0 0.5rem 100px;
 `;

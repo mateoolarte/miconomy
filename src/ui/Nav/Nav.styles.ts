@@ -121,3 +121,7 @@ export const PrimaryActionsText = styled.span`
   display: inline-block;
   margin-left: 0.5rem;
 `;
+
+export const SecondaryActionsLink = styled.a`
+  color: ${(props) => (props.isActive ? 'var(--ant-primary-color)' : '#000')};
+`;

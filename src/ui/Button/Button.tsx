@@ -1,11 +1,11 @@
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { Button as ButtonAnt } from 'antd';
 
 type TypeOptions = 'submit' | 'button';
 
 interface ButtonProps {
   type: TypeOptions;
-  children: object | string;
+  children: ReactNode;
   disabled?: boolean;
   onClick?: any;
   fullWidth?: boolean;

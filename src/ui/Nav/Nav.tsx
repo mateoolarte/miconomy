@@ -35,6 +35,7 @@ import {
   PrimaryActionsItem,
   PrimaryActionsBtn,
   PrimaryActionsText,
+  SecondaryActionsLink,
 } from './Nav.styles';
 
 export function Nav() {
@@ -176,6 +177,29 @@ export function Nav() {
     );
   }
 
+  function renderSecondaryActions(currentUrl: string) {
+    return (
+      <PrimaryActionsList>
+        <PrimaryActionsItem>
+          <Link href="/categories" passHref>
+            <SecondaryActionsLink isActive={currentUrl === '/categories'}>
+              <FileTextOutlined />
+              <PrimaryActionsText>Categorías</PrimaryActionsText>
+            </SecondaryActionsLink>
+          </Link>
+        </PrimaryActionsItem>
+        <PrimaryActionsItem>
+          <Link href="/budgets" passHref>
+            <SecondaryActionsLink isActive={currentUrl === '/budgets'}>
+              <CreditCardOutlined />
+              <PrimaryActionsText>Presupuestos</PrimaryActionsText>
+            </SecondaryActionsLink>
+          </Link>
+        </PrimaryActionsItem>
+      </PrimaryActionsList>
+    );
+  }
+
   if (loading) return <h2>Loading...</h2>;
   if (error) return <h2>Error! {error.message}</h2>;
 
@@ -223,10 +247,18 @@ export function Nav() {
           </Link>
         </Item>
         <ItemSecondary>
-          <ItemSecondaryBtn type="button">
-            <MoreOutlined />
-            <LinkText>Más</LinkText>
-          </ItemSecondaryBtn>
+          <Popover
+            content={renderSecondaryActions(currentUrl)}
+            trigger="click"
+            visible={secondaryAction}
+            onVisibleChange={() => setSecondaryAction(!secondaryAction)}
+            overlayClassName="popover-primary"
+          >
+            <ItemSecondaryBtn type="button">
+              <MoreOutlined />
+              <LinkText>Más</LinkText>
+            </ItemSecondaryBtn>
+          </Popover>
         </ItemSecondary>
       </List>
     </Wrapper>
