@@ -17,5 +17,11 @@
     "strict": false
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "coverage", ".next", "src/cypress"]
+  "exclude": [
+    "node_modules",
+    "coverage",
+    ".next",
+    "src/cypress",
+    "src/pages/_document.tsx"
+  ]
 }
