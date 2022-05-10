@@ -1,5 +1,6 @@
 import { ReactElement, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
+import { PlusOutlined } from '@ant-design/icons';
 
 import { BUDGET } from './graphql/budget';
 import { CATEGORIES } from '../../graphql/queries/categories';
@@ -8,6 +9,8 @@ import { CREATE_CATEGORY_BUDGET } from './graphql/createCategoryBudget';
 import { Input } from '../../ui/Input';
 
 import { CategoryBudget } from './CategoryBudget';
+
+import { AddCategory } from './CategoriesBudget.styles';
 
 interface Props {
   budgetCategories: any;
@@ -70,9 +73,10 @@ export function CategoriesBudget({
           );
         })}
       </ul>
-      <button type="button" onClick={() => setActiveForm(!activeForm)}>
+      <AddCategory type="button" onClick={() => setActiveForm(!activeForm)}>
+        <PlusOutlined />
         Agregar categoría
-      </button>
+      </AddCategory>
       {activeForm && (
         <form onSubmit={handleNewCategory}>
           <select

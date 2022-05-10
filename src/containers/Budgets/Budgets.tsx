@@ -1,12 +1,16 @@
 import { ReactElement, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import Link from 'next/link';
+import { PlusOutlined, ArrowRightOutlined } from '@ant-design/icons';
 
 import { BUDGETS } from '../../graphql/queries/budgets';
 import { CREATE_BUDGET } from './graphql/createBudget';
 
 import { Input } from '../../ui/Input';
+import { Modal } from '../../ui/Modal';
 import { Layout } from '../../ui/Layout';
+
+import { AddBudget, BudgetCard, BudgetsContainer } from './Budgets.styles';
 
 export function Budgets(): ReactElement {
   const [activeForm, setActiveForm] = useState(false);
@@ -34,47 +38,48 @@ export function Budgets(): ReactElement {
   function handleForm(e) {
     e.preventDefault();
 
-    createBudget({ variables: { name } });
-    resetState();
+    if (name) {
+      createBudget({ variables: { name } });
+      resetState();
+    }
   }
 
   return (
     <Layout>
-      {data?.budgets.map((budget) => {
-        return (
-          <div key={budget.id}>
-            <Link href={`/budgets/${budget.id}`}>
-              <a>{budget.name}</a>
+      <BudgetsContainer>
+        {data?.budgets.map((budget) => {
+          return (
+            <Link href={`/budgets/${budget.id}`} passHref key={budget.id}>
+              <BudgetCard>
+                {budget.name} <ArrowRightOutlined />
+              </BudgetCard>
             </Link>
-          </div>
-        );
-      })}
+          );
+        })}
+      </BudgetsContainer>
 
-      <button type="button" onClick={handleToggleForm}>
+      <AddBudget type="button" onClick={handleToggleForm}>
+        <PlusOutlined />
         Agregar presupuesto
-      </button>
+      </AddBudget>
 
       {activeForm && (
-        <div>
-          <h3>Agregar presupuesto</h3>
-          <form onSubmit={handleForm}>
-            <Input
-              type="text"
-              label="Nombre"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-            <div>
-              <button type="button" onClick={handleToggleForm}>
-                Cancelar
-              </button>
-              <button type="submit" disabled={!name}>
-                Agregar
-              </button>
-            </div>
-          </form>
-        </div>
+        <Modal
+          visible={activeForm}
+          title="Agregar presupuesto"
+          submitText="Agregar"
+          cancelText="Cancelar"
+          handleSubmit={handleForm}
+          handleCancel={handleToggleForm}
+        >
+          <Input
+            type="text"
+            label="Nombre"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </Modal>
       )}
     </Layout>
   );

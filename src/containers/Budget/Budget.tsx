@@ -5,19 +5,21 @@ import { useRouter } from 'next/router';
 import { BUDGET } from './graphql/budget';
 import { UPDATE_BUDGET } from './graphql/updateBudget';
 
+import { Layout } from '../../ui/Layout';
 import { Input } from '../../ui/Input';
+import { Button } from '../../ui/Button';
+import { Tabs } from '../../ui/Tabs';
 
 import { CategoriesBudget } from './CategoriesBudget';
 import { SavingsBudget } from './SavingsBudget';
 
-import { CATEGORIES_TAB, SAVINGS_TAB } from '../../utils/constants';
+import { UpdateBtnContainer, UpdateName } from './Budget.styles';
 
 export function Budget(): ReactElement {
   const router = useRouter();
   const { id } = router.query;
 
   const [name, setName] = useState('');
-  const [activeTab, setActiveTab] = useState('categories');
 
   const { loading, error, data } = useQuery(BUDGET, {
     variables: { id: Number(id) },
@@ -25,6 +27,29 @@ export function Budget(): ReactElement {
   const [updateBudget] = useMutation(UPDATE_BUDGET, {
     refetchQueries: [BUDGET],
   });
+
+  const tabs = [
+    {
+      key: '1',
+      title: 'Categorías',
+      content: (
+        <CategoriesBudget
+          budgetCategories={data?.budget?.categories}
+          budget={data?.budget}
+        />
+      ),
+    },
+    {
+      key: '2',
+      title: 'Ahorros',
+      content: (
+        <SavingsBudget
+          budgetSavings={data?.budget?.savings}
+          budget={data?.budget}
+        />
+      ),
+    },
+  ];
 
   useEffect(() => {
     setName(data?.budget?.name);
@@ -36,16 +61,12 @@ export function Budget(): ReactElement {
     updateBudget({ variables: { id: Number(data?.budget?.id), name } });
   }
 
-  function handleTabs(type) {
-    setActiveTab(type);
-  }
-
   if (loading) return <h2>Loading...</h2>;
   if (error) return <h2>Error! {error.message}</h2>;
 
   return (
-    <section>
-      <form onSubmit={handleName}>
+    <Layout>
+      <UpdateName onSubmit={handleName}>
         <Input
           type="text"
           label="Nombre"
@@ -53,35 +74,14 @@ export function Budget(): ReactElement {
           onChange={(e) => setName(e.target.value)}
           required
         />
-        <button type="submit">Actualizar</button>
-      </form>
+        <UpdateBtnContainer>
+          <Button type="submit" disabled={!name} style="primary">
+            Actualizar
+          </Button>
+        </UpdateBtnContainer>
+      </UpdateName>
 
-      <ul>
-        <li>
-          <button type="button" onClick={() => handleTabs(CATEGORIES_TAB)}>
-            Categorías {activeTab === CATEGORIES_TAB && 'Activo'}
-          </button>
-        </li>
-        <li>
-          <button type="button" onClick={() => handleTabs(SAVINGS_TAB)}>
-            Ahorros {activeTab === SAVINGS_TAB && 'Activo'}
-          </button>
-        </li>
-      </ul>
-
-      {activeTab === CATEGORIES_TAB && (
-        <CategoriesBudget
-          budgetCategories={data?.budget?.categories}
-          budget={data?.budget}
-        />
-      )}
-
-      {activeTab === SAVINGS_TAB && (
-        <SavingsBudget
-          budgetSavings={data?.budget?.savings}
-          budget={data?.budget}
-        />
-      )}
-    </section>
+      <Tabs options={tabs} centered />
+    </Layout>
   );
 }

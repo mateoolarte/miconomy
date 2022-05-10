@@ -1,13 +1,18 @@
 import { ReactElement, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
+import { PlusOutlined } from '@ant-design/icons';
 
 import { BUDGET } from './graphql/budget';
 import { SAVINGS } from '../../graphql/queries/savings';
 import { CREATE_SAVING_BUDGET } from './graphql/createSavingBudget';
 
 import { Input } from '../../ui/Input';
+import { Modal } from '../../ui/Modal';
+import { Select } from '../../ui/Select';
 
 import { SavingBudget } from './SavingBudget';
+
+import { AddSaving } from './SavingBudget.styles';
 
 interface Props {
   budgetSavings: any;
@@ -53,40 +58,46 @@ export function SavingsBudget({ budgetSavings, budget }: Props): ReactElement {
   if (error) return <h2>Error! {error.message}</h2>;
 
   return (
-    <div>
+    <>
       <ul>
         {budgetSavings.map((item) => {
           return <SavingBudget key={item.id} budget={budget} saving={item} />;
         })}
       </ul>
-      <button type="button" onClick={() => setActiveForm(!activeForm)}>
+      <AddSaving type="button" onClick={() => setActiveForm(!activeForm)}>
+        <PlusOutlined />
         Agregar ahorro
-      </button>
-      {activeForm && (
-        <form onSubmit={handleNewSaving}>
-          <select onChange={(e) => setSaving(e.target.value)} value={saving}>
-            <option value="">Selecciona un ahorro</option>
-            {data?.savings
-              .filter((item) => savingsWithoutSelection.includes(item.name))
-              .map((item) => {
-                return (
-                  <option value={item.id} key={item.id}>
-                    {item.name}
-                  </option>
-                );
-              })}
-          </select>
-          <Input
-            type="number"
-            value={value}
-            onChange={(e) => setValue(Number(e.target.value))}
-          />
-          <button type="button" onClick={() => setActiveForm(!activeForm)}>
-            Cancelar
-          </button>
-          <button type="submit">Agregar ahorro</button>
-        </form>
-      )}
-    </div>
+      </AddSaving>
+
+      <Modal
+        visible={activeForm}
+        handleSubmit={handleNewSaving}
+        title="Agregar ahorro"
+        submitText="Agregar"
+        cancelText="Cancelar"
+        handleCancel={() => setActiveForm(!activeForm)}
+      >
+        <Select
+          options={data?.savings
+            .filter((item) => savingsWithoutSelection.includes(item.name))
+            .map((item) => {
+              return {
+                value: item.id,
+                label: item.name,
+              };
+            })}
+          value={saving}
+          onChange={(value) => setSaving(value)}
+          emptyOptionText="Seleccione un ahorro"
+          emptyOptionValue=""
+          defaultValue=""
+        />
+        <Input
+          type="number"
+          value={value}
+          onChange={(e) => setValue(Number(e.target.value))}
+        />
+      </Modal>
+    </>
   );
 }
