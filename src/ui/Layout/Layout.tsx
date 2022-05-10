@@ -12,10 +12,10 @@ interface LayoutProps {
 
 export function Layout({ children, hideNav }: LayoutProps) {
   return (
-    <section>
+    <>
       <Header />
       <Container>{children}</Container>
       {!hideNav && <Nav />}
-    </section>
+    </>
   );
 }
