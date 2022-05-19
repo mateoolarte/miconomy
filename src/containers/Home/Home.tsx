@@ -8,7 +8,10 @@ import { CREATE_INCOME } from '../../graphql/mutations/createIncome';
 import { BALANCE } from './graphql/balance';
 
 import { Input } from '../../ui/Input';
+import { Select } from '../../ui/Select';
 import { Layout } from '../../ui/Layout';
+import { Button } from '../../ui/Button';
+import { Modal } from '../../ui/Modal';
 import { ButtonLink } from '../../ui/ButtonLink';
 
 import {
@@ -21,10 +24,13 @@ import {
 import {
   Heading,
   ExploreContainer,
-  ExploreTitle,
+  Title,
   ExploreOptions,
   ExploreCard,
   ExploreLink,
+  BalanceContainer,
+  BalanceItem,
+  Actions,
 } from './Home.styles';
 
 export function Home(): ReactElement {
@@ -133,83 +139,108 @@ export function Home(): ReactElement {
       )}
 
       {entryId && (
-        <div>
-          {balanceData?.balance && (
-            <div>
-              <h2>Resumen del mes</h2>
-              <p>Gastos totales: {totalExpenses}</p>
-              <p>Ingresos totales: {totalIncomes}</p>
-              <p>Disponible: {available}</p>
-            </div>
+        <>
+          {balanceData?.balance && totalExpenses !== 0 && totalIncomes !== 0 && (
+            <>
+              <Title>Resumen del mes</Title>
+              <BalanceContainer>
+                <BalanceItem>
+                  <p>Gastos totales</p> <strong>{totalExpenses}</strong>
+                </BalanceItem>
+                <BalanceItem>
+                  <p>Ingresos totales</p> <strong>{totalIncomes}</strong>
+                </BalanceItem>
+                <BalanceItem fullWidth>
+                  <p>Disponible</p>
+                  <strong>{available}</strong>
+                </BalanceItem>
+              </BalanceContainer>
+            </>
           )}
 
-          <h2>¿Que quieres hacer hoy?</h2>
-          <button type="button" onClick={handleToggleExpense}>
-            Agregar gasto
-          </button>
-          <button type="button" onClick={handleToggleIncome}>
-            Agregar ingreso
-          </button>
+          <Title>¿Que quieres hacer hoy?</Title>
+          <Actions>
+            <Button
+              type="button"
+              onClick={handleToggleExpense}
+              fullWidth
+              style="primary"
+            >
+              Agregar gasto
+            </Button>
+            <Button
+              type="button"
+              onClick={handleToggleIncome}
+              fullWidth
+              style="ghost"
+            >
+              Agregar ingreso
+            </Button>
+          </Actions>
 
-          {expenseForm && (
-            <form onSubmit={handleExpense}>
-              <h3>Agregar gasto</h3>
-              <select
-                onChange={(e) => setCategoryId(Number(e.target.value))}
-                value={categoryId}
-              >
-                <option value="">Selecciona una categoría</option>
-                {data?.entry?.categories.map((item) => {
-                  return (
-                    <option key={item.id} value={item.id}>
-                      {item.name}
-                    </option>
-                  );
-                })}
-              </select>
-              <Input
-                type="number"
-                label="Valor"
-                value={value}
-                onChange={(e) => setValue(Number(e.target.value))}
-                required
-              />
-              <Input
-                type="text"
-                label="Descripción"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                required
-              />
-              <button type="submit">Agregar</button>
-            </form>
-          )}
+          <Modal
+            visible={expenseForm}
+            title="Agregar gasto"
+            submitText="Agregar"
+            cancelText="Cancelar"
+            handleSubmit={handleExpense}
+            handleCancel={() => setExpenseForm(!expenseForm)}
+          >
+            <Select
+              options={data?.entry?.categories.map((item) => ({
+                value: item.id,
+                label: item.name,
+              }))}
+              emptyOptionText="Selecciona una categoría"
+              emptyOptionValue={0}
+              value={categoryId}
+              defaultValue={0}
+              onChange={(value) => setCategoryId(Number(value))}
+            />
+            <Input
+              type="number"
+              label="Valor"
+              value={value}
+              onChange={(e) => setValue(Number(e.target.value))}
+              required
+            />
+            <Input
+              type="text"
+              label="Descripción"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+            />
+          </Modal>
 
-          {incomeForm && (
-            <form onSubmit={handleIncome}>
-              <h3>Agregar ingreso</h3>
-              <Input
-                type="number"
-                label="Valor"
-                value={value}
-                onChange={(e) => setValue(Number(e.target.value))}
-                required
-              />
-              <Input
-                type="text"
-                label="Descripción"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                required
-              />
-              <button type="submit">Agregar</button>
-            </form>
-          )}
-        </div>
+          <Modal
+            visible={incomeForm}
+            title="Agregar ingreso"
+            submitText="Agregar"
+            cancelText="Cancelar"
+            handleSubmit={handleIncome}
+            handleCancel={() => setIncomeForm(!incomeForm)}
+          >
+            <Input
+              type="number"
+              label="Valor"
+              value={value}
+              onChange={(e) => setValue(Number(e.target.value))}
+              required
+            />
+            <Input
+              type="text"
+              label="Descripción"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+            />
+          </Modal>
+        </>
       )}
 
       <ExploreContainer>
-        <ExploreTitle>Explora</ExploreTitle>
+        <Title>Explora</Title>
         <ExploreOptions>
           {options.map(({ id, link, label, Icon }) => {
             return (
