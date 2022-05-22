@@ -6,19 +6,19 @@ import Link from 'next/link';
 
 import { BUDGETS } from '../../graphql/queries/budgets';
 import { ENTRY } from '../../graphql/queries/entry';
-import { CREATE_EXPENSE } from '../../graphql/mutations/createExpense';
-import { CREATE_INCOME } from '../../graphql/mutations/createIncome';
 import { CREATE_ENTRY } from './graphql/createEntry';
 
-import { Input } from '../../ui/Input';
 import { Select } from '../../ui/Select';
 import { Layout } from '../../ui/Layout';
 import { ButtonLink } from '../../ui/ButtonLink';
+import { Button } from '../../ui/Button';
 
 import {
-  EmptyHeading,
+  Heading,
   EmptyBudgetContainer,
   EmptyBudgetTitle,
+  EmptyStateDescription,
+  EmptyStateCtaContainer,
 } from './Entry.styles';
 
 export function Entry(): ReactElement {
@@ -35,19 +35,8 @@ export function Entry(): ReactElement {
   const [createEntry] = useMutation(CREATE_ENTRY, {
     refetchQueries: [ENTRY],
   });
-  const [createExpense] = useMutation(CREATE_EXPENSE, {
-    refetchQueries: [ENTRY],
-  });
-  const [createIncome] = useMutation(CREATE_INCOME, {
-    refetchQueries: [ENTRY],
-  });
 
   const [budgetId, setBudgetId] = useState(0);
-  const [expenseForm, setExpenseForm] = useState(false);
-  const [incomeForm, setIncomeForm] = useState(false);
-  const [value, setValue] = useState(0);
-  const [description, setDescription] = useState('');
-  const [categoryId, setCategoryId] = useState(0);
 
   const pendingSavings = data?.entry?.savings.filter(
     (item) => !item.sent
@@ -55,11 +44,6 @@ export function Entry(): ReactElement {
 
   function resetState() {
     setBudgetId(0);
-    setExpenseForm(false);
-    setIncomeForm(false);
-    setValue(0);
-    setDescription('');
-    setCategoryId(0);
   }
 
   function handleEntry(e) {
@@ -69,44 +53,18 @@ export function Entry(): ReactElement {
     resetState();
   }
 
-  function handleToggleExpense(e) {
-    e.preventDefault();
-
-    setExpenseForm(!expenseForm);
-  }
-
-  function handleToggleIncome(e) {
-    e.preventDefault();
-
-    setIncomeForm(!incomeForm);
-  }
-
-  function handleExpense(e) {
-    e.preventDefault();
-
-    createExpense({ variables: { value, description, entryId, categoryId } });
-    resetState();
-  }
-
-  function handleIncome(e) {
-    e.preventDefault();
-
-    createIncome({ variables: { value, description, entryId } });
-    resetState();
-  }
-
   if (loading) return <h2>Loading...</h2>;
   if (error) return <h2>Error! {error.message}</h2>;
 
   if (!entryId) {
     return (
       <Layout>
-        <EmptyHeading>
+        <Heading>
           Proximo mes a crear
           <p>
             {currentMonth} {year}
           </p>
-        </EmptyHeading>
+        </Heading>
 
         {(!budgetsData?.budgets || budgetsData?.budgets.length === 0) && (
           <EmptyBudgetContainer>
@@ -121,7 +79,9 @@ export function Entry(): ReactElement {
 
         {budgetsData?.budgets && budgetsData?.budgets.length > 0 && (
           <form onSubmit={handleEntry}>
-            <p>Selecciona un presupuesto existente</p>
+            <EmptyStateDescription>
+              Selecciona un presupuesto existente
+            </EmptyStateDescription>
 
             <Select
               options={budgetsData.budgets.map((item) => ({
@@ -134,7 +94,16 @@ export function Entry(): ReactElement {
               emptyOptionText="Selecciona un presupuesto"
               emptyOptionValue={0}
             />
-            <button type="submit">Crear mes</button>
+            <EmptyStateCtaContainer>
+              <Button
+                type="submit"
+                size="middle"
+                style="primary"
+                disabled={budgetId === 0}
+              >
+                Crear mes
+              </Button>
+            </EmptyStateCtaContainer>
           </form>
         )}
       </Layout>
@@ -143,71 +112,12 @@ export function Entry(): ReactElement {
 
   return (
     <Layout>
-      <div>
-        Mes actual {currentMonth} {year}
-      </div>
-      <div>
-        <button type="button" onClick={handleToggleExpense}>
-          Crear gasto
-        </button>
-
-        <button type="button" onClick={handleToggleIncome}>
-          Crear ingreso
-        </button>
-      </div>
-
-      {expenseForm && (
-        <form onSubmit={handleExpense}>
-          <h3>Agregar gasto</h3>
-          <Select
-            options={data?.entry?.categories.map((item) => ({
-              value: item.id,
-              label: item.name,
-            }))}
-            value={categoryId}
-            defaultValue={0}
-            emptyOptionText="Selecciona una categoría"
-            emptyOptionValue={0}
-            onChange={(value) => setCategoryId(Number(value))}
-          />
-          <Input
-            type="number"
-            label="Valor"
-            value={value}
-            onChange={(e) => setValue(Number(e.target.value))}
-            required
-          />
-          <Input
-            type="text"
-            label="Descripción"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
-          <button type="submit">Agregar</button>
-        </form>
-      )}
-
-      {incomeForm && (
-        <form onSubmit={handleIncome}>
-          <h3>Agregar ingreso</h3>
-          <Input
-            type="number"
-            label="Valor"
-            value={value}
-            onChange={(e) => setValue(Number(e.target.value))}
-            required
-          />
-          <Input
-            type="text"
-            label="Descripción"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
-          <button type="submit">Agregar</button>
-        </form>
-      )}
+      <Heading>
+        Mes actual
+        <p>
+          {currentMonth} {year}
+        </p>
+      </Heading>
 
       <div>
         <h3>Categorías</h3>
