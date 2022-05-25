@@ -8,6 +8,9 @@ import { UPDATE_EXPENSE } from './graphql/updateExpense';
 import { DELETE_EXPENSE } from './graphql/deleteExpense';
 
 import { Input } from '../../ui/Input';
+import { Layout } from '../../ui/Layout';
+
+import { Title } from './EntryCategory.styles';
 
 export function EntryCategory(): ReactElement {
   const router = useRouter();
@@ -75,8 +78,8 @@ export function EntryCategory(): ReactElement {
   if (error) return <h2>Error! {error.message}</h2>;
 
   return (
-    <section>
-      <h1>{data?.entryCategory?.name}</h1>
+    <Layout>
+      <Title>{data?.entryCategory?.name}</Title>
       <div>
         <p>Presupuesto</p>
         <p>{data?.entryCategory?.amount}</p>
@@ -205,6 +208,6 @@ export function EntryCategory(): ReactElement {
           </button>
         </form>
       )}
-    </section>
+    </Layout>
   );
 }
