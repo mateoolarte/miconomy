@@ -19,6 +19,15 @@ import {
   EmptyBudgetTitle,
   EmptyStateDescription,
   EmptyStateCtaContainer,
+  Title,
+  List,
+  Item,
+  ItemLink,
+  ItemTitle,
+  ItemText,
+  ItemContent,
+  ItemSavingText,
+  ItemSaving,
 } from './Entry.styles';
 
 export function Entry(): ReactElement {
@@ -119,69 +128,78 @@ export function Entry(): ReactElement {
         </p>
       </Heading>
 
-      <div>
-        <h3>Categorías</h3>
-        <ul>
-          {data?.entry?.categories.map((item) => {
-            const totalExpenses = item.expenses.reduce(
-              (prev, current) => prev + current.value,
-              0
-            );
-            const lastExpense = item.expenses[item.expenses.length - 1];
+      <Title>Categorías</Title>
+      <List>
+        {data?.entry?.categories.map((item) => {
+          const totalExpenses = item.expenses.reduce(
+            (prev, current) => prev + current.value,
+            0
+          );
+          const lastExpense = item.expenses[item.expenses.length - 1];
 
-            return (
-              <li key={item.id}>
-                <Link href={`/entry/categories/${item.id}?entryId=${entryId}`}>
-                  <a>
-                    <h4>{item.name}</h4>
-                    <p>Presupuesto: {item.amount}</p>
-                    {totalExpenses > 0 && <p>Gasto actual: {totalExpenses}</p>}
-                    {lastExpense && (
-                      <p>
-                        Último gasto: {lastExpense?.description}{' '}
-                        {lastExpense?.value}
-                      </p>
+          return (
+            <Item key={item.id}>
+              <Link
+                href={`/entry/categories/${item.id}?entryId=${entryId}`}
+                passHref
+              >
+                <ItemLink>
+                  <ItemTitle>{item.name}</ItemTitle>
+                  <ItemContent>
+                    <ItemText>
+                      Presupuesto <strong>{item.amount}</strong>
+                    </ItemText>
+                    {totalExpenses > 0 && (
+                      <ItemText>
+                        Gasto actual <strong>{totalExpenses}</strong>
+                      </ItemText>
                     )}
-                  </a>
-                </Link>
-              </li>
-            );
-          })}
-
-          {data?.entry?.savings.length > 0 && (
-            <li>
-              <Link href={`/savings`}>
-                <a>
-                  <h4>Ahorros</h4>
-                  {pendingSavings === 0 && (
-                    <p>
-                      ¡Felicitaciones! Has completado todos los ahorros de este
-                      mes
-                    </p>
+                  </ItemContent>
+                  {lastExpense && (
+                    <ItemText>
+                      Último gasto
+                      <strong>
+                        {lastExpense?.description} {lastExpense?.value}
+                      </strong>
+                    </ItemText>
                   )}
-                  {pendingSavings > 0 && (
-                    <p>
-                      Tienes pendiente de enviar {pendingSavings}
-                      {pendingSavings > 1 ? ' abonos' : ' abono'}
-                    </p>
-                  )}
-                  {data?.entry?.savings
-                    .filter((item) => !item.sent)
-                    .map((item) => {
-                      return (
-                        <p key={item.id}>
-                          <strong>
-                            {item.name} {item.fee}
-                          </strong>
-                        </p>
-                      );
-                    })}
-                </a>
+                </ItemLink>
               </Link>
-            </li>
-          )}
-        </ul>
-      </div>
+            </Item>
+          );
+        })}
+
+        {data?.entry?.savings.length > 0 && (
+          <Item>
+            <Link href={`/savings`}>
+              <ItemLink>
+                <ItemTitle>Ahorros</ItemTitle>
+                {pendingSavings === 0 && (
+                  <ItemSavingText>
+                    ¡Felicitaciones! Has completado todos los ahorros de este
+                    mes
+                  </ItemSavingText>
+                )}
+                {pendingSavings > 0 && (
+                  <ItemSavingText>
+                    Tienes pendiente de enviar {pendingSavings}
+                    {pendingSavings > 1 ? ' abonos' : ' abono'}
+                  </ItemSavingText>
+                )}
+                {data?.entry?.savings
+                  .filter((item) => !item.sent)
+                  .map((item) => {
+                    return (
+                      <ItemSaving key={item.id}>
+                        {item.name} {item.fee}
+                      </ItemSaving>
+                    );
+                  })}
+              </ItemLink>
+            </Link>
+          </Item>
+        )}
+      </List>
     </Layout>
   );
 }
