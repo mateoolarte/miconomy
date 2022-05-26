@@ -1,6 +1,7 @@
 import { ReactElement, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useQuery, useMutation } from '@apollo/client';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 import { ENTRY_CATEGORY } from './graphql/entryCategory';
 import { UPDATE_CATEGORY_ENTRY } from './graphql/updateCategoryEntry';
@@ -9,8 +10,26 @@ import { DELETE_EXPENSE } from './graphql/deleteExpense';
 
 import { Input } from '../../ui/Input';
 import { Layout } from '../../ui/Layout';
+import { Breadcrumb } from '../../ui/Breadcrumb';
+import { Modal } from '../../ui/Modal';
 
-import { Title } from './EntryCategory.styles';
+import {
+  Title,
+  DeleteCategory,
+  Actions,
+  ActionsBox,
+  ActionsTitle,
+  ActionsValue,
+  ActionsBtn,
+  Heading,
+  List,
+  Item,
+  ItemTitle,
+  ItemDate,
+  ItemValue,
+  ItemActions,
+  ItemBtn,
+} from './EntryCategory.styles';
 
 export function EntryCategory(): ReactElement {
   const router = useRouter();
@@ -79,21 +98,46 @@ export function EntryCategory(): ReactElement {
 
   return (
     <Layout>
-      <Title>{data?.entryCategory?.name}</Title>
-      <div>
-        <p>Presupuesto</p>
-        <p>{data?.entryCategory?.amount}</p>
-        <button
-          type="button"
-          onClick={() => {
-            setToggleEditBudget(!toggleEditBudget);
-            setAmount(data?.entryCategory?.amount);
-          }}
-        >
-          Editar
-        </button>
-        {toggleEditBudget && (
-          <form onSubmit={handleEditBudget}>
+      <Breadcrumb
+        options={[
+          { label: 'Mes actual', path: '/entry' },
+          { label: data?.entryCategory?.name, path: '' },
+        ]}
+      />
+      <Title>
+        {data?.entryCategory?.name}{' '}
+        <DeleteCategory type="button">
+          <DeleteOutlined />
+          Eliminar
+        </DeleteCategory>
+      </Title>
+      <Actions>
+        <ActionsBox>
+          <ActionsTitle>Presupuesto</ActionsTitle>
+          <ActionsValue>
+            {data?.entryCategory?.amount}
+            <ActionsBtn
+              type="button"
+              onClick={() => {
+                setToggleEditBudget(!toggleEditBudget);
+                setAmount(data?.entryCategory?.amount);
+              }}
+            >
+              <EditOutlined />
+            </ActionsBtn>
+          </ActionsValue>
+
+          <Modal
+            visible={toggleEditBudget}
+            title="Actualizar presupuesto"
+            submitText="Actualizar"
+            cancelText="Cancelar"
+            handleCancel={() => {
+              setToggleEditBudget(!toggleEditBudget);
+              setAmount(0);
+            }}
+            handleSubmit={handleEditBudget}
+          >
             <Input
               type="number"
               label="Valor"
@@ -101,38 +145,31 @@ export function EntryCategory(): ReactElement {
               onChange={(e) => setAmount(Number(e.target.value))}
               required
             />
-            <button
-              type="button"
-              onClick={() => {
-                setToggleEditBudget(!toggleEditBudget);
-                setAmount(0);
-              }}
-            >
-              Cancelar
-            </button>
-            <button type="submit">Actualizar</button>
-          </form>
+          </Modal>
+        </ActionsBox>
+        {totalExpenses > 0 && (
+          <ActionsBox>
+            <ActionsTitle>Gasto actual</ActionsTitle>
+            <ActionsValue>{totalExpenses}</ActionsValue>
+          </ActionsBox>
         )}
-      </div>
-      {totalExpenses > 0 && (
-        <div>
-          <p>Gasto actual</p>
-          <p>{totalExpenses}</p>
-        </div>
-      )}
+      </Actions>
 
       {data?.entryCategory?.expenses.length > 0 && (
         <>
-          <h2>Gastos</h2>
-          <ul>
+          <Heading>Gastos</Heading>
+          <List>
             {data?.entryCategory?.expenses.map((item) => {
               return (
-                <li key={item.id}>
-                  <p>{item.description}</p>
-                  <p>{item.updatedAt}</p>
-                  <p>{item.value}</p>
-                  <div>
-                    <button
+                <Item key={item.id}>
+                  <ItemTitle>
+                    {item.description}
+                    <ItemDate>{item.updatedAt}</ItemDate>
+                    <ItemValue>-{item.value}</ItemValue>
+                  </ItemTitle>
+
+                  <ItemActions>
+                    <ItemBtn
                       type="button"
                       onClick={() => {
                         setExpenseId(item.id);
@@ -141,9 +178,9 @@ export function EntryCategory(): ReactElement {
                         setToggleEditExpense(!toggleEditExpense);
                       }}
                     >
-                      Editar
-                    </button>
-                    <button
+                      <EditOutlined />
+                    </ItemBtn>
+                    <ItemBtn
                       type="button"
                       onClick={() => {
                         setExpenseId(item.id);
@@ -151,63 +188,60 @@ export function EntryCategory(): ReactElement {
                         setToggleDeleteExpense(!toggleDeleteExpense);
                       }}
                     >
-                      Eliminar
-                    </button>
-                  </div>
-                </li>
+                      <DeleteOutlined />
+                    </ItemBtn>
+                  </ItemActions>
+                </Item>
               );
             })}
-          </ul>
+          </List>
         </>
       )}
 
-      {toggleEditExpense && (
-        <form onSubmit={handleEditExpense}>
-          <Input
-            type="text"
-            label="Valor"
-            value={value}
-            onChange={(e) => setValue(Number(e.target.value))}
-            required
-          />
-          <Input
-            type="text"
-            label="Descripción"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
-          <button
-            type="button"
-            onClick={() => {
-              setExpenseId(0);
-              setValue(0);
-              setDescription('');
-              setToggleEditExpense(!toggleEditExpense);
-            }}
-          >
-            Cancelar
-          </button>
-          <button type="submit">Actualizar</button>
-        </form>
-      )}
-      {toggleDeleteExpense && (
-        <form onSubmit={handleDeleteExpense}>
-          <p>¿Estas seguro que deseas eliminar este gasto?</p>
-          <h3>{description}</h3>
-          <button type="submit">Eliminar</button>
-          <button
-            type="button"
-            onClick={() => {
-              setExpenseId(0);
-              setDescription('');
-              setToggleDeleteExpense(!toggleDeleteExpense);
-            }}
-          >
-            Cancelar
-          </button>
-        </form>
-      )}
+      <Modal
+        visible={toggleEditExpense}
+        title="Editar gasto"
+        submitText="Editar"
+        cancelText="Cancelar"
+        handleCancel={() => {
+          setExpenseId(0);
+          setValue(0);
+          setDescription('');
+          setToggleEditExpense(!toggleEditExpense);
+        }}
+        handleSubmit={handleEditExpense}
+      >
+        <Input
+          type="text"
+          label="Valor"
+          value={value}
+          onChange={(e) => setValue(Number(e.target.value))}
+          required
+        />
+        <Input
+          type="text"
+          label="Descripción"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+        />
+      </Modal>
+
+      <Modal
+        visible={toggleDeleteExpense}
+        title="Eliminar gasto"
+        submitText="Eliminar"
+        cancelText="Cancelar"
+        handleCancel={() => {
+          setExpenseId(0);
+          setDescription('');
+          setToggleDeleteExpense(!toggleDeleteExpense);
+        }}
+        handleSubmit={handleDeleteExpense}
+      >
+        <p>¿Estas seguro que deseas eliminar este gasto?</p>
+        <h3>{description}</h3>
+      </Modal>
     </Layout>
   );
 }
