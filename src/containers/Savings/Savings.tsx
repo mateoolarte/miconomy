@@ -1,5 +1,6 @@
 import { ReactElement, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
+import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 
 import { ENTRY } from '../../graphql/queries/entry';
 import { SAVINGS } from '../../graphql/queries/savings';
@@ -10,6 +11,22 @@ import { SEND_SAVING } from './graphql/sendSaving';
 
 import { Input } from '../../ui/Input';
 import { Layout } from '../../ui/Layout';
+import { Button } from '../../ui/Button';
+import { Modal } from '../../ui/Modal';
+
+import {
+  Notification,
+  NotificationText,
+  Box,
+  Title,
+  PrimaryActions,
+  BtnIcon,
+  Description,
+  Info,
+  SecondaryActions,
+  Container,
+  AddSaving,
+} from './Savings.styles';
 
 const initialState = {
   edit: false,
@@ -122,197 +139,208 @@ export function Savings(): ReactElement {
         .filter((item) => !item.sent)
         .map((item) => {
           return (
-            <div key={item.id}>
-              Tienes pendiente enviar a tu ahorro mensual de {item.name} de{' '}
-              {item.fee}
-              <button
+            <Notification key={item.id}>
+              <NotificationText>
+                Tienes pendiente enviar a tu ahorro mensual de{' '}
+                <strong>{item.name}</strong> de <strong>{item.fee}</strong>
+              </NotificationText>
+              <Button
                 type="button"
+                size="middle"
+                style="primary"
                 onClick={() => handleSendSaving(item.id, item.fee)}
               >
                 Enviar
-              </button>
-            </div>
+              </Button>
+            </Notification>
           );
         })}
 
-      {data?.savings.map((saving) => {
-        return (
-          <div key={saving.id}>
-            <h2>{saving.name}</h2>
-            <div>
-              <button
-                type="button"
-                onClick={() => {
-                  setId(saving.id);
-                  setName(saving.name);
-                  setGoal(saving.goal);
-                  setValue(saving.value);
-                  handleActiveForm('edit');
-                }}
-              >
-                Editar
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setId(saving.id);
-                  setName(saving.name);
-                  handleActiveForm('delete');
-                }}
-              >
-                Eliminar
-              </button>
-            </div>
-            <p>Objetivo: {saving.goal}</p>
-            <p>Ahorro actual: {saving.value}</p>
-            <div>
-              <button
-                type="button"
-                onClick={() => {
-                  setId(saving.id);
-                  setName(saving.name);
-                  setGoal(saving.goal);
-                  setValue(saving.value);
-                  handleActiveForm('add');
-                }}
-              >
-                Agregar
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setId(saving.id);
-                  setName(saving.name);
-                  setGoal(saving.goal);
-                  setValue(saving.value);
-                  handleActiveForm('remove');
-                }}
-              >
-                Retirar
-              </button>
-            </div>
-          </div>
-        );
-      })}
-      <button type="button" onClick={() => handleActiveForm('new')}>
+      <Container>
+        {data?.savings.map((saving) => {
+          return (
+            <Box key={saving.id}>
+              <Title>
+                {saving.name}
+                <PrimaryActions>
+                  <BtnIcon
+                    type="button"
+                    onClick={() => {
+                      setId(saving.id);
+                      setName(saving.name);
+                      setGoal(saving.goal);
+                      setValue(saving.value);
+                      handleActiveForm('edit');
+                    }}
+                  >
+                    <EditOutlined />
+                  </BtnIcon>
+                  <BtnIcon
+                    type="button"
+                    onClick={() => {
+                      setId(saving.id);
+                      setName(saving.name);
+                      handleActiveForm('delete');
+                    }}
+                  >
+                    <DeleteOutlined />
+                  </BtnIcon>
+                </PrimaryActions>
+              </Title>
+
+              <Info>
+                <Description>
+                  Objetivo: <strong>{saving.goal}</strong>
+                </Description>
+                <Description>
+                  Ahorro actual: <strong>{saving.value}</strong>
+                </Description>
+              </Info>
+              <SecondaryActions>
+                <Button
+                  type="button"
+                  style="primary"
+                  size="large"
+                  onClick={() => {
+                    setId(saving.id);
+                    setName(saving.name);
+                    setGoal(saving.goal);
+                    setValue(saving.value);
+                    handleActiveForm('add');
+                  }}
+                >
+                  Agregar
+                </Button>
+                <Button
+                  type="button"
+                  style="ghost"
+                  size="large"
+                  onClick={() => {
+                    setId(saving.id);
+                    setName(saving.name);
+                    setGoal(saving.goal);
+                    setValue(saving.value);
+                    handleActiveForm('remove');
+                  }}
+                >
+                  Retirar
+                </Button>
+              </SecondaryActions>
+            </Box>
+          );
+        })}
+      </Container>
+
+      <AddSaving type="button" onClick={() => handleActiveForm('new')}>
+        <PlusOutlined />
         Agregar ahorro
-      </button>
-      {activeForm.edit && (
-        <div>
-          <h3>Editar ahorro</h3>
-          <form onSubmit={handleEdit}>
-            <Input
-              type="text"
-              label="Nombre"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-            <Input
-              type="number"
-              label="Objetivo"
-              value={goal}
-              onChange={(e) => setGoal(Number(e.target.value))}
-              required
-            />
-            <div>
-              <button type="button" onClick={() => handleInactiveForm()}>
-                Cancelar
-              </button>
-              <button type="submit">Editar</button>
-            </div>
-          </form>
-        </div>
-      )}
-      {activeForm.delete && (
-        <div>
-          <p>¿Estás seguro que deseas eliminar este ahorro?</p>
-          <h3>{name}</h3>
-          <div>
-            <button type="submit" onClick={handleDelete}>
-              Eliminar
-            </button>
-            <button type="button" onClick={() => handleInactiveForm()}>
-              Cancelar
-            </button>
-          </div>
-        </div>
-      )}
-      {activeForm.add && (
-        <div>
-          <h3>Agregar ahorro a {name}</h3>
-          <p>Ahorro actual: {value}</p>
-          <form onSubmit={handleAdd}>
-            <Input
-              type="number"
-              label="¿Cuanto quieres agregar?"
-              value={valueToAdd}
-              onChange={(e) => setValueToAdd(Number(e.target.value))}
-              required
-            />
-            <div>
-              <button type="button" onClick={() => handleInactiveForm()}>
-                Cancelar
-              </button>
-              <button type="submit">Agregar</button>
-            </div>
-          </form>
-        </div>
-      )}
-      {activeForm.remove && (
-        <div>
-          <h3>Retirar ahorro de {name}</h3>
-          <p>Valor disponible: {value}</p>
-          <form onSubmit={handleRemove}>
-            <Input
-              type="number"
-              label="¿Cuanto quieres retirar?"
-              value={valueToRemove}
-              onChange={(e) => setValueToRemove(Number(e.target.value))}
-              required
-            />
-            <div>
-              <button type="submit">Retirar</button>
-              <button type="button" onClick={() => handleInactiveForm()}>
-                Cancelar
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-      {activeForm.new && (
-        <div>
-          <h3>Agregar ahorro</h3>
-          <form onSubmit={handleNew}>
-            <Input
-              type="text"
-              label="Nombre"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-            <Input
-              type="number"
-              label="Objetivo"
-              value={goal}
-              onChange={(e) => setGoal(Number(e.target.value))}
-              required
-            />
-            <Input
-              type="text"
-              label="Valor inicial (Opcional)"
-              value={value}
-              onChange={(e) => setValue(Number(e.target.value))}
-            />
-            <div>
-              <button type="button" onClick={() => handleInactiveForm()}>
-                Cancelar
-              </button>
-              <button type="submit">Agregar</button>
-            </div>
-          </form>
-        </div>
-      )}
+      </AddSaving>
+
+      <Modal
+        visible={activeForm.edit}
+        title="Editar ahorro"
+        submitText="Editar"
+        cancelText="Cancelar"
+        handleSubmit={handleEdit}
+        handleCancel={() => handleInactiveForm()}
+      >
+        <Input
+          type="text"
+          label="Nombre"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <Input
+          type="number"
+          label="Objetivo"
+          value={goal}
+          onChange={(e) => setGoal(Number(e.target.value))}
+          required
+        />
+      </Modal>
+
+      <Modal
+        visible={activeForm.delete}
+        title="Eliminar ahorro"
+        submitText="Eliminar"
+        cancelText="Cancelar"
+        handleSubmit={handleDelete}
+        handleCancel={() => handleInactiveForm()}
+      >
+        <p>¿Estás seguro que deseas eliminar este ahorro?</p>
+        <h3>{name}</h3>
+      </Modal>
+
+      <Modal
+        visible={activeForm.add}
+        title="Agregar monto"
+        submitText="Agregar"
+        cancelText="Cancelar"
+        handleSubmit={handleAdd}
+        handleCancel={() => handleInactiveForm()}
+      >
+        <h3>Agregar ahorro a {name}</h3>
+        <p>Ahorro actual: {value}</p>
+
+        <Input
+          type="number"
+          label="¿Cuanto quieres agregar?"
+          value={valueToAdd}
+          onChange={(e) => setValueToAdd(Number(e.target.value))}
+          required
+        />
+      </Modal>
+
+      <Modal
+        visible={activeForm.remove}
+        title="Retirar monto"
+        submitText="Retirar"
+        cancelText="Cancelar"
+        handleSubmit={handleRemove}
+        handleCancel={() => handleInactiveForm()}
+      >
+        <h3>Retirar ahorro de {name}</h3>
+        <p>Valor disponible: {value}</p>
+
+        <Input
+          type="number"
+          label="¿Cuanto quieres retirar?"
+          value={valueToRemove}
+          onChange={(e) => setValueToRemove(Number(e.target.value))}
+          required
+        />
+      </Modal>
+
+      <Modal
+        visible={activeForm.new}
+        title="Agregar ahorro"
+        submitText="Agregar"
+        cancelText="Cancelar"
+        handleSubmit={handleNew}
+        handleCancel={() => handleInactiveForm()}
+      >
+        <Input
+          type="text"
+          label="Nombre"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <Input
+          type="number"
+          label="Objetivo"
+          value={goal}
+          onChange={(e) => setGoal(Number(e.target.value))}
+          required
+        />
+        <Input
+          type="text"
+          label="Valor inicial (Opcional)"
+          value={value}
+          onChange={(e) => setValue(Number(e.target.value))}
+        />
+      </Modal>
     </Layout>
   );
 }
