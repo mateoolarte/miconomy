@@ -7,8 +7,12 @@ import { CATEGORIES } from '../../graphql/queries/categories';
 import { CREATE_CATEGORY_BUDGET } from './graphql/createCategoryBudget';
 
 import { Input } from '../../ui/Input';
+import { Select } from '../../ui/Select';
+import { Modal } from '../../ui/Modal';
 
 import { CategoryBudget } from './CategoryBudget';
+
+import { List } from './Budget.styles';
 
 import { AddCategory } from './CategoriesBudget.styles';
 
@@ -61,8 +65,8 @@ export function CategoriesBudget({
   if (error) return <h2>Error! {error.message}</h2>;
 
   return (
-    <div>
-      <ul>
+    <>
+      <List>
         {budgetCategories.map((category) => {
           return (
             <CategoryBudget
@@ -72,41 +76,41 @@ export function CategoriesBudget({
             />
           );
         })}
-      </ul>
+      </List>
       <AddCategory type="button" onClick={() => setActiveForm(!activeForm)}>
         <PlusOutlined />
         Agregar categoría
       </AddCategory>
-      {activeForm && (
-        <form onSubmit={handleNewCategory}>
-          <select
-            onChange={(e) => setCategory(e.target.value)}
-            value={category}
-          >
-            <option value="">Selecciona una categoría</option>
-            {data?.categories
-              .filter((category) =>
-                categoriesWithoutSelection.includes(category.name)
-              )
-              .map((category) => {
-                return (
-                  <option value={category.id} key={category.id}>
-                    {category.name}
-                  </option>
-                );
-              })}
-          </select>
-          <Input
-            type="number"
-            value={value}
-            onChange={(e) => setValue(Number(e.target.value))}
-          />
-          <button type="button" onClick={() => setActiveForm(!activeForm)}>
-            Cancelar
-          </button>
-          <button type="submit">Agregar categoría</button>
-        </form>
-      )}
-    </div>
+
+      <Modal
+        visible={activeForm}
+        title="Agregar categoría"
+        submitText="Agregar"
+        cancelText="Cancelar"
+        handleSubmit={handleNewCategory}
+        handleCancel={() => setActiveForm(!activeForm)}
+      >
+        <Select
+          options={data?.categories
+            .filter((item) => categoriesWithoutSelection.includes(item.name))
+            .map((item) => {
+              return {
+                value: item.id,
+                label: item.name,
+              };
+            })}
+          value={category}
+          onChange={(value) => setCategory(value)}
+          emptyOptionText="Seleccione una categoría"
+          emptyOptionValue=""
+          defaultValue=""
+        />
+        <Input
+          type="number"
+          value={value}
+          onChange={(e) => setValue(Number(e.target.value))}
+        />
+      </Modal>
+    </>
   );
 }

@@ -1,5 +1,6 @@
 import { ReactElement, useState } from 'react';
 import { useMutation } from '@apollo/client';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 import { BUDGET } from './graphql/budget';
 
@@ -7,6 +8,16 @@ import { DELETE_CATEGORY_BUDGET } from './graphql/deleteCategoryBudget';
 import { UPDATE_CATEGORY_BUDGET } from './graphql/updateCategoryBudget';
 
 import { Input } from '../../ui/Input';
+import { Modal } from '../../ui/Modal';
+
+import {
+  Item,
+  Info,
+  Title,
+  Description,
+  Actions,
+  BtnIcon,
+} from './Budget.styles';
 
 interface Props {
   category: any;
@@ -41,39 +52,45 @@ export function CategoryBudget({ category, budget }: Props): ReactElement {
   }
 
   return (
-    <li>
-      <h3>{category.name}</h3>
-      <p>{category.amount}</p>
-      <button
-        type="button"
-        onClick={() => handleDeleteCategory(budget.id, category.id)}
-      >
-        Eliminar
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          setActiveForm(!activeForm);
-          setValue(category.amount);
-        }}
-      >
-        {activeForm ? 'Cancelar' : 'Editar'}
-      </button>
-      {activeForm && (
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleEditCategory(budget.id, category.id);
+    <Item>
+      <Info>
+        <Title>{category.name}</Title>
+        <Description>
+          Presupuesto: <strong>{category.amount}</strong>
+        </Description>
+      </Info>
+      <Actions>
+        <BtnIcon
+          type="button"
+          onClick={() => handleDeleteCategory(budget.id, category.id)}
+        >
+          <DeleteOutlined />
+        </BtnIcon>
+        <BtnIcon
+          type="button"
+          onClick={() => {
+            setActiveForm(!activeForm);
+            setValue(category.amount);
           }}
         >
-          <Input
-            type="number"
-            value={value}
-            onChange={(e) => setValue(Number(e.target.value))}
-          />
-          <button type="submit">Actualizar</button>
-        </form>
-      )}
-    </li>
+          <EditOutlined />
+        </BtnIcon>
+      </Actions>
+
+      <Modal
+        visible={activeForm}
+        title={`Editar ${category.name}`}
+        submitText="Actualizar"
+        cancelText="Cancelar"
+        handleSubmit={() => handleEditCategory(budget.id, category.id)}
+        handleCancel={() => setActiveForm(!activeForm)}
+      >
+        <Input
+          type="number"
+          value={value}
+          onChange={(e) => setValue(Number(e.target.value))}
+        />
+      </Modal>
+    </Item>
   );
 }

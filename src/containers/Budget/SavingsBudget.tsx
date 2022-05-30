@@ -14,6 +14,8 @@ import { SavingBudget } from './SavingBudget';
 
 import { AddSaving } from './SavingBudget.styles';
 
+import { List } from './Budget.styles';
+
 interface Props {
   budgetSavings: any;
   budget: any;
@@ -59,11 +61,11 @@ export function SavingsBudget({ budgetSavings, budget }: Props): ReactElement {
 
   return (
     <>
-      <ul>
+      <List>
         {budgetSavings.map((item) => {
           return <SavingBudget key={item.id} budget={budget} saving={item} />;
         })}
-      </ul>
+      </List>
       <AddSaving type="button" onClick={() => setActiveForm(!activeForm)}>
         <PlusOutlined />
         Agregar ahorro
