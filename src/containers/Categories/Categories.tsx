@@ -1,5 +1,6 @@
 import { ReactElement, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
+import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 
 import { CATEGORIES } from '../../graphql/queries/categories';
 import { CREATE_CATEGORY } from './graphql/createCategory';
@@ -7,6 +8,15 @@ import { UPDATE_CATEGORY } from './graphql/updateCategory';
 
 import { Input } from '../../ui/Input';
 import { Layout } from '../../ui/Layout';
+import { Modal } from '../../ui/Modal';
+
+import {
+  Container,
+  Box,
+  Title,
+  BtnIcon,
+  AddCategory,
+} from './Categories.styles';
 
 const initialState = { new: false, edit: false };
 
@@ -56,59 +66,53 @@ export function Categories(): ReactElement {
 
   return (
     <Layout>
-      {data?.categories.map((category) => {
-        return (
-          <div key={category.id}>
-            <h2>{category.name}</h2>
-            <button
-              type="button"
-              onClick={() => {
-                setName(category.name);
-                setId(category.id);
-                handleActiveForm('edit');
-              }}
-            >
-              Editar
-            </button>
-          </div>
-        );
-      })}
-      <button
+      <Container>
+        {data?.categories.map((category) => {
+          return (
+            <Box key={category.id}>
+              <Title>{category.name}</Title>
+              <BtnIcon
+                type="button"
+                onClick={() => {
+                  setName(category.name);
+                  setId(category.id);
+                  handleActiveForm('edit');
+                }}
+              >
+                <EditOutlined />
+              </BtnIcon>
+            </Box>
+          );
+        })}
+      </Container>
+
+      <AddCategory
         type="button"
         onClick={() => {
           setName('');
           handleActiveForm('new');
         }}
       >
+        <PlusOutlined />
         Agregar categoría
-      </button>
-      {(activeForm.new || activeForm.edit) && (
-        <div>
-          <h3>{activeForm.new ? 'Nueva categoría' : 'Editar categoría'}</h3>
-          <form onSubmit={activeForm.new ? handleNew : handleEdit}>
-            <Input
-              type="text"
-              label="Nombre"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-            <div>
-              <button
-                type="button"
-                onClick={() =>
-                  handleInactiveForm(activeForm.new ? 'new' : 'edit')
-                }
-              >
-                Cancelar
-              </button>
-              <button type="submit" disabled={!name}>
-                {activeForm.new ? 'Agregar' : 'Actualizar'}
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
+      </AddCategory>
+
+      <Modal
+        visible={activeForm.new || activeForm.edit}
+        title={activeForm.new ? 'Nueva categoría' : 'Editar categoría'}
+        submitText={activeForm.new ? 'Agregar' : 'Actualizar'}
+        cancelText="Cancelar"
+        handleSubmit={activeForm.new ? handleNew : handleEdit}
+        handleCancel={() => handleInactiveForm(activeForm.new ? 'new' : 'edit')}
+      >
+        <Input
+          type="text"
+          label="Nombre"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+      </Modal>
     </Layout>
   );
 }
