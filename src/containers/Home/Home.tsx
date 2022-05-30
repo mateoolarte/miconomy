@@ -198,17 +198,17 @@ export function Home(): ReactElement {
               onChange={(value) => setCategoryId(Number(value))}
             />
             <Input
-              type="number"
-              label="Valor"
-              value={value}
-              onChange={(e) => setValue(Number(e.target.value))}
-              required
-            />
-            <Input
               type="text"
               label="Descripción"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              required
+            />
+            <Input
+              type="number"
+              label="Valor"
+              value={value}
+              onChange={(e) => setValue(Number(e.target.value))}
               required
             />
           </Modal>
@@ -222,17 +222,17 @@ export function Home(): ReactElement {
             handleCancel={() => setIncomeForm(!incomeForm)}
           >
             <Input
-              type="number"
-              label="Valor"
-              value={value}
-              onChange={(e) => setValue(Number(e.target.value))}
-              required
-            />
-            <Input
               type="text"
               label="Descripción"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              required
+            />
+            <Input
+              type="number"
+              label="Valor"
+              value={value}
+              onChange={(e) => setValue(Number(e.target.value))}
               required
             />
           </Modal>
