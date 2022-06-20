@@ -1,5 +1,6 @@
 {
   "name": "miconomy-web",
+  "private": true,
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{ts,tsx,js,jsx}"
@@ -69,7 +70,6 @@
     "*.{js,jsx,ts,tsx,json,md,mdx}": "prettier --write",
     "*.{test,spec}.{ts,tsx,js,jsx}": "yarn test"
   },
-  "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
