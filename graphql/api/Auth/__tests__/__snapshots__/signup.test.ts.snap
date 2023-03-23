@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`signup should signup a new user 1`] = `
+Object {
+  "signup": Object {
+    "user": Object {
+      "currencyCode": "COP",
+      "email": "test1@miconomy.co",
+      "id": 1,
+    },
+  },
+}
+`;
+
+exports[`signup should signup a new user 2`] = `
+Array [
+  Object {
+    "currencyCode": "COP",
+    "email": "test1@miconomy.co",
+    "id": 1,
+  },
+]
+`;

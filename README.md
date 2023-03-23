@@ -1,9 +1,12 @@
-# Miconomy Web
+# Miconomy
 
-Here you can find the web app. Built with NextJS & GraphQL
+Here you can find the web app. Built with NextJS, GraphQL & Prisma ORM
 
 ## Features
 
+- Prisma: Next generation of ORM to work with DB
+- Postgres: Database provider
+- Nexus: Code-first library to generate schema for GraphQL servers
 - Apollo client: A GraphQL client library
 - NextJS: React framework with SSR
 - Styled components: CSS in JS library to manage styles
@@ -14,60 +17,99 @@ Here you can find the web app. Built with NextJS & GraphQL
 - ESLint: Validate the Typescript code style with best practices
 - Prettier: Formatter files with configured options
 
+## Used libraries
+
+- Bcrypt: Password hashing
+- JWT: JWT token
+
 ## Prerequisites
 
-- Yarn
-- NodeJS LTS version
+- [PNPM](https://pnpm.io/)
+- Latest [NodeJS](https://nodejs.org/en) version
 
 ## Installation
 
 - Clone this repo
-- Run on terminal `yarn` to install dependencies
+- Run on terminal `pnpm install` to install dependencies
 - Create a `.env` file and ask a teammate to share the content
-- Run on terminal `yarn dev` and start rocking
+- Run on terminal `pnpm dev` and start rocking
+
+## Roadmap
+
+- [ ] Review jest config for graphql api suite test cases
 
 ## Available commands
 
 ### Run development server
 
 ```bash
-yarn dev
+pnpm dev
 ```
 
 ### Generate production server
 
 ```bash
-yarn build
+pnpm build
 ```
 
 ### Run a production server
 
 ```bash
-yarn start
+pnpm start
+```
+
+### Run a GUI app to manage database models
+
+```bash
+pnpm studio
+```
+
+### Sync migrations for development server
+
+```bash
+pnpm migrate:dev
+```
+
+**Note:** You should ensure to have the right credentials for the database on `.env` file.
+
+### Create migrations for development server
+
+```bash
+pnpm migrate:dev --name NAME_OF_MIGRATION
+```
+
+**Note:** You should ensure to have the right credentials for the database on `.env` file.
+
+### Sync migrations for production server
+
+In this case, before run this command we should un/comment on the `.env` the right DB provider env
+
+```bash
+pnpm migrate
 ```
 
 ### Run tests
 
 ```bash
-yarn test
+pnpm test
 ```
 
 ### Run unit tests
 
 ```bash
-yarn test:unit
+pnpm test:unit
 ```
 
 ### Run watching tests
 
 ```bash
-yarn test:watch
+pnpm test:watch
 ```
 
 ### Run coverage tests
 
 ```bash
-yarn test:coverage
+pnpm test:coverage
 ```
 
 ### Run cypress
@@ -75,29 +117,29 @@ yarn test:coverage
 - run it on its own window
 
 ```bash
-yarn cypress:watch
+pnpm e2e:watch
 ```
 
 - these end to end tests can also be open on the terminal directly
 
 ```bash
-yarn cypress:run
+pnpm e2e:run
 ```
 
 ### Run linter on js and ts files
 
 ```bash
-yarn lint
+pnpm lint
 ```
 
 ### Run formatter
 
 ```bash
-yarn fmt
+pnpm fmt
 ```
 
 ### Run formatter and linter
 
 ```bash
-yarn pretty
+pnpm pretty
 ```

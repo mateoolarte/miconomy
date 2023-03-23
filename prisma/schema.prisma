@@ -1,0 +1,144 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id Int @default(autoincrement()) @id
+  email String @unique
+  password String
+  currencyCode String @default("COP")
+  entries Entry[]
+  savings Saving[]
+  budgets Budget[]
+  categories Category[]
+}
+
+model Entry {
+  id Int @default(autoincrement()) @id
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  month Month @relation(fields: [monthId], references: [id])
+  monthId Int
+  year Year @relation(fields: [yearId], references: [id])
+  yearId Int
+  incomes Income[]
+  expenses Expense[]
+  categories EntryCategory[]
+  savings EntrySaving[]
+}
+
+model Month {
+  id Int @default(autoincrement()) @id
+  value Int @unique
+  entries Entry[]
+}
+
+model Year {
+  id Int @default(autoincrement()) @id
+  value Int @unique
+  entries Entry[]
+}
+
+model Income {
+  id Int @default(autoincrement()) @id
+  value Int
+  description String
+  entry Entry @relation(fields: [entryId], references: [id])
+  entryId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Saving {
+  id Int @default(autoincrement()) @id
+  name String
+  value Int
+  goal Int
+  type String @default("saving")
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  entries EntrySaving[]
+  budgets SavingBudget[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Budget {
+  id Int @default(autoincrement()) @id
+  name String
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  savings SavingBudget[]
+  categories CategoryBudget[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Category {
+  id Int @default(autoincrement()) @id
+  name String
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  expenses Expense[]
+  entries EntryCategory[]
+  budgets CategoryBudget[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Expense {
+  id Int @default(autoincrement()) @id
+  value Int
+  description String
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  entry Entry @relation(fields: [entryId], references: [id])
+  entryId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model EntryCategory {
+  entry Entry @relation(fields: [entryId], references: [id])
+  entryId Int
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  amount Int @default(0)
+  @@id([entryId, categoryId])
+}
+
+model EntrySaving {
+  entry Entry @relation(fields: [entryId], references: [id])
+  entryId Int
+  saving Saving @relation(fields: [savingId], references: [id])
+  savingId Int
+  fee Int @default(0)
+  sent Boolean @default(false)
+  @@id([entryId, savingId])
+}
+
+model SavingBudget {
+  budget Budget @relation(fields: [budgetId], references: [id])
+  budgetId Int
+  saving Saving @relation(fields: [savingId], references: [id])
+  savingId Int
+  fee Int @default(0)
+  @@id([budgetId, savingId])
+}
+
+model CategoryBudget {
+  budget Budget @relation(fields: [budgetId], references: [id])
+  budgetId Int
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  amount Int @default(0)
+  @@id([categoryId, budgetId])
+}
