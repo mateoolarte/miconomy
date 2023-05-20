@@ -28,7 +28,7 @@
     "node_modules",
     "coverage",
     ".next",
-    "src/cypress",
-    "src/pages/_document.tsx"
+    "cypress",
+    "pages/_document.tsx"
   ]
 }

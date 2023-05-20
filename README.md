@@ -1,6 +1,6 @@
 # Miconomy
 
-Here you can find the web app. Built with NextJS, GraphQL & Prisma ORM
+Personal finance tracker web app. Built with NextJS, GraphQL & Prisma ORM
 
 ## Features
 
@@ -33,10 +33,6 @@ Here you can find the web app. Built with NextJS, GraphQL & Prisma ORM
 - Run on terminal `pnpm install` to install dependencies
 - Create a `.env` file and ask a teammate to share the content
 - Run on terminal `pnpm dev` and start rocking
-
-## Roadmap
-
-- [ ] Review jest config for graphql api suite test cases
 
 ## Available commands
 

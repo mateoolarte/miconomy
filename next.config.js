@@ -28,6 +28,6 @@ module.exports = {
     ];
   },
   typescript: {
-    ignoreBuildErrors: true, // TODO: Remove after I type the whole app
+    ignoreBuildErrors: true, // TODO: Remove after I typed the whole app
   },
 };
