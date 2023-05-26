@@ -1,6 +1,8 @@
-import { useState, ReactElement } from 'react';
+'use client';
+
+import { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 import { validateEmail } from '../../utils/validateEmail';
 import { setCookie } from '../../utils/cookies';
@@ -16,7 +18,7 @@ import { Button } from '../../ui/Button';
 
 import { Heading, Title, Wrapper, AnchorWrapper } from './Login.styles';
 
-export function Login(): ReactElement {
+export function Login() {
   const router = useRouter();
 
   const [email, setEmail] = useState('');
@@ -35,12 +37,7 @@ export function Login(): ReactElement {
       const timeToExpire = 60 * 60 * 24 * 26; // 26 days
 
       setCookie(USER_TOKEN_KEY, token, timeToExpire);
-      router.push({
-        pathname: '/',
-        query: {
-          message: 'Has ingresado correctamente',
-        },
-      });
+      router.push('/');
     },
     onError(error) {
       const { message } = error;

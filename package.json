@@ -77,6 +77,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "lint": "next lint",
     "studio": "prisma studio",
     "migrate:dev": "prisma migrate dev",
     "migrate": "prisma migrate deploy",
@@ -85,14 +86,14 @@
     "test:coverage": "jest --coverage",
     "e2e:watch": "cypress open",
     "e2e:run": "cypress run",
-    "test": "yarn test:unit",
-    "lint": "next lint",
+    "test": "pnpm test:unit",
     "fmt": "prettier --write .",
-    "pretty": "yarn fmt && yarn lint"
+    "pretty": "pnpm fmt && pnpm lint"
   },
   "dependencies": {
     "@ant-design/icons": "^5.1.0",
-    "@apollo/client": "^3.7.14",
+    "@apollo/client": "3.8.0-alpha.15",
+    "@apollo/experimental-nextjs-app-support": "^0.1.0",
     "@prisma/client": "^4.14.1",
     "antd": "^5.5.0",
     "bcrypt": "^5.1.0",
@@ -112,7 +113,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
-    "@types/node": "^20.2.1",
+    "@types/node": "^20.2.3",
     "@types/react": "^18.2.6",
     "babel-jest": "^29.5.0",
     "babel-plugin-styled-components": "^2.1.3",

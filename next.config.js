@@ -30,4 +30,20 @@ module.exports = {
   typescript: {
     ignoreBuildErrors: true, // TODO: Remove after I typed the whole app
   },
+  async redirects() {
+    return [
+      {
+        source: '/login',
+        has: [
+          {
+            type: 'cookie',
+            key: 'userToken',
+            value: undefined,
+          },
+        ],
+        permanent: false,
+        destination: '/',
+      },
+    ];
+  },
 };
