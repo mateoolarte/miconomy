@@ -1,5 +1,5 @@
 import { ReactElement, ReactNode } from 'react';
-import { Button as ButtonAnt } from 'antd';
+import { Button as ButtonUI } from '@chakra-ui/react';
 
 type TypeOptions = 'submit' | 'button';
 
@@ -9,8 +9,9 @@ interface ButtonProps {
   disabled?: boolean;
   onClick?: any;
   fullWidth?: boolean;
-  size?: 'large' | 'middle' | 'small';
-  style?: 'primary' | 'ghost' | 'dashed' | 'link' | 'text' | 'default';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
+  variant?: 'solid' | 'outline' | 'ghost' | 'link';
+  style: 'blue';
   loading?: boolean;
 }
 
@@ -22,19 +23,21 @@ export function Button({
   fullWidth,
   size,
   style,
+  variant,
   loading,
 }: ButtonProps): ReactElement {
   return (
-    <ButtonAnt
-      type={style}
-      htmlType={type}
+    <ButtonUI
+      type={type}
       disabled={disabled}
       onClick={onClick}
-      block={fullWidth}
+      width={fullWidth ? '100%' : 'auto'}
+      variant={variant}
       size={size}
-      loading={loading}
+      isLoading={loading}
+      colorScheme={style}
     >
       {children}
-    </ButtonAnt>
+    </ButtonUI>
   );
 }

@@ -33,7 +33,7 @@ module.exports = {
   async redirects() {
     return [
       {
-        source: '/login',
+        source: '/(login|signup)',
         has: [
           {
             type: 'cookie',
@@ -43,6 +43,17 @@ module.exports = {
         ],
         permanent: false,
         destination: '/',
+      },
+      {
+        source: '/',
+        missing: [
+          {
+            type: 'cookie',
+            key: 'userToken',
+          },
+        ],
+        permanent: false,
+        destination: '/login',
       },
     ];
   },

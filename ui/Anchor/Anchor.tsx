@@ -1,15 +1,16 @@
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
+import { Link as LinkUI } from '@chakra-ui/react';
 import Link from 'next/link';
 
 export interface AnchorProps {
   link: string;
-  text: string;
+  children: ReactNode;
 }
 
-export function Anchor({ link, text }: AnchorProps): ReactElement {
+export function Anchor({ link, children }: AnchorProps): ReactElement {
   return (
-    <Link legacyBehavior href={link}>
-      <a>{text}</a>
-    </Link>
+    <LinkUI as={Link} href={link}>
+      {children}
+    </LinkUI>
   );
 }

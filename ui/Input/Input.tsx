@@ -1,61 +1,72 @@
 import { ReactElement, useState } from 'react';
-import { Input as InputAnt } from 'antd';
+import {
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  Input as InputUI,
+  InputGroup,
+  InputRightElement,
+  IconButton,
+} from '@chakra-ui/react';
 
 import EyeOpen from '../icons/EyeOpen';
 import EyeClose from '../icons/EyeClose';
-
-import { Wrapper, Label, Error, ShowPassword } from './Input.styles';
-
 interface InputProps {
   type: string;
+  name: string;
   label?: string;
   value: string | number;
   onChange: any;
   onBlur?: any;
-  errorMessage?: string;
-  showPlainPassword?: boolean;
+  error?: string;
+  hasInputChange?: boolean;
   required?: boolean;
 }
 
 export function Input({
   type,
+  name,
   label,
   value,
   onChange,
   onBlur,
-  errorMessage,
-  showPlainPassword,
+  error,
+  hasInputChange,
   required,
 }: InputProps): ReactElement {
-  const hasEyeActivated = showPlainPassword && type === 'password';
-  const [isPlainPassword, setIsPlainPassword] = useState(false);
+  const [show, setShow] = useState(false);
+  const toggleInputType = hasInputChange && show ? 'text' : type;
+  const ariaLabelPasswordIcon = `${show ? 'Ocultar' : 'Mostrar'} contraseña`;
+
+  const handleClick = () => setShow(!show);
 
   return (
-    <Wrapper>
-      {label && (
-        <Label htmlFor={label} error={errorMessage}>
-          {label}
-        </Label>
-      )}
-      <InputAnt
-        type={hasEyeActivated && isPlainPassword ? 'text' : type}
-        id={label}
-        value={value}
-        onChange={onChange}
-        onBlur={onBlur}
-        required={required}
-        status={errorMessage ? 'error' : undefined}
-      />
-      {hasEyeActivated && (
-        <ShowPassword
-          type="button"
-          onClick={() => setIsPlainPassword(!isPlainPassword)}
-          aria-label="Mostrar contraseña"
-        >
-          {isPlainPassword ? <EyeOpen /> : <EyeClose />}
-        </ShowPassword>
-      )}
-      {errorMessage && <Error>{errorMessage}</Error>}
-    </Wrapper>
+    <FormControl isInvalid={Boolean(error)}>
+      {label && <FormLabel>{label}</FormLabel>}
+
+      <InputGroup>
+        <InputUI
+          type={toggleInputType}
+          name={name}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          required={required}
+        />
+
+        {hasInputChange && (
+          <InputRightElement>
+            <IconButton
+              onClick={handleClick}
+              icon={show ? <EyeOpen /> : <EyeClose />}
+              aria-label={ariaLabelPasswordIcon}
+              p="3"
+            />
+          </InputRightElement>
+        )}
+      </InputGroup>
+
+      {error && <FormErrorMessage>{error}</FormErrorMessage>}
+    </FormControl>
   );
 }

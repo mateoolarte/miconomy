@@ -1,46 +1,43 @@
-import { useState, ReactElement } from 'react';
+'use client';
+
+import { useState, FormEvent, ChangeEvent, FocusEvent } from 'react';
 import { useMutation } from '@apollo/client';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
+import { Box, Heading, VStack } from '@chakra-ui/react';
 
-import { validateEmail } from '../../utils/validateEmail';
-import { setCookie } from '../../utils/cookies';
+import { validateEmail } from '@/utils/validateEmail';
+import { setCookie } from '@/utils/cookies';
 
-import { USER_TOKEN_KEY } from '../../utils/constants';
+import { USER_TOKEN_KEY } from '@/constants';
 
 import { SIGNUP } from './graphql/signup';
 
-import { Input } from '../../ui/Input';
-import { Anchor } from '../../ui/Anchor';
-import { Alert } from '../../ui/Alert';
-import { Button } from '../../ui/Button';
+import { Input } from '@/ui/Input';
+import { Anchor } from '@/ui/Anchor';
+import { Toast } from '@/ui/Toast';
+import { Button } from '@/ui/Button';
 
-import { Heading, Title, Wrapper, AnchorWrapper } from './Signup.styles';
+const initialErrorsState = {
+  email: '',
+  password: '',
+  message: '',
+};
 
-export function Signup(): ReactElement {
+export function Signup() {
   const router = useRouter();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState({
-    email: '',
-    password: '',
-    message: '',
-  });
+  const [errors, setErrors] = useState(initialErrorsState);
 
   const [signupAction, { loading }] = useMutation(SIGNUP, {
     onCompleted(data) {
       const response = data?.signup;
       const { token } = response;
-
       const timeToExpire = 60 * 60 * 24 * 26; // 26 days
 
       setCookie(USER_TOKEN_KEY, token, timeToExpire);
-      router.push({
-        pathname: '/',
-        query: {
-          message: 'Te registraste correctamente',
-        },
-      });
+      router.push('/');
     },
     onError(error) {
       const { message } = error;
@@ -49,16 +46,16 @@ export function Signup(): ReactElement {
         ...errors,
         message,
       });
-      setEmail('');
-      setPassword('');
     },
   });
 
-  const hasErrors = errors.email !== '' || errors.password !== '';
-  const isFormValid =
-    hasErrors || !validateEmail(email) || password.length <= 7 || loading;
+  function validateForm() {
+    const hasErrors = errors.email !== '' || errors.password !== '';
 
-  function handleEmailValidation(value) {
+    return hasErrors || !validateEmail(email) || password.length <= 7;
+  }
+
+  function handleEmailValidation(value: string) {
     if (!validateEmail(value)) {
       setErrors({
         ...errors,
@@ -72,7 +69,7 @@ export function Signup(): ReactElement {
     }
   }
 
-  function handlePasswordValidation(value) {
+  function handlePasswordValidation(value: string) {
     if (value.length <= 7) {
       setErrors({
         ...errors,
@@ -86,15 +83,28 @@ export function Signup(): ReactElement {
     }
   }
 
-  function handleCloseAlert() {
-    setErrors({
-      ...errors,
-      message: '',
-    });
+  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
+    setErrors(initialErrorsState);
+
+    const name = e.target.name;
+    const value = e.target.value;
+
+    if (name == 'email') setEmail(value);
+    if (name == 'password') setPassword(value);
   }
 
-  function handleForm(e) {
+  function handleInputFocus(e: FocusEvent<HTMLInputElement>) {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    if (name == 'email') handleEmailValidation(value);
+    if (name == 'password') handlePasswordValidation(value);
+  }
+
+  function handleForm(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    setErrors(initialErrorsState);
 
     signupAction({
       variables: {
@@ -104,51 +114,60 @@ export function Signup(): ReactElement {
     });
   }
 
+  const isFormValid = validateForm();
+
   return (
-    <Wrapper onSubmit={handleForm}>
-      {errors.message && (
-        <Alert
-          message={errors.message}
-          handleClose={handleCloseAlert}
-          type="error"
+    <Box as="form" mx="auto" w="95%" onSubmit={handleForm}>
+      {errors.message && <Toast title={errors.message} status="error" />}
+
+      <Heading size="2xl" my="12" fontWeight="800" textAlign="center">
+        Miconomy
+      </Heading>
+
+      <Heading size="lg" mb="6" textAlign="center">
+        Registro
+      </Heading>
+
+      <VStack spacing="5">
+        <Input
+          type="email"
+          name="email"
+          label="Correo electrónico"
+          value={email}
+          onChange={handleInputChange}
+          onBlur={handleInputFocus}
+          error={errors.email}
+          required
         />
-      )}
 
-      <Title>Miconomy</Title>
+        <Input
+          type="password"
+          name="password"
+          label="Contraseña"
+          value={password}
+          onChange={handleInputChange}
+          onBlur={handleInputFocus}
+          error={errors.password}
+          hasInputChange
+          required
+        />
 
-      <Heading>Registro</Heading>
-      <Input
-        type="email"
-        label="Correo electrónico"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        onBlur={(e) => handleEmailValidation(e.target.value)}
-        errorMessage={errors.email}
-        required
-      />
-      <Input
-        type="password"
-        label="Contraseña"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        onBlur={(e) => handlePasswordValidation(e.target.value)}
-        errorMessage={errors.password}
-        showPlainPassword
-        required
-      />
-      <Button
-        type="submit"
-        disabled={isFormValid}
-        fullWidth
-        size="large"
-        style="primary"
-        loading={loading}
-      >
-        Registrarme
-      </Button>
-      <AnchorWrapper>
-        <Anchor link="/login" text="¿Ya tienes cuenta?" />
-      </AnchorWrapper>
-    </Wrapper>
+        <Button
+          type="submit"
+          disabled={isFormValid}
+          fullWidth
+          size="lg"
+          variant="solid"
+          style="blue"
+          loading={loading}
+        >
+          Registrarme
+        </Button>
+      </VStack>
+
+      <Box mt="8" textAlign="center">
+        <Anchor link="/login">¿Ya tienes cuenta?</Anchor>
+      </Box>
+    </Box>
   );
 }

@@ -140,23 +140,25 @@ export function Home(): ReactElement {
 
       {entryId && (
         <>
-          {balanceData?.balance && totalExpenses !== 0 && totalIncomes !== 0 && (
-            <>
-              <Title>Resumen del mes</Title>
-              <BalanceContainer>
-                <BalanceItem>
-                  <p>Gastos totales</p> <strong>{totalExpenses}</strong>
-                </BalanceItem>
-                <BalanceItem>
-                  <p>Ingresos totales</p> <strong>{totalIncomes}</strong>
-                </BalanceItem>
-                <BalanceItem fullWidth>
-                  <p>Disponible</p>
-                  <strong>{available}</strong>
-                </BalanceItem>
-              </BalanceContainer>
-            </>
-          )}
+          {balanceData?.balance &&
+            totalExpenses !== 0 &&
+            totalIncomes !== 0 && (
+              <>
+                <Title>Resumen del mes</Title>
+                <BalanceContainer>
+                  <BalanceItem>
+                    <p>Gastos totales</p> <strong>{totalExpenses}</strong>
+                  </BalanceItem>
+                  <BalanceItem>
+                    <p>Ingresos totales</p> <strong>{totalIncomes}</strong>
+                  </BalanceItem>
+                  <BalanceItem fullWidth>
+                    <p>Disponible</p>
+                    <strong>{available}</strong>
+                  </BalanceItem>
+                </BalanceContainer>
+              </>
+            )}
 
           <Title>¿Que quieres hacer hoy?</Title>
           <Actions>
