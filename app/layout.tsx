@@ -1,14 +1,14 @@
 import { ReactNode } from 'react';
-import { ApolloWrapper } from '@/libs/apollo/ApolloWrapper';
-import { UIProvider } from '@/libs/chakra-ui/providers';
+import { ApolloProvider } from '@/libs/apollo/ApolloProvider';
+import { UIProvider } from '@/libs/chakra-ui/UIProvider';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="es">
       <body>
-        <ApolloWrapper>
+        <ApolloProvider>
           <UIProvider>{children}</UIProvider>
-        </ApolloWrapper>
+        </ApolloProvider>
       </body>
     </html>
   );

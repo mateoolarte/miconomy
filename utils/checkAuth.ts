@@ -1,34 +1,15 @@
-import Cookies from 'universal-cookie';
 import { USER_TOKEN_KEY } from '@/constants';
 import { getCookie } from './cookies';
 
-interface AuthRes {
+interface CheckAuthRes {
   isAuth: boolean;
-  token: string;
+  token: string | undefined;
 }
 
-export function checkAuth(context?: any, redirectTo?: string): AuthRes {
-  let isAuth: boolean;
-  let token: string;
-  const cookies = context?.req?.headers?.cookie;
-
-  if (cookies) {
-    // server side
-    const cookie = new Cookies(cookies);
-    isAuth = cookie.get(USER_TOKEN_KEY) !== undefined;
-    token = cookie.get(USER_TOKEN_KEY);
-  } else {
-    // client side
-    isAuth = getCookie(USER_TOKEN_KEY) !== undefined;
-    token = getCookie(USER_TOKEN_KEY);
-  }
-
-  if (context && !isAuth) {
-    context.res.writeHead(302, {
-      Location: redirectTo || '/login',
-    });
-    context.res.end();
-  }
+// Only works in the client side
+export function checkAuth(): CheckAuthRes {
+  const isAuth: boolean = getCookie(USER_TOKEN_KEY) !== undefined;
+  let token: string | undefined = getCookie(USER_TOKEN_KEY);
 
   return { isAuth, token };
 }

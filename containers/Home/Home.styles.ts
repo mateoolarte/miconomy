@@ -40,7 +40,7 @@ export const ExploreLink = styled.a`
   color: #000;
   box-shadow: 0px 2px 5px #cbd5e1;
 
-  span {
+  svg {
     margin-bottom: 0.5rem;
     font-size: 2.2rem;
   }
@@ -76,7 +76,7 @@ export const BalanceItem = styled.div`
   }
 `;
 
-export const Actions = styled.div`
+export const ActionsS = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 0.5rem;

@@ -55,6 +55,28 @@ module.exports = {
         permanent: false,
         destination: '/login',
       },
+      {
+        source: '/(categories|savings|entry|budgets)',
+        missing: [
+          {
+            type: 'cookie',
+            key: 'userToken',
+          },
+        ],
+        permanent: false,
+        destination: '/login',
+      },
+      {
+        source: '/(budgets|entry/categories)/:id',
+        missing: [
+          {
+            type: 'cookie',
+            key: 'userToken',
+          },
+        ],
+        permanent: false,
+        destination: '/login',
+      },
     ];
   },
 };

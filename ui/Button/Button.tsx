@@ -11,7 +11,7 @@ interface ButtonProps {
   fullWidth?: boolean;
   size?: 'xs' | 'sm' | 'md' | 'lg';
   variant?: 'solid' | 'outline' | 'ghost' | 'link';
-  style: 'blue';
+  style?: 'blue';
   loading?: boolean;
 }
 
@@ -41,3 +41,9 @@ export function Button({
     </ButtonUI>
   );
 }
+
+Button.defaultProps = {
+  variant: 'solid',
+  size: 'md',
+  style: 'blue',
+};
