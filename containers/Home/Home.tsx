@@ -1,7 +1,4 @@
-'use client';
-
-import { Suspense } from 'react';
-import { useSuspenseQuery } from '@apollo/experimental-nextjs-app-support/ssr';
+import { useQuery } from '@apollo/client';
 
 import { ENTRY } from '@/graphql/web/queries/entry';
 
@@ -16,22 +13,19 @@ export function Home() {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1;
 
-  const { error, data } = useSuspenseQuery(ENTRY, {
+  const { error, data, loading } = useQuery(ENTRY, {
     variables: { month, year },
   });
   if (error) return <h2>Error! {error.message}</h2>;
-
-  const { id, categories } = data?.entry;
+  if (loading) return <h2>Loading...</h2>;
 
   return (
-    <Suspense fallback={<h2>Loading...</h2>}>
-      <Layout hideNav>
-        <EmptyState entryId={id} />
+    <Layout hideNav>
+      <EmptyState entryId={data?.id} />
 
-        <Content entryId={id} categories={categories} />
+      <Content entryId={data?.id} categories={data?.categories} />
 
-        <Explore />
-      </Layout>
-    </Suspense>
+      <Explore />
+    </Layout>
   );
 }

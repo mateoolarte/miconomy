@@ -1,9 +1,10 @@
+'use client';
+
 import { ReactNode } from 'react';
+import { Box } from '@chakra-ui/react';
 
 import { Header } from '../Header';
 import { Nav } from '../Nav';
-
-import { Container } from './Layout.styles';
 
 interface LayoutProps {
   children: ReactNode;
@@ -14,7 +15,11 @@ export function Layout({ children, hideNav }: LayoutProps) {
   return (
     <>
       <Header />
-      <Container>{children}</Container>
+      {children && (
+        <Box as="main" px="2" pb="24">
+          {children}
+        </Box>
+      )}
       {!hideNav && <Nav />}
     </>
   );

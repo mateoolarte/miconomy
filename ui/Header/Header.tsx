@@ -1,15 +1,12 @@
 import Link from 'next/link';
-
-import { Title, Wrapper } from './Header.styles';
+import { Box, Heading } from '@chakra-ui/react';
 
 export function Header() {
   return (
-    <Wrapper>
-      <Title>
-        <Link legacyBehavior href="/">
-          <a>Miconomy</a>
-        </Link>
-      </Title>
-    </Wrapper>
+    <Box mb="8">
+      <Heading size="xl" fontWeight="800" textAlign="center">
+        <Link href="/">Miconomy</Link>
+      </Heading>
+    </Box>
   );
 }

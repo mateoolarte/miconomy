@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, FormEvent, ChangeEvent, FocusEvent } from 'react';
 import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/navigation';

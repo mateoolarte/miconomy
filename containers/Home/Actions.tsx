@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, MouseEvent } from 'react';
 
 import { useMutation } from '@apollo/client';
