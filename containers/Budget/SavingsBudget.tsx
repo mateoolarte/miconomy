@@ -1,6 +1,7 @@
 import { ReactElement, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { PlusOutlined } from '@ant-design/icons';
+import { Icon } from '@chakra-ui/react';
+import { BsPlusCircle } from 'react-icons/bs';
 
 import { BUDGET } from './graphql/budget';
 import { SAVINGS } from '../../graphql/web/queries/savings';
@@ -67,7 +68,7 @@ export function SavingsBudget({ budgetSavings, budget }: Props): ReactElement {
         })}
       </List>
       <AddSaving type="button" onClick={() => setActiveForm(!activeForm)}>
-        <PlusOutlined />
+        <Icon as={BsPlusCircle} mr={2} fontSize="lg" />
         Agregar ahorro
       </AddSaving>
 

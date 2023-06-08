@@ -1,7 +1,8 @@
 import { ReactElement, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useQuery, useMutation } from '@apollo/client';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { Icon } from '@chakra-ui/react';
+import { BiEditAlt, BiTrashAlt } from 'react-icons/bi';
 
 import { ENTRY_CATEGORY } from './graphql/entryCategory';
 import { UPDATE_CATEGORY_ENTRY } from './graphql/updateCategoryEntry';
@@ -107,7 +108,7 @@ export function EntryCategory(): ReactElement {
       <Title>
         {data?.entryCategory?.name}{' '}
         <DeleteCategory type="button">
-          <DeleteOutlined />
+          <Icon as={BiTrashAlt} fontSize="md" />
           Eliminar
         </DeleteCategory>
       </Title>
@@ -123,7 +124,7 @@ export function EntryCategory(): ReactElement {
                 setAmount(data?.entryCategory?.amount);
               }}
             >
-              <EditOutlined />
+              <Icon as={BiEditAlt} fontSize="xl" />
             </ActionsBtn>
           </ActionsValue>
 

@@ -1,12 +1,11 @@
-import { Suspense } from 'react';
-import { useSuspenseQuery } from '@apollo/experimental-nextjs-app-support/ssr';
+import { useQuery } from '@apollo/client';
 
 import { BALANCE } from './graphql/balance';
 
 import { Title, BalanceContainer, BalanceItem } from './Home.styles';
 
 export function Balance({ entryId }: { entryId: any }) {
-  const { error, data } = useSuspenseQuery(BALANCE, {
+  const { error, data, loading } = useQuery(BALANCE, {
     variables: { entryId },
   });
 
@@ -26,6 +25,9 @@ export function Balance({ entryId }: { entryId: any }) {
   if (totalExpenses == 0 && totalIncomes == 0) return null;
 
   const available = totalIncomes - totalExpenses;
+
+  if (error) return <h2>Error! {error.message}</h2>;
+  if (loading) return <h2>Loading...</h2>;
 
   return (
     <>

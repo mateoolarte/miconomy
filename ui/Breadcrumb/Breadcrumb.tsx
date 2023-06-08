@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { Icon } from '@chakra-ui/react';
+import { AiOutlineArrowLeft } from 'react-icons/ai';
 
 import { Wrapper, Item, PathLink, Path } from './Breadcrumb.styles';
 
@@ -20,7 +20,7 @@ export function Breadcrumb({ options }: BreadcrumbProps) {
       {options.map((option, index) => {
         return (
           <Item key={option.label}>
-            {index === 0 && <ArrowLeftOutlined />}
+            {index === 0 && <Icon as={AiOutlineArrowLeft} fontSize="lg" />}
             {option.path && (
               <>
                 <Link legacyBehavior href={option.path} passHref>

@@ -1,6 +1,7 @@
 import { ReactElement, useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Icon } from '@chakra-ui/react';
+import { BiEditAlt, BiTrashAlt } from 'react-icons/bi';
 
 import { BUDGET } from './graphql/budget';
 
@@ -64,7 +65,7 @@ export function CategoryBudget({ category, budget }: Props): ReactElement {
           type="button"
           onClick={() => handleDeleteCategory(budget.id, category.id)}
         >
-          <DeleteOutlined />
+          <Icon as={BiTrashAlt} fontSize="xl" />
         </BtnIcon>
         <BtnIcon
           type="button"
@@ -73,7 +74,7 @@ export function CategoryBudget({ category, budget }: Props): ReactElement {
             setValue(category.amount);
           }}
         >
-          <EditOutlined />
+          <Icon as={BiEditAlt} fontSize="xl" />
         </BtnIcon>
       </Actions>
 

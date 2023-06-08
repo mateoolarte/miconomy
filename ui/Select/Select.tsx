@@ -1,20 +1,15 @@
-import { Select as SelectAnt } from 'antd';
+import { Select as SelectChakra } from '@chakra-ui/react';
 
-const { Option } = SelectAnt;
-
-import { Wrapper } from './Select.styles';
-
-type SelectOption = {
+interface SelectOption {
   value: string | number;
   label: string;
-};
+}
 
 interface SelectProps {
-  options: Array<SelectOption>;
+  options: SelectOption[];
   value: string | number;
   onChange: any;
   emptyOptionText: string;
-  emptyOptionValue: string | number;
   defaultValue?: string | number;
 }
 
@@ -23,21 +18,23 @@ export function Select({
   value,
   onChange,
   emptyOptionText,
-  emptyOptionValue,
   defaultValue,
 }: SelectProps) {
   return (
-    <Wrapper>
-      <SelectAnt value={value} defaultValue={defaultValue} onChange={onChange}>
-        <Option value={emptyOptionValue}>{emptyOptionText}</Option>
-        {options.map((option) => {
-          return (
-            <Option value={option.value} key={option.value}>
-              {option.label}
-            </Option>
-          );
-        })}
-      </SelectAnt>
-    </Wrapper>
+    <SelectChakra
+      value={value}
+      defaultValue={defaultValue}
+      onChange={onChange}
+      mb={4}
+      placeholder={emptyOptionText}
+    >
+      {options.map((option) => {
+        return (
+          <option value={option.value} key={option.value}>
+            {option.label}
+          </option>
+        );
+      })}
+    </SelectChakra>
   );
 }

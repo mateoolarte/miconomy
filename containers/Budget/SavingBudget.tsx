@@ -1,6 +1,7 @@
 import { ReactElement, useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Icon } from '@chakra-ui/react';
+import { BiEditAlt, BiTrashAlt } from 'react-icons/bi';
 
 import { BUDGET } from './graphql/budget';
 
@@ -64,7 +65,7 @@ export function SavingBudget({ saving, budget }: Props): ReactElement {
           type="button"
           onClick={() => handleDeleteSaving(budget.id, saving.id)}
         >
-          <DeleteOutlined />
+          <Icon as={BiTrashAlt} fontSize="xl" />
         </BtnIcon>
         <BtnIcon
           type="button"
@@ -73,7 +74,7 @@ export function SavingBudget({ saving, budget }: Props): ReactElement {
             setValue(saving.fee);
           }}
         >
-          <EditOutlined />
+          <Icon as={BiEditAlt} fontSize="xl" />
         </BtnIcon>
       </Actions>
 

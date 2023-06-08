@@ -1,6 +1,7 @@
 import { ReactElement, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { PlusOutlined } from '@ant-design/icons';
+import { Icon } from '@chakra-ui/react';
+import { BsPlusCircle } from 'react-icons/bs';
 
 import { BUDGET } from './graphql/budget';
 import { CATEGORIES } from '../../graphql/web/queries/categories';
@@ -78,7 +79,7 @@ export function CategoriesBudget({
         })}
       </List>
       <AddCategory type="button" onClick={() => setActiveForm(!activeForm)}>
-        <PlusOutlined />
+        <Icon as={BsPlusCircle} mr={2} fontSize="lg" />
         Agregar categoría
       </AddCategory>
 

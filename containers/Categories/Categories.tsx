@@ -1,6 +1,8 @@
 import { ReactElement, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { Icon } from '@chakra-ui/react';
+import { BsPlusCircle } from 'react-icons/bs';
+import { BiEditAlt } from 'react-icons/bi';
 
 import { CATEGORIES } from '../../graphql/web/queries/categories';
 import { CREATE_CATEGORY } from './graphql/createCategory';
@@ -79,7 +81,7 @@ export function Categories(): ReactElement {
                   handleActiveForm('edit');
                 }}
               >
-                <EditOutlined />
+                <Icon as={BiEditAlt} fontSize="xl" />
               </BtnIcon>
             </Box>
           );
@@ -93,7 +95,7 @@ export function Categories(): ReactElement {
           handleActiveForm('new');
         }}
       >
-        <PlusOutlined />
+        <Icon as={BsPlusCircle} mr={2} fontSize="lg" />
         Agregar categoría
       </AddCategory>
 

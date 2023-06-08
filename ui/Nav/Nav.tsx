@@ -3,15 +3,22 @@ import { useQuery, useMutation } from '@apollo/client';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
-  HomeOutlined,
-  CalendarOutlined,
-  DollarOutlined,
-  PlusOutlined,
-  MoreOutlined,
-  FileTextOutlined,
-  CreditCardOutlined,
-} from '@ant-design/icons';
-import { Popover } from 'antd';
+  Icon,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverBody,
+  PopoverArrow,
+} from '@chakra-ui/react';
+import {
+  BiHomeAlt,
+  BiCalendar,
+  BiDollarCircle,
+  BiDotsVerticalRounded,
+  BiFile,
+  BiCreditCard,
+  BiPlus,
+} from 'react-icons/bi';
 
 import { ENTRY } from '../../graphql/web/queries/entry';
 import { CREATE_EXPENSE } from '../../graphql/web/mutations/createExpense';
@@ -101,105 +108,6 @@ export function Nav() {
     resetState();
   }
 
-  function renderPrimaryActions() {
-    return (
-      <PrimaryActionsList>
-        <PrimaryActionsItem>
-          <PrimaryActionsBtn type="button" onClick={handleToggleExpense}>
-            <FileTextOutlined />
-            <PrimaryActionsText>Gasto</PrimaryActionsText>
-          </PrimaryActionsBtn>
-          <Modal
-            visible={expenseForm}
-            title="Agregar gasto"
-            submitText="Agregar"
-            cancelText="Cancelar"
-            handleSubmit={handleExpense}
-            handleCancel={() => setExpenseForm(!expenseForm)}
-          >
-            <Select
-              options={data?.entry?.categories.map((item) => ({
-                value: item.id,
-                label: item.name,
-              }))}
-              emptyOptionText="Selecciona una categoría"
-              emptyOptionValue={0}
-              value={categoryId}
-              defaultValue={0}
-              onChange={(value) => setCategoryId(Number(value))}
-            />
-            <Input
-              type="text"
-              label="Descripción"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            />
-            <Input
-              type="number"
-              label="Valor"
-              value={value}
-              onChange={(e) => setValue(Number(e.target.value))}
-              required
-            />
-          </Modal>
-        </PrimaryActionsItem>
-        <PrimaryActionsItem>
-          <PrimaryActionsBtn type="button" onClick={handleToggleIncome}>
-            <CreditCardOutlined />
-            <PrimaryActionsText>Ingreso</PrimaryActionsText>
-          </PrimaryActionsBtn>
-          <Modal
-            visible={incomeForm}
-            title="Agregar ingreso"
-            submitText="Agregar"
-            cancelText="Cancelar"
-            handleSubmit={handleIncome}
-            handleCancel={() => setIncomeForm(!incomeForm)}
-          >
-            <Input
-              type="text"
-              label="Descripción"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            />
-            <Input
-              type="number"
-              label="Valor"
-              value={value}
-              onChange={(e) => setValue(Number(e.target.value))}
-              required
-            />
-          </Modal>
-        </PrimaryActionsItem>
-      </PrimaryActionsList>
-    );
-  }
-
-  function renderSecondaryActions(currentUrl: string) {
-    return (
-      <PrimaryActionsList>
-        <PrimaryActionsItem>
-          <Link legacyBehavior href="/categories" passHref>
-            <SecondaryActionsLink isActive={currentUrl === '/categories'}>
-              <FileTextOutlined />
-              <PrimaryActionsText>Categorías</PrimaryActionsText>
-            </SecondaryActionsLink>
-          </Link>
-        </PrimaryActionsItem>
-        <PrimaryActionsItem>
-          <Link legacyBehavior href="/budgets" passHref>
-            <SecondaryActionsLink isActive={currentUrl === '/budgets'}>
-              <CreditCardOutlined />
-              <PrimaryActionsText>Presupuestos</PrimaryActionsText>
-            </SecondaryActionsLink>
-          </Link>
-        </PrimaryActionsItem>
-      </PrimaryActionsList>
-    );
-  }
-
   if (loading) return <h2>Loading...</h2>;
   if (error) return <h2>Error! {error.message}</h2>;
 
@@ -209,7 +117,7 @@ export function Nav() {
         <Item isActive={currentUrl === '/'}>
           <Link legacyBehavior href="/">
             <a>
-              <HomeOutlined />
+              <Icon as={BiHomeAlt} fontSize="lg" />
               <LinkText>Inicio</LinkText>
             </a>
           </Link>
@@ -217,47 +125,148 @@ export function Nav() {
         <Item isActive={currentUrl === '/entry'}>
           <Link legacyBehavior href="/entry">
             <a>
-              <CalendarOutlined />
+              <Icon as={BiCalendar} fontSize="lg" />
               <LinkText>Mes actual</LinkText>
             </a>
           </Link>
         </Item>
         <ItemPrimary>
-          <Popover
-            content={renderPrimaryActions()}
-            trigger="click"
-            visible={primaryAction}
-            onVisibleChange={() => setPrimaryAction(!primaryAction)}
-            overlayClassName="popover-primary"
-          >
-            <ItemPrimaryBtn type="button" isClosed={primaryAction}>
-              <PlusOutlined rotate={primaryAction ? 45 : 0} />
-              <LinkTextPrimary isClosed={primaryAction}>
-                {primaryAction ? 'Cerrar' : 'Agregar'}
-              </LinkTextPrimary>
-            </ItemPrimaryBtn>
+          <Popover>
+            <PopoverTrigger>
+              <ItemPrimaryBtn type="button" isClosed={primaryAction}>
+                <Icon as={BiPlus} rotate={primaryAction ? 45 : 0} />
+                <LinkTextPrimary isClosed={primaryAction}>
+                  {primaryAction ? 'Cerrar' : 'Agregar'}
+                </LinkTextPrimary>
+              </ItemPrimaryBtn>
+            </PopoverTrigger>
+            <PopoverContent>
+              <PopoverArrow />
+              <PopoverBody>
+                <PrimaryActionsList>
+                  <PrimaryActionsItem>
+                    <PrimaryActionsBtn
+                      type="button"
+                      onClick={handleToggleExpense}
+                    >
+                      <Icon as={BiFile} fontSize="lg" />
+                      <PrimaryActionsText>Gasto</PrimaryActionsText>
+                    </PrimaryActionsBtn>
+                    <Modal
+                      visible={expenseForm}
+                      title="Agregar gasto"
+                      submitText="Agregar"
+                      cancelText="Cancelar"
+                      handleSubmit={handleExpense}
+                      handleCancel={() => setExpenseForm(!expenseForm)}
+                    >
+                      <Select
+                        options={data?.entry?.categories.map((item) => ({
+                          value: item.id,
+                          label: item.name,
+                        }))}
+                        emptyOptionText="Selecciona una categoría"
+                        emptyOptionValue={0}
+                        value={categoryId}
+                        defaultValue={0}
+                        onChange={(value) => setCategoryId(Number(value))}
+                      />
+                      <Input
+                        type="text"
+                        label="Descripción"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        required
+                      />
+                      <Input
+                        type="number"
+                        label="Valor"
+                        value={value}
+                        onChange={(e) => setValue(Number(e.target.value))}
+                        required
+                      />
+                    </Modal>
+                  </PrimaryActionsItem>
+                  <PrimaryActionsItem>
+                    <PrimaryActionsBtn
+                      type="button"
+                      onClick={handleToggleIncome}
+                    >
+                      <Icon as={BiCreditCard} fontSize="lg" />
+                      <PrimaryActionsText>Ingreso</PrimaryActionsText>
+                    </PrimaryActionsBtn>
+                    <Modal
+                      visible={incomeForm}
+                      title="Agregar ingreso"
+                      submitText="Agregar"
+                      cancelText="Cancelar"
+                      handleSubmit={handleIncome}
+                      handleCancel={() => setIncomeForm(!incomeForm)}
+                    >
+                      <Input
+                        type="text"
+                        label="Descripción"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        required
+                      />
+                      <Input
+                        type="number"
+                        label="Valor"
+                        value={value}
+                        onChange={(e) => setValue(Number(e.target.value))}
+                        required
+                      />
+                    </Modal>
+                  </PrimaryActionsItem>
+                </PrimaryActionsList>
+              </PopoverBody>
+            </PopoverContent>
           </Popover>
         </ItemPrimary>
         <Item isActive={currentUrl === '/savings'}>
           <Link legacyBehavior href="/savings">
             <a>
-              <DollarOutlined />
+              <Icon as={BiDollarCircle} fontSize="lg" />
               <LinkText>Ahorros</LinkText>
             </a>
           </Link>
         </Item>
         <ItemSecondary>
-          <Popover
-            content={renderSecondaryActions(currentUrl)}
-            trigger="click"
-            visible={secondaryAction}
-            onVisibleChange={() => setSecondaryAction(!secondaryAction)}
-            overlayClassName="popover-primary"
-          >
-            <ItemSecondaryBtn type="button">
-              <MoreOutlined />
-              <LinkText>Más</LinkText>
-            </ItemSecondaryBtn>
+          <Popover>
+            <PopoverTrigger>
+              <ItemSecondaryBtn type="button">
+                <Icon as={BiDotsVerticalRounded} fontSize="lg" />
+                <LinkText>Más</LinkText>
+              </ItemSecondaryBtn>
+            </PopoverTrigger>
+            <PopoverContent>
+              <PopoverArrow />
+              <PopoverBody>
+                <PrimaryActionsList>
+                  <PrimaryActionsItem>
+                    <Link legacyBehavior href="/categories" passHref>
+                      <SecondaryActionsLink
+                        isActive={currentUrl === '/categories'}
+                      >
+                        <Icon as={BiFile} fontSize="lg" />
+                        <PrimaryActionsText>Categorías</PrimaryActionsText>
+                      </SecondaryActionsLink>
+                    </Link>
+                  </PrimaryActionsItem>
+                  <PrimaryActionsItem>
+                    <Link legacyBehavior href="/budgets" passHref>
+                      <SecondaryActionsLink
+                        isActive={currentUrl === '/budgets'}
+                      >
+                        <Icon as={BiCreditCard} fontSize="lg" />
+                        <PrimaryActionsText>Presupuestos</PrimaryActionsText>
+                      </SecondaryActionsLink>
+                    </Link>
+                  </PrimaryActionsItem>
+                </PrimaryActionsList>
+              </PopoverBody>
+            </PopoverContent>
           </Popover>
         </ItemSecondary>
       </List>

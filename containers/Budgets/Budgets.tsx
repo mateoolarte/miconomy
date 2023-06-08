@@ -1,7 +1,8 @@
 import { ReactElement, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import Link from 'next/link';
-import { PlusOutlined, ArrowRightOutlined } from '@ant-design/icons';
+import { Icon } from '@chakra-ui/react';
+import { BsPlusCircle, BsArrowRightCircle } from 'react-icons/bs';
 
 import { BUDGETS } from '../../graphql/web/queries/budgets';
 import { CREATE_BUDGET } from './graphql/createBudget';
@@ -49,9 +50,14 @@ export function Budgets(): ReactElement {
       <BudgetsContainer>
         {data?.budgets.map((budget) => {
           return (
-            <Link legacyBehavior href={`/budgets/${budget.id}`} passHref key={budget.id}>
+            <Link
+              legacyBehavior
+              href={`/budgets/${budget.id}`}
+              passHref
+              key={budget.id}
+            >
               <BudgetCard>
-                {budget.name} <ArrowRightOutlined />
+                {budget.name} <Icon as={BsArrowRightCircle} fontSize="xl" />
               </BudgetCard>
             </Link>
           );
@@ -59,7 +65,7 @@ export function Budgets(): ReactElement {
       </BudgetsContainer>
 
       <AddBudget type="button" onClick={handleToggleForm}>
-        <PlusOutlined />
+        <Icon as={BsPlusCircle} mr={2} fontSize="lg" />
         Agregar presupuesto
       </AddBudget>
 

@@ -43,6 +43,7 @@ export function Button({
 }
 
 Button.defaultProps = {
+  type: 'button',
   variant: 'solid',
   size: 'md',
   style: 'blue',

@@ -1,6 +1,8 @@
 import { ReactElement, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { Icon } from '@chakra-ui/react';
+import { BiEditAlt, BiTrashAlt } from 'react-icons/bi';
+import { BsPlusCircle } from 'react-icons/bs';
 
 import { ENTRY } from '../../graphql/web/queries/entry';
 import { SAVINGS } from '../../graphql/web/queries/savings';
@@ -173,7 +175,7 @@ export function Savings(): ReactElement {
                       handleActiveForm('edit');
                     }}
                   >
-                    <EditOutlined />
+                    <Icon as={BiEditAlt} fontSize="xl" />
                   </BtnIcon>
                   <BtnIcon
                     type="button"
@@ -183,7 +185,7 @@ export function Savings(): ReactElement {
                       handleActiveForm('delete');
                     }}
                   >
-                    <DeleteOutlined />
+                    <Icon as={BiTrashAlt} fontSize="xl" />
                   </BtnIcon>
                 </PrimaryActions>
               </Title>
@@ -232,7 +234,7 @@ export function Savings(): ReactElement {
       </Container>
 
       <AddSaving type="button" onClick={() => handleActiveForm('new')}>
-        <PlusOutlined />
+        <Icon as={BsPlusCircle} mr={2} fontSize="lg" />
         Agregar ahorro
       </AddSaving>
 
