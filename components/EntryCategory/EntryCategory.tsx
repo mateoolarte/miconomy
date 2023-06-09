@@ -179,7 +179,7 @@ export function EntryCategory(): ReactElement {
                         setToggleEditExpense(!toggleEditExpense);
                       }}
                     >
-                      <EditOutlined />
+                      <BiEditAlt />
                     </ItemBtn>
                     <ItemBtn
                       type="button"
@@ -189,7 +189,7 @@ export function EntryCategory(): ReactElement {
                         setToggleDeleteExpense(!toggleDeleteExpense);
                       }}
                     >
-                      <DeleteOutlined />
+                      <BiTrashAlt />
                     </ItemBtn>
                   </ItemActions>
                 </Item>
