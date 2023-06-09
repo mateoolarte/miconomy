@@ -10,7 +10,7 @@ type ApolloType = ApolloClient<NormalizedCacheObject> | undefined;
 
 let apolloClient: ApolloType = undefined;
 
-export function initializeApollo(initialState: any): ApolloType {
+export function initializeApollo(initialState?: any): ApolloType {
   const client = apolloClient ?? createApolloClient();
 
   // If your page has Next.js data fetching methods that use Apollo Client,

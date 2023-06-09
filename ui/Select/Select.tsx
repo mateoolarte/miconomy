@@ -1,3 +1,4 @@
+import { ChangeEventHandler } from 'react';
 import { Select as SelectChakra } from '@chakra-ui/react';
 
 interface SelectOption {
@@ -8,9 +9,8 @@ interface SelectOption {
 interface SelectProps {
   options: SelectOption[];
   value: string | number;
-  onChange: any;
+  onChange: ChangeEventHandler<HTMLSelectElement> | undefined;
   emptyOptionText: string;
-  defaultValue?: string | number;
 }
 
 export function Select({
@@ -18,12 +18,10 @@ export function Select({
   value,
   onChange,
   emptyOptionText,
-  defaultValue,
 }: SelectProps) {
   return (
     <SelectChakra
       value={value}
-      defaultValue={defaultValue}
       onChange={onChange}
       mb={4}
       placeholder={emptyOptionText}

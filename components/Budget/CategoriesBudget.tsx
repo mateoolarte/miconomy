@@ -1,6 +1,6 @@
 import { ReactElement, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { Icon } from '@chakra-ui/react';
+import { Icon, List } from '@chakra-ui/react';
 import { BsPlusCircle } from 'react-icons/bs';
 
 import { BUDGET } from './graphql/budget';
@@ -12,8 +12,6 @@ import { Select } from '../../ui/Select';
 import { Modal } from '../../ui/Modal';
 
 import { CategoryBudget } from './CategoryBudget';
-
-import { List } from './Budget.styles';
 
 import { AddCategory } from './CategoriesBudget.styles';
 

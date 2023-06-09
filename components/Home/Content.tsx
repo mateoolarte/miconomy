@@ -1,13 +1,14 @@
 import { Balance } from './Balance';
 import { Actions } from './Actions';
 
-export function Content({
-  entryId,
-  categories,
-}: {
-  entryId: any;
+interface ContentProps {
+  entryId: number | null;
   categories: any;
-}) {
+}
+
+export function Content(props: ContentProps) {
+  const { entryId, categories } = props;
+
   if (!entryId) return null;
 
   return (

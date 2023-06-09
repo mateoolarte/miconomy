@@ -1,4 +1,4 @@
-import { Entry } from '../../containers/Entry';
+import { Entry } from '@/components/Entry';
 
 export default function EntryPage() {
   return <Entry />;

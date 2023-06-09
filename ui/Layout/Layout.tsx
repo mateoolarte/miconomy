@@ -1,5 +1,3 @@
-'use client';
-
 import { ReactNode } from 'react';
 import { Box } from '@chakra-ui/react';
 
@@ -15,11 +13,13 @@ export function Layout({ children, hideNav }: LayoutProps) {
   return (
     <>
       <Header />
+
       {children && (
         <Box as="main" px="2" pb="24">
           {children}
         </Box>
       )}
+
       {!hideNav && <Nav />}
     </>
   );

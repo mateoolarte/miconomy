@@ -11,19 +11,6 @@ export const Heading = styled.div`
   }
 `;
 
-export const EmptyBudgetContainer = styled.div``;
-
-export const EmptyBudgetTitle = styled.h2`
-  font-size: 1rem;
-  text-align: center;
-`;
-
-export const EmptyStateDescription = styled.p`
-  font-size: 0.9rem;
-  font-weight: 700;
-  text-align: center;
-`;
-
 export const EmptyStateCtaContainer = styled.div`
   text-align: right;
 `;

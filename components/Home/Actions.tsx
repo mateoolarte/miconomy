@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import { useState, MouseEvent } from 'react';
 
@@ -15,13 +15,14 @@ import { Select } from '@/ui/Select';
 
 import { Title, ActionsS } from './Home.styles';
 
-export function Actions({
-  entryId,
-  categories,
-}: {
+interface ActionsProps {
   entryId: any;
   categories: any;
-}) {
+}
+
+export function Actions(props: ActionsProps) {
+  const { entryId, categories } = props;
+
   const [expenseForm, setExpenseForm] = useState(false);
   const [incomeForm, setIncomeForm] = useState(false);
 

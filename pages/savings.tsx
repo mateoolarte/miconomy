@@ -1,4 +1,4 @@
-import { Savings } from '../containers/Savings';
+import { Savings } from '../components/Savings';
 
 export default function SavingsPage() {
   return <Savings />;

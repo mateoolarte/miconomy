@@ -15,21 +15,23 @@ interface ButtonProps {
   loading?: boolean;
 }
 
-export function Button({
-  type,
-  children,
-  disabled,
-  onClick,
-  fullWidth,
-  size,
-  style,
-  variant,
-  loading,
-}: ButtonProps): ReactElement {
+export function Button(props: ButtonProps): ReactElement {
+  const {
+    type = 'button',
+    variant = 'solid',
+    size = 'md',
+    style = 'blue',
+    children,
+    disabled,
+    onClick,
+    fullWidth,
+    loading,
+  } = props;
+
   return (
     <ButtonUI
       type={type}
-      disabled={disabled}
+      isDisabled={disabled}
       onClick={onClick}
       width={fullWidth ? '100%' : 'auto'}
       variant={variant}
@@ -41,10 +43,3 @@ export function Button({
     </ButtonUI>
   );
 }
-
-Button.defaultProps = {
-  type: 'button',
-  variant: 'solid',
-  size: 'md',
-  style: 'blue',
-};

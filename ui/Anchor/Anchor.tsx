@@ -9,7 +9,7 @@ export interface AnchorProps {
 
 export function Anchor({ link, children }: AnchorProps): ReactElement {
   return (
-    <LinkUI as={Link} href={link}>
+    <LinkUI as={Link} href={link} textDecoration="underline" fontWeight={700}>
       {children}
     </LinkUI>
   );

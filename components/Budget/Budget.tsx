@@ -1,6 +1,7 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
+import { Box } from '@chakra-ui/react';
 
 import { BUDGET } from './graphql/budget';
 import { UPDATE_BUDGET } from './graphql/updateBudget';
@@ -12,8 +13,6 @@ import { Tabs } from '../../ui/Tabs';
 
 import { CategoriesBudget } from './CategoriesBudget';
 import { SavingsBudget } from './SavingsBudget';
-
-import { UpdateBtnContainer, UpdateName } from './Budget.styles';
 
 export function Budget(): ReactElement {
   const router = useRouter();
@@ -66,7 +65,7 @@ export function Budget(): ReactElement {
 
   return (
     <Layout>
-      <UpdateName onSubmit={handleName}>
+      <Box as="form" onSubmit={handleName} mb={6}>
         <Input
           type="text"
           label="Nombre"
@@ -74,12 +73,12 @@ export function Budget(): ReactElement {
           onChange={(e) => setName(e.target.value)}
           required
         />
-        <UpdateBtnContainer>
+        <Box textAlign="center">
           <Button type="submit" disabled={!name} style="primary">
             Actualizar
           </Button>
-        </UpdateBtnContainer>
-      </UpdateName>
+        </Box>
+      </Box>
 
       <Tabs options={tabs} centered />
     </Layout>

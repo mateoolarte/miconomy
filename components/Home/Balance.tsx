@@ -2,22 +2,26 @@ import { useQuery } from '@apollo/client';
 
 import { BALANCE } from './graphql/balance';
 
+import { Loading } from '@/ui/Loading';
+
 import { Title, BalanceContainer, BalanceItem } from './Home.styles';
 
 export function Balance({ entryId }: { entryId: any }) {
   const { error, data, loading } = useQuery(BALANCE, {
     variables: { entryId },
   });
+  const balance = data?.balance;
+  const expenses = balance?.expenses;
+  const incomes = balance?.incomes;
 
   if (error) return <h2>Error! {error.message}</h2>;
+  if (loading) return <Loading />;
 
-  const { expenses, incomes } = data?.balance;
-
-  const totalExpenses = expenses.reduce(
+  const totalExpenses = expenses?.reduce(
     (prev, current) => prev + current.value,
     0
   );
-  const totalIncomes = incomes.reduce(
+  const totalIncomes = incomes?.reduce(
     (prev, current) => prev + current.value,
     0
   );
@@ -25,9 +29,6 @@ export function Balance({ entryId }: { entryId: any }) {
   if (totalExpenses == 0 && totalIncomes == 0) return null;
 
   const available = totalIncomes - totalExpenses;
-
-  if (error) return <h2>Error! {error.message}</h2>;
-  if (loading) return <h2>Loading...</h2>;
 
   return (
     <>

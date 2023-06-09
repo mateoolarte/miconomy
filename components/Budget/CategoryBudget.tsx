@@ -1,6 +1,6 @@
 import { ReactElement, useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { Icon } from '@chakra-ui/react';
+import { Icon, ListItem } from '@chakra-ui/react';
 import { BiEditAlt, BiTrashAlt } from 'react-icons/bi';
 
 import { BUDGET } from './graphql/budget';
@@ -11,14 +11,7 @@ import { UPDATE_CATEGORY_BUDGET } from './graphql/updateCategoryBudget';
 import { Input } from '../../ui/Input';
 import { Modal } from '../../ui/Modal';
 
-import {
-  Item,
-  Info,
-  Title,
-  Description,
-  Actions,
-  BtnIcon,
-} from './Budget.styles';
+import { Info, Title, Description, Actions, BtnIcon } from './Budget.styles';
 
 interface Props {
   category: any;
@@ -53,7 +46,7 @@ export function CategoryBudget({ category, budget }: Props): ReactElement {
   }
 
   return (
-    <Item>
+    <ListItem>
       <Info>
         <Title>{category.name}</Title>
         <Description>
@@ -92,6 +85,6 @@ export function CategoryBudget({ category, budget }: Props): ReactElement {
           onChange={(e) => setValue(Number(e.target.value))}
         />
       </Modal>
-    </Item>
+    </ListItem>
   );
 }
