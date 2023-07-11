@@ -4,9 +4,9 @@ import { useState, MouseEvent } from 'react';
 
 import { useMutation } from '@apollo/client';
 
-import { ENTRY } from '@/graphql/web/queries/entry';
-import { CREATE_EXPENSE } from '@/graphql/web/mutations/createExpense';
-import { CREATE_INCOME } from '@/graphql/web/mutations/createIncome';
+import { ENTRY } from '@/graphql/queries/entry';
+import { CREATE_EXPENSE } from '@/graphql/mutations/createExpense';
+import { CREATE_INCOME } from '@/graphql/mutations/createIncome';
 
 import { Button } from '@/ui/Button';
 import { Modal } from '@/ui/Modal';

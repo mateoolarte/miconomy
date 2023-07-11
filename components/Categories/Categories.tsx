@@ -4,7 +4,7 @@ import { Icon } from '@chakra-ui/react';
 import { BsPlusCircle } from 'react-icons/bs';
 import { BiEditAlt } from 'react-icons/bi';
 
-import { CATEGORIES } from '../../graphql/web/queries/categories';
+import { CATEGORIES } from '../../graphql/queries/categories';
 import { CREATE_CATEGORY } from './graphql/createCategory';
 import { UPDATE_CATEGORY } from './graphql/updateCategory';
 

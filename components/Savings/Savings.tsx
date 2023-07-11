@@ -4,8 +4,8 @@ import { Icon } from '@chakra-ui/react';
 import { BiEditAlt, BiTrashAlt } from 'react-icons/bi';
 import { BsPlusCircle } from 'react-icons/bs';
 
-import { ENTRY } from '../../graphql/web/queries/entry';
-import { SAVINGS } from '../../graphql/web/queries/savings';
+import { ENTRY } from '../../graphql/queries/entry';
+import { SAVINGS } from '../../graphql/queries/savings';
 import { UPDATE_SAVING } from './graphql/updateSaving';
 import { DELETE_SAVING } from './graphql/deleteSaving';
 import { CREATE_SAVING } from './graphql/createSaving';

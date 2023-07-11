@@ -20,9 +20,9 @@ import {
   BiPlus,
 } from 'react-icons/bi';
 
-import { ENTRY } from '../../graphql/web/queries/entry';
-import { CREATE_EXPENSE } from '../../graphql/web/mutations/createExpense';
-import { CREATE_INCOME } from '../../graphql/web/mutations/createIncome';
+import { ENTRY } from '../../graphql/queries/entry';
+import { CREATE_EXPENSE } from '../../graphql/mutations/createExpense';
+import { CREATE_INCOME } from '../../graphql/mutations/createIncome';
 
 import { Modal } from '../Modal';
 import { Input } from '../Input';

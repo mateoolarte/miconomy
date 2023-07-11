@@ -24,6 +24,8 @@ interface ContentProps {
 export function Content(props: ContentProps) {
   var { categories, savings, entryId } = props;
 
+  if (!entryId) return null;
+
   var currentDate = new Date();
   var year = currentDate.getFullYear();
   var currentMonth = format(currentDate, 'MMMM', { locale: es });

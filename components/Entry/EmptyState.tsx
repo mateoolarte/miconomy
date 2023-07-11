@@ -3,8 +3,8 @@ import { useQuery, useMutation } from '@apollo/client';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
-import { ENTRY } from '@/graphql/web/queries/entry';
-import { BUDGETS } from '@/graphql/web/queries/budgets';
+import { ENTRY } from '@/graphql/queries/entry';
+import { BUDGETS } from '@/graphql/queries/budgets';
 import { CREATE_ENTRY } from './graphql/createEntry';
 
 import { Select } from '@/ui/Select';

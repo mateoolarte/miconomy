@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 
-import { ENTRY } from '@/graphql/web/queries/entry';
+import { ENTRY } from '@/graphql/queries/entry';
 
 export function useFetchEntry() {
   const currentDate = new Date();

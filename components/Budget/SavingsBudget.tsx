@@ -4,7 +4,7 @@ import { Icon } from '@chakra-ui/react';
 import { BsPlusCircle } from 'react-icons/bs';
 
 import { BUDGET } from './graphql/budget';
-import { SAVINGS } from '../../graphql/web/queries/savings';
+import { SAVINGS } from '../../graphql/queries/savings';
 import { CREATE_SAVING_BUDGET } from './graphql/createSavingBudget';
 
 import { Input } from '../../ui/Input';

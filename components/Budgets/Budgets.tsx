@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Icon } from '@chakra-ui/react';
 import { BsPlusCircle, BsArrowRightCircle } from 'react-icons/bs';
 
-import { BUDGETS } from '../../graphql/web/queries/budgets';
+import { BUDGETS } from '../../graphql/queries/budgets';
 import { CREATE_BUDGET } from './graphql/createBudget';
 
 import { Input } from '../../ui/Input';
