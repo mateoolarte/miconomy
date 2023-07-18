@@ -1,91 +1,53 @@
-import { ReactElement, useState } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
-import Link from 'next/link';
-import { Icon } from '@chakra-ui/react';
-import { BsPlusCircle, BsArrowRightCircle } from 'react-icons/bs';
+import { useState, MouseEvent } from "react";
+import { useQuery, useMutation } from "@apollo/client";
 
-import { BUDGETS } from '../../graphql/queries/budgets';
-import { CREATE_BUDGET } from './graphql/createBudget';
+import { BUDGETS } from "@/graphql/queries/budgets";
+import { CREATE_BUDGET } from "./graphql/createBudget";
 
-import { Input } from '../../ui/Input';
-import { Modal } from '../../ui/Modal';
-import { Layout } from '../../ui/Layout';
+import { Layout } from "@/ui/Layout";
+import { Loading } from "@/ui/Loading";
+import { Error } from "@/ui/Error";
 
-import { AddBudget, BudgetCard, BudgetsContainer } from './Budgets.styles';
+import { List } from "./List";
+import { AddBtn } from "./AddBtn";
+import { Form } from "./Form";
 
-export function Budgets(): ReactElement {
-  const [activeForm, setActiveForm] = useState(false);
-  const [name, setName] = useState('');
+import { Budgets } from "@/types";
 
-  const { loading, error, data } = useQuery(BUDGETS);
+export function Budgets() {
+  const [activeForm, setActiveForm] = useState<boolean>(false);
+
+  const { loading, error, data } = useQuery<Budgets>(BUDGETS);
   const [createBudget] = useMutation(CREATE_BUDGET, {
     refetchQueries: [BUDGETS],
   });
 
-  if (loading) return <h2>Loading...</h2>;
-  if (error) return <h2>Error! {error.message}</h2>;
+  if (loading) return <Loading />;
+  if (error) return <Error>{error.message}</Error>;
 
-  function resetState() {
-    setActiveForm(false);
-    setName('');
-  }
-
-  function handleToggleForm(e) {
+  function handleToggleForm(e: MouseEvent<HTMLButtonElement & HTMLDivElement>) {
     e.preventDefault();
 
     setActiveForm(!activeForm);
   }
 
-  function handleForm(e) {
-    e.preventDefault();
-
+  function handleForm(name: string) {
     if (name) {
       createBudget({ variables: { name } });
-      resetState();
+      setActiveForm(false);
     }
   }
 
   return (
     <Layout>
-      <BudgetsContainer>
-        {data?.budgets.map((budget) => {
-          return (
-            <Link
-              legacyBehavior
-              href={`/budgets/${budget.id}`}
-              passHref
-              key={budget.id}
-            >
-              <BudgetCard>
-                {budget.name} <Icon as={BsArrowRightCircle} fontSize="xl" />
-              </BudgetCard>
-            </Link>
-          );
-        })}
-      </BudgetsContainer>
+      <List budgets={data?.budgets} />
 
-      <AddBudget type="button" onClick={handleToggleForm}>
-        <Icon as={BsPlusCircle} mr={2} fontSize="lg" />
-        Agregar presupuesto
-      </AddBudget>
+      {!activeForm && (
+        <AddBtn handleAction={handleToggleForm}>Agregar presupuesto</AddBtn>
+      )}
 
       {activeForm && (
-        <Modal
-          visible={activeForm}
-          title="Agregar presupuesto"
-          submitText="Agregar"
-          cancelText="Cancelar"
-          handleSubmit={handleForm}
-          handleCancel={handleToggleForm}
-        >
-          <Input
-            type="text"
-            label="Nombre"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </Modal>
+        <Form handleForm={handleForm} handleToggleForm={handleToggleForm} />
       )}
     </Layout>
   );

@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ForwardedRef, useState, forwardRef } from "react";
 import {
   FormControl,
   FormLabel,
@@ -7,13 +7,13 @@ import {
   InputGroup,
   InputRightElement,
   IconButton,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
-import EyeOpen from '../icons/EyeOpen';
-import EyeClose from '../icons/EyeClose';
+import EyeOpen from "../icons/EyeOpen";
+import EyeClose from "../icons/EyeClose";
 interface InputProps {
   type: string;
-  name: string;
+  name?: string;
   label?: string;
   value: string | number;
   onChange: any;
@@ -23,20 +23,24 @@ interface InputProps {
   required?: boolean;
 }
 
-export function Input({
-  type,
-  name,
-  label,
-  value,
-  onChange,
-  onBlur,
-  error,
-  hasInputChange,
-  required,
-}: InputProps): ReactElement {
+export function InputComponent(
+  props: InputProps,
+  ref: ForwardedRef<HTMLInputElement>
+) {
+  const {
+    type,
+    name,
+    label,
+    value,
+    onChange,
+    onBlur,
+    error,
+    hasInputChange,
+    required,
+  } = props;
   const [show, setShow] = useState(false);
-  const toggleInputType = hasInputChange && show ? 'text' : type;
-  const ariaLabelPasswordIcon = `${show ? 'Ocultar' : 'Mostrar'} contraseña`;
+  const toggleInputType = hasInputChange && show ? "text" : type;
+  const ariaLabelPasswordIcon = `${show ? "Ocultar" : "Mostrar"} contraseña`;
 
   const handleClick = () => setShow(!show);
 
@@ -52,6 +56,7 @@ export function Input({
           onChange={onChange}
           onBlur={onBlur}
           required={required}
+          ref={ref}
         />
 
         {hasInputChange && (
@@ -70,3 +75,5 @@ export function Input({
     </FormControl>
   );
 }
+
+export const Input = forwardRef(InputComponent);
