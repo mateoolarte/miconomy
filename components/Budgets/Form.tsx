@@ -8,34 +8,42 @@ import {
   useState,
 } from "react";
 
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 
 import { Input } from "@/ui/Input";
 import { Button } from "@/ui/Button";
+import { Alert } from "@/ui/Alert";
 
 interface FormProps {
-  handleForm: (name: string) => void;
+  handleAction: any;
   handleToggleForm: (e: MouseEvent<HTMLButtonElement & HTMLDivElement>) => void;
+  error: string;
 }
 
 function FormComponent(props: FormProps) {
-  const { handleForm, handleToggleForm } = props;
+  const { handleAction, handleToggleForm, error } = props;
 
   const [name, setName] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const [createBudget, { loading }] = handleAction;
+
   useEffect(() => {
     inputRef.current?.focus();
-  }, []);
+  }, [error]);
+
+  useEffect(() => {
+    if (error) setName("");
+  }, [error]);
 
   function handleName(e: ChangeEvent<HTMLInputElement>) {
     setName(e.target.value);
   }
 
   function submitForm(e: FormEvent<HTMLFormElement & HTMLDivElement>) {
-    e.preventDefault;
+    e.preventDefault();
 
-    handleForm(name);
+    createBudget({ variables: { name } });
   }
 
   return (
@@ -47,6 +55,11 @@ function FormComponent(props: FormProps) {
       gap={3}
       onSubmit={submitForm}
     >
+      {error && (
+        <Box textAlign="left">
+          <Alert status="error">{error}</Alert>
+        </Box>
+      )}
       <Input
         type="text"
         label="Nombre del presupuesto"
@@ -56,8 +69,10 @@ function FormComponent(props: FormProps) {
         ref={inputRef}
       />
       <Flex gap={2} justifyContent="flex-end">
-        <Button type="submit">Agregar</Button>
-        <Button onClick={handleToggleForm} variant="outline">
+        <Button type="submit" disabled={loading}>
+          Agregar
+        </Button>
+        <Button onClick={handleToggleForm} variant="outline" disabled={loading}>
           Cancelar
         </Button>
       </Flex>

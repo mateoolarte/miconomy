@@ -16,9 +16,22 @@ import { Budgets } from "@/types";
 
 export function Budgets() {
   const [activeForm, setActiveForm] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const { loading, error, data } = useQuery<Budgets>(BUDGETS);
-  const [createBudget] = useMutation(CREATE_BUDGET, {
+  const addBudget = useMutation(CREATE_BUDGET, {
+    onCompleted() {
+      setActiveForm(false);
+    },
+    onError(error) {
+      const { message } = error;
+
+      setErrorMessage(message);
+
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 3000);
+    },
     refetchQueries: [BUDGETS],
   });
 
@@ -31,13 +44,6 @@ export function Budgets() {
     setActiveForm(!activeForm);
   }
 
-  function handleForm(name: string) {
-    if (name) {
-      createBudget({ variables: { name } });
-      setActiveForm(false);
-    }
-  }
-
   return (
     <Layout>
       <List budgets={data?.budgets} />
@@ -47,7 +53,11 @@ export function Budgets() {
       )}
 
       {activeForm && (
-        <Form handleForm={handleForm} handleToggleForm={handleToggleForm} />
+        <Form
+          handleAction={addBudget}
+          handleToggleForm={handleToggleForm}
+          error={errorMessage}
+        />
       )}
     </Layout>
   );
