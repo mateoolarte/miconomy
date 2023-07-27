@@ -1,21 +1,21 @@
-import { ReactElement, useState } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
-import { Icon } from '@chakra-ui/react';
-import { BsPlusCircle } from 'react-icons/bs';
+import { ReactElement, useState } from "react";
+import { useQuery, useMutation } from "@apollo/client";
+import { Icon } from "@chakra-ui/react";
+import { BsPlusCircle } from "react-icons/bs";
 
-import { BUDGET } from './graphql/budget';
-import { SAVINGS } from '../../graphql/queries/savings';
-import { CREATE_SAVING_BUDGET } from './graphql/createSavingBudget';
+import { BUDGET } from "./graphql/budget";
+import { SAVINGS } from "../../graphql/queries/savings";
+import { CREATE_SAVING_BUDGET } from "./graphql/createSavingBudget";
 
-import { Input } from '../../ui/Input';
-import { Modal } from '../../ui/Modal';
-import { Select } from '../../ui/Select';
+import { Input } from "../../ui/Input";
+import { Modal } from "../../ui/Modal";
+import { Select } from "../../ui/Select";
 
-import { SavingBudget } from './SavingBudget';
+import { SavingBudget } from "./SavingBudget";
 
-import { AddSaving } from './SavingBudget.styles';
+import { AddSaving } from "./SavingBudget.styles";
 
-import { List } from './Budget.styles';
+import { List } from "./Budget.styles";
 
 interface Props {
   budgetSavings: any;
@@ -24,7 +24,7 @@ interface Props {
 
 export function SavingsBudget({ budgetSavings, budget }: Props): ReactElement {
   const [activeForm, setActiveForm] = useState(false);
-  const [saving, setSaving] = useState('');
+  const [saving, setSaving] = useState("");
   const [value, setValue] = useState(0);
 
   const { loading, error, data } = useQuery(SAVINGS);
@@ -34,7 +34,7 @@ export function SavingsBudget({ budgetSavings, budget }: Props): ReactElement {
 
   function resetState() {
     setActiveForm(false);
-    setSaving('');
+    setSaving("");
     setValue(0);
   }
 
@@ -54,7 +54,7 @@ export function SavingsBudget({ budgetSavings, budget }: Props): ReactElement {
   const normalizeSavings = data?.savings.map((item) => item.name);
   const normalizeBudgetSavings = budgetSavings.map((item) => item.name);
   const savingsWithoutSelection = normalizeSavings?.filter(
-    (item) => !normalizeBudgetSavings.includes(item)
+    (item) => !normalizeBudgetSavings.includes(item),
   );
 
   if (loading) return <h2>Loading...</h2>;
@@ -90,10 +90,8 @@ export function SavingsBudget({ budgetSavings, budget }: Props): ReactElement {
               };
             })}
           value={saving}
-          onChange={(value) => setSaving(value)}
+          onChange={(e) => setSaving(e.target.value)}
           emptyOptionText="Seleccione un ahorro"
-          emptyOptionValue=""
-          defaultValue=""
         />
         <Input
           type="number"

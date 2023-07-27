@@ -1,11 +1,10 @@
-import { ReactElement, ReactNode } from "react";
+import { PropsWithChildren } from "react";
 import { Button as ButtonUI } from "@chakra-ui/react";
 
 type TypeOptions = "submit" | "button";
 
 interface ButtonProps {
   type?: TypeOptions;
-  children: ReactNode;
   disabled?: boolean;
   onClick?: any;
   fullWidth?: boolean;
@@ -15,7 +14,7 @@ interface ButtonProps {
   loading?: boolean;
 }
 
-export function Button(props: ButtonProps): ReactElement {
+export function Button(props: PropsWithChildren<ButtonProps>) {
   const {
     type = "button",
     variant = "solid",

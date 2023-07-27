@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useState } from "react";
+import { useQuery, useMutation } from "@apollo/client";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import {
   Icon,
   Popover,
@@ -9,7 +9,7 @@ import {
   PopoverContent,
   PopoverBody,
   PopoverArrow,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 import {
   BiHomeAlt,
   BiCalendar,
@@ -18,15 +18,15 @@ import {
   BiFile,
   BiCreditCard,
   BiPlus,
-} from 'react-icons/bi';
+} from "react-icons/bi";
 
-import { ENTRY } from '../../graphql/queries/entry';
-import { CREATE_EXPENSE } from '../../graphql/mutations/createExpense';
-import { CREATE_INCOME } from '../../graphql/mutations/createIncome';
+import { ENTRY } from "@/graphql/queries/entry";
+import { CREATE_EXPENSE } from "@/graphql/mutations/createExpense";
+import { CREATE_INCOME } from "@/graphql/mutations/createIncome";
 
-import { Modal } from '../Modal';
-import { Input } from '../Input';
-import { Select } from '../Select';
+import { Modal } from "../Modal";
+import { Input } from "../Input";
+import { Select } from "../Select";
 
 import {
   Wrapper,
@@ -43,7 +43,7 @@ import {
   PrimaryActionsBtn,
   PrimaryActionsText,
   SecondaryActionsLink,
-} from './Nav.styles';
+} from "./Nav.styles";
 
 export function Nav() {
   const currentDate = new Date();
@@ -61,7 +61,7 @@ export function Nav() {
 
   const [categoryId, setCategoryId] = useState(0);
   const [value, setValue] = useState(0);
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState("");
 
   const { loading, error, data } = useQuery(ENTRY, {
     variables: { month, year },
@@ -78,7 +78,7 @@ export function Nav() {
     setExpenseForm(false);
     setIncomeForm(false);
     setValue(0);
-    setDescription('');
+    setDescription("");
     setCategoryId(0);
   }
 
@@ -114,7 +114,7 @@ export function Nav() {
   return (
     <Wrapper>
       <List>
-        <Item isActive={currentUrl === '/'}>
+        <Item isActive={currentUrl === "/"}>
           <Link legacyBehavior href="/">
             <a>
               <Icon as={BiHomeAlt} fontSize="lg" />
@@ -122,7 +122,7 @@ export function Nav() {
             </a>
           </Link>
         </Item>
-        <Item isActive={currentUrl === '/entry'}>
+        <Item isActive={currentUrl === "/entry"}>
           <Link legacyBehavior href="/entry">
             <a>
               <Icon as={BiCalendar} fontSize="lg" />
@@ -136,7 +136,7 @@ export function Nav() {
               <ItemPrimaryBtn type="button" isClosed={primaryAction}>
                 <Icon as={BiPlus} rotate={primaryAction ? 45 : 0} />
                 <LinkTextPrimary isClosed={primaryAction}>
-                  {primaryAction ? 'Cerrar' : 'Agregar'}
+                  {primaryAction ? "Cerrar" : "Agregar"}
                 </LinkTextPrimary>
               </ItemPrimaryBtn>
             </PopoverTrigger>
@@ -166,10 +166,8 @@ export function Nav() {
                           label: item.name,
                         }))}
                         emptyOptionText="Selecciona una categoría"
-                        emptyOptionValue={0}
                         value={categoryId}
-                        defaultValue={0}
-                        onChange={(value) => setCategoryId(Number(value))}
+                        onChange={(e) => setCategoryId(Number(e.target.value))}
                       />
                       <Input
                         type="text"
@@ -224,7 +222,7 @@ export function Nav() {
             </PopoverContent>
           </Popover>
         </ItemPrimary>
-        <Item isActive={currentUrl === '/savings'}>
+        <Item isActive={currentUrl === "/savings"}>
           <Link legacyBehavior href="/savings">
             <a>
               <Icon as={BiDollarCircle} fontSize="lg" />
@@ -247,7 +245,7 @@ export function Nav() {
                   <PrimaryActionsItem>
                     <Link legacyBehavior href="/categories" passHref>
                       <SecondaryActionsLink
-                        isActive={currentUrl === '/categories'}
+                        isActive={currentUrl === "/categories"}
                       >
                         <Icon as={BiFile} fontSize="lg" />
                         <PrimaryActionsText>Categorías</PrimaryActionsText>
@@ -257,7 +255,7 @@ export function Nav() {
                   <PrimaryActionsItem>
                     <Link legacyBehavior href="/budgets" passHref>
                       <SecondaryActionsLink
-                        isActive={currentUrl === '/budgets'}
+                        isActive={currentUrl === "/budgets"}
                       >
                         <Icon as={BiCreditCard} fontSize="lg" />
                         <PrimaryActionsText>Presupuestos</PrimaryActionsText>

@@ -1,15 +1,15 @@
-import { MouseEvent, PropsWithChildren, memo } from "react";
+import { MouseEvent, PropsWithChildren } from "react";
 import { Icon, Flex } from "@chakra-ui/react";
-import { BsPlusCircle } from "react-icons/bs";
+import { IconType } from "react-icons";
 
-interface AddBtnProps {
+interface ButtonDottedProps {
   handleAction: (e: MouseEvent<HTMLButtonElement & HTMLDivElement>) => void;
+  icon: IconType;
 }
 
-function AddBtnComponent({
-  children,
-  handleAction,
-}: PropsWithChildren<AddBtnProps>) {
+export function ButtonDotted(props: PropsWithChildren<ButtonDottedProps>) {
+  const { handleAction, icon, children } = props;
+
   return (
     <Flex
       as="button"
@@ -29,10 +29,8 @@ function AddBtnComponent({
       textAlign="center"
       color="gray.500"
     >
-      <Icon as={BsPlusCircle} mr={2} fontSize="lg" />
+      <Icon as={icon} mr={2} fontSize="lg" />
       {children}
     </Flex>
   );
 }
-
-export const AddBtn = memo(AddBtnComponent);

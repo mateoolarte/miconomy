@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import { useState, MouseEvent } from 'react';
+import { useState, MouseEvent } from "react";
 
-import { useMutation } from '@apollo/client';
+import { useMutation } from "@apollo/client";
 
-import { ENTRY } from '@/graphql/queries/entry';
-import { CREATE_EXPENSE } from '@/graphql/mutations/createExpense';
-import { CREATE_INCOME } from '@/graphql/mutations/createIncome';
+import { ENTRY } from "@/graphql/queries/entry";
+import { CREATE_EXPENSE } from "@/graphql/mutations/createExpense";
+import { CREATE_INCOME } from "@/graphql/mutations/createIncome";
 
-import { Button } from '@/ui/Button';
-import { Modal } from '@/ui/Modal';
-import { Input } from '@/ui/Input';
-import { Select } from '@/ui/Select';
+import { Button } from "@/ui/Button";
+import { Modal } from "@/ui/Modal";
+import { Input } from "@/ui/Input";
+import { Select } from "@/ui/Select";
 
-import { Title, ActionsS } from './Home.styles';
+import { Title, ActionsS } from "./Home.styles";
 
 interface ActionsProps {
   entryId: any;
@@ -26,9 +26,9 @@ export function Actions(props: ActionsProps) {
   const [expenseForm, setExpenseForm] = useState(false);
   const [incomeForm, setIncomeForm] = useState(false);
 
-  const [categoryId, setCategoryId] = useState(undefined);
+  const [categoryId, setCategoryId] = useState<string | number>("");
   const [value, setValue] = useState(0);
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState("");
 
   const [createExpense] = useMutation(CREATE_EXPENSE, {
     refetchQueries: [ENTRY],
@@ -40,9 +40,9 @@ export function Actions(props: ActionsProps) {
   function resetState() {
     setExpenseForm(false);
     setIncomeForm(false);
-    setCategoryId(undefined);
+    setCategoryId("");
     setValue(0);
-    setDescription('');
+    setDescription("");
   }
 
   function handleExpense(e) {
@@ -103,10 +103,8 @@ export function Actions(props: ActionsProps) {
             label: item.name,
           }))}
           emptyOptionText="Selecciona una categoría"
-          emptyOptionValue={0}
           value={categoryId}
-          defaultValue={0}
-          onChange={(value) => setCategoryId(Number(value))}
+          onChange={(e) => setCategoryId(Number(e.target.value))}
         />
         <Input
           type="text"

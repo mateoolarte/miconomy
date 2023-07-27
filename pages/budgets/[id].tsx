@@ -1,4 +1,4 @@
-import { Budget } from '../../components/Budget';
+import { Budget } from '@/components/Budget';
 
 export default function BudgetPage() {
   return <Budget />;

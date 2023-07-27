@@ -1,24 +1,26 @@
-import { ReactElement, useEffect, useState } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
-import { useRouter } from 'next/router';
-import { Box } from '@chakra-ui/react';
+import { useEffect, useState, FormEvent, ChangeEvent } from "react";
+import { useQuery, useMutation } from "@apollo/client";
+import { useRouter } from "next/router";
+import { Box } from "@chakra-ui/react";
 
-import { BUDGET } from './graphql/budget';
-import { UPDATE_BUDGET } from './graphql/updateBudget';
+import { BUDGET } from "./graphql/budget";
+import { UPDATE_BUDGET } from "./graphql/updateBudget";
 
-import { Layout } from '../../ui/Layout';
-import { Input } from '../../ui/Input';
-import { Button } from '../../ui/Button';
-import { Tabs } from '../../ui/Tabs';
+import { Layout } from "@/ui/Layout";
+import { Input } from "@/ui/Input";
+import { Button } from "@/ui/Button";
+import { Tabs } from "@/ui/Tabs";
+import { Loading } from "@/ui/Loading";
+import { Error } from "@/ui/Error";
 
-import { CategoriesBudget } from './CategoriesBudget';
-import { SavingsBudget } from './SavingsBudget';
+import { CategoriesBudget } from "./CategoriesBudget";
+import { SavingsBudget } from "./SavingsBudget";
 
-export function Budget(): ReactElement {
+export function Budget() {
   const router = useRouter();
   const { id } = router.query;
 
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
 
   const { loading, error, data } = useQuery(BUDGET, {
     variables: { id: Number(id) },
@@ -27,54 +29,53 @@ export function Budget(): ReactElement {
     refetchQueries: [BUDGET],
   });
 
-  const tabs = [
-    {
-      key: '1',
-      title: 'Categorías',
-      content: (
-        <CategoriesBudget
-          budgetCategories={data?.budget?.categories}
-          budget={data?.budget}
-        />
-      ),
-    },
-    {
-      key: '2',
-      title: 'Ahorros',
-      content: (
-        <SavingsBudget
-          budgetSavings={data?.budget?.savings}
-          budget={data?.budget}
-        />
-      ),
-    },
-  ];
-
   useEffect(() => {
     setName(data?.budget?.name);
   }, [data]);
 
-  function handleName(e) {
-    e.preventDefault();
+  if (loading) return <Loading />;
+  if (error) return <Error>{error.message}</Error>;
 
-    updateBudget({ variables: { id: Number(data?.budget?.id), name } });
+  const { budget } = data;
+  const { categories, savings } = budget;
+
+  const tabs = [
+    {
+      key: "1",
+      title: "Categorías",
+      content: (
+        <CategoriesBudget budgetCategories={categories} budget={budget} />
+      ),
+    },
+    {
+      key: "2",
+      title: "Ahorros",
+      content: <SavingsBudget budgetSavings={savings} budget={budget} />,
+    },
+  ];
+
+  function handleName(e: ChangeEvent<HTMLInputElement>) {
+    setName(e.target.value);
   }
 
-  if (loading) return <h2>Loading...</h2>;
-  if (error) return <h2>Error! {error.message}</h2>;
+  function updateBudgetName(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    updateBudget({ variables: { id: Number(budget?.id), name } });
+  }
 
   return (
     <Layout>
-      <Box as="form" onSubmit={handleName} mb={6}>
+      <Box as="form" onSubmit={updateBudgetName} mb={6}>
         <Input
           type="text"
           label="Nombre"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={handleName}
           required
         />
-        <Box textAlign="center">
-          <Button type="submit" disabled={!name} style="primary">
+        <Box textAlign="right" mt={2}>
+          <Button type="submit" disabled={!name}>
             Actualizar
           </Button>
         </Box>

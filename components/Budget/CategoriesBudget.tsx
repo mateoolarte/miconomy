@@ -1,45 +1,48 @@
-import { ReactElement, useState } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
-import { Icon, List } from '@chakra-ui/react';
-import { BsPlusCircle } from 'react-icons/bs';
+import { ChangeEvent, FormEvent, useState } from "react";
+import { useQuery, useMutation } from "@apollo/client";
+import { List } from "@chakra-ui/react";
+import { BsPlusCircle } from "react-icons/bs";
 
-import { BUDGET } from './graphql/budget';
-import { CATEGORIES } from '../../graphql/queries/categories';
-import { CREATE_CATEGORY_BUDGET } from './graphql/createCategoryBudget';
+import { BUDGET } from "./graphql/budget";
+import { CATEGORIES } from "@/graphql/queries/categories";
+import { CREATE_CATEGORY_BUDGET } from "./graphql/createCategoryBudget";
 
-import { Input } from '../../ui/Input';
-import { Select } from '../../ui/Select';
-import { Modal } from '../../ui/Modal';
+import { Input } from "@/ui/Input";
+import { Select } from "@/ui/Select";
+import { Modal } from "@/ui/Modal";
+import { ButtonDotted } from "@/ui/Button";
+import { Loading } from "@/ui/Loading";
+import { Error } from "@/ui/Error";
 
-import { CategoryBudget } from './CategoryBudget';
+import { CategoryBudget } from "./CategoryBudget";
 
-import { AddCategory } from './CategoriesBudget.styles';
+import { Budget, Categories, Category } from "@/types";
 
 interface Props {
-  budgetCategories: any;
-  budget: any;
+  budgetCategories: Category[];
+  budget: Budget;
 }
 
-export function CategoriesBudget({
-  budgetCategories,
-  budget,
-}: Props): ReactElement {
+export function CategoriesBudget({ budgetCategories, budget }: Props) {
   const [activeForm, setActiveForm] = useState(false);
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState("");
   const [value, setValue] = useState(0);
 
-  const { loading, error, data } = useQuery(CATEGORIES);
+  const { loading, error, data } = useQuery<Categories>(CATEGORIES);
   const [createCategoryBudget] = useMutation(CREATE_CATEGORY_BUDGET, {
     refetchQueries: [BUDGET],
   });
 
+  if (loading) return <Loading />;
+  if (error) return <Error>{error.message}</Error>;
+
   function resetState() {
     setActiveForm(false);
-    setCategory('');
+    setCategory("");
     setValue(0);
   }
 
-  function handleNewCategory(e) {
+  function addCategory(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     createCategoryBudget({
@@ -52,16 +55,18 @@ export function CategoriesBudget({
     resetState();
   }
 
-  const normalizeCategories = data?.categories.map((category) => category.name);
+  const normalizeCategories = data?.categories?.map(
+    (category) => category.name,
+  );
   const normalizeBudgetCategories = budgetCategories.map(
-    (category) => category.name
+    (category) => category.name,
   );
   const categoriesWithoutSelection = normalizeCategories?.filter(
-    (category) => !normalizeBudgetCategories.includes(category)
+    (category) => !normalizeBudgetCategories.includes(category),
   );
-
-  if (loading) return <h2>Loading...</h2>;
-  if (error) return <h2>Error! {error.message}</h2>;
+  const filteredCategories = data?.categories?.filter(
+    (item) => categoriesWithoutSelection?.includes(item.name) || [],
+  );
 
   return (
     <>
@@ -76,38 +81,42 @@ export function CategoriesBudget({
           );
         })}
       </List>
-      <AddCategory type="button" onClick={() => setActiveForm(!activeForm)}>
-        <Icon as={BsPlusCircle} mr={2} fontSize="lg" />
+      <ButtonDotted
+        handleAction={() => setActiveForm(!activeForm)}
+        icon={BsPlusCircle}
+      >
         Agregar categoría
-      </AddCategory>
+      </ButtonDotted>
 
       <Modal
         visible={activeForm}
         title="Agregar categoría"
         submitText="Agregar"
         cancelText="Cancelar"
-        handleSubmit={handleNewCategory}
+        handleSubmit={addCategory}
         handleCancel={() => setActiveForm(!activeForm)}
       >
-        <Select
-          options={data?.categories
-            .filter((item) => categoriesWithoutSelection.includes(item.name))
-            .map((item) => {
+        {filteredCategories && filteredCategories.length > 0 && (
+          <Select
+            options={filteredCategories.map((item) => {
               return {
                 value: item.id,
                 label: item.name,
               };
             })}
-          value={category}
-          onChange={(value) => setCategory(value)}
-          emptyOptionText="Seleccione una categoría"
-          emptyOptionValue=""
-          defaultValue=""
-        />
+            value={category}
+            onChange={(e) => {
+              setCategory(e.target.value);
+            }}
+            emptyOptionText="Seleccione una categoría"
+          />
+        )}
         <Input
           type="number"
           value={value}
-          onChange={(e) => setValue(Number(e.target.value))}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setValue(Number(e.target.value))
+          }
         />
       </Modal>
     </>

@@ -1,5 +1,6 @@
 import { useState, MouseEvent } from "react";
 import { useQuery, useMutation } from "@apollo/client";
+import { BsPlusCircle } from "react-icons/bs";
 
 import { BUDGETS } from "@/graphql/queries/budgets";
 import { CREATE_BUDGET } from "./graphql/createBudget";
@@ -7,9 +8,9 @@ import { CREATE_BUDGET } from "./graphql/createBudget";
 import { Layout } from "@/ui/Layout";
 import { Loading } from "@/ui/Loading";
 import { Error } from "@/ui/Error";
+import { ButtonDotted } from "@/ui/Button";
 
 import { List } from "./List";
-import { AddBtn } from "./AddBtn";
 import { Form } from "./Form";
 
 import { Budgets } from "@/types";
@@ -49,7 +50,9 @@ export function Budgets() {
       <List budgets={data?.budgets} />
 
       {!activeForm && (
-        <AddBtn handleAction={handleToggleForm}>Agregar presupuesto</AddBtn>
+        <ButtonDotted handleAction={handleToggleForm} icon={BsPlusCircle}>
+          Agregar presupuesto
+        </ButtonDotted>
       )}
 
       {activeForm && (
