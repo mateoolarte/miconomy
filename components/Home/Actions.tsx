@@ -1,23 +1,22 @@
-"use client";
-
 import { useState, MouseEvent } from "react";
-
+import { Box, Heading } from "@chakra-ui/react";
 import { useMutation } from "@apollo/client";
 
-import { ENTRY } from "@/graphql/queries/entry";
 import { CREATE_EXPENSE } from "@/graphql/mutations/createExpense";
 import { CREATE_INCOME } from "@/graphql/mutations/createIncome";
+import { BALANCE } from "./graphql/balance";
 
 import { Button } from "@/ui/Button";
 import { Modal } from "@/ui/Modal";
 import { Input } from "@/ui/Input";
 import { Select } from "@/ui/Select";
 
-import { Title, ActionsS } from "./Home.styles";
+import { ActionsS } from "./Home.styles";
+import { EntryCategory } from "@/types";
 
 interface ActionsProps {
-  entryId: any;
-  categories: any;
+  entryId: number | null;
+  categories: EntryCategory[];
 }
 
 export function Actions(props: ActionsProps) {
@@ -31,10 +30,10 @@ export function Actions(props: ActionsProps) {
   const [description, setDescription] = useState("");
 
   const [createExpense] = useMutation(CREATE_EXPENSE, {
-    refetchQueries: [ENTRY],
+    refetchQueries: [BALANCE],
   });
   const [createIncome] = useMutation(CREATE_INCOME, {
-    refetchQueries: [ENTRY],
+    refetchQueries: [BALANCE],
   });
 
   function resetState() {
@@ -72,8 +71,10 @@ export function Actions(props: ActionsProps) {
   }
 
   return (
-    <>
-      <Title>¿Que quieres hacer hoy?</Title>
+    <Box mb={8}>
+      <Heading as="h3" size="lg" textAlign="center" mb={4}>
+        ¿Que quieres hacer hoy?
+      </Heading>
 
       <ActionsS>
         <Button type="button" onClick={handleToggleExpense} fullWidth>
@@ -145,6 +146,6 @@ export function Actions(props: ActionsProps) {
           required
         />
       </Modal>
-    </>
+    </Box>
   );
 }

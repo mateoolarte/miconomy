@@ -6,7 +6,7 @@ import { ExploreItem } from './ExploreItem';
 
 export function Explore() {
   return (
-    <Box mt={8}>
+    <Box mb={8}>
       <Heading as="h3" size="lg" textAlign="center" mb={4}>
         Explora
       </Heading>

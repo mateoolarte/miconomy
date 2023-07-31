@@ -1,9 +1,9 @@
-import NextLink from 'next/link';
-import { Link, Card, CardBody, Icon } from '@chakra-ui/react';
+import NextLink from "next/link";
+import { Link, Card, CardBody, Icon } from "@chakra-ui/react";
 
-import { ExploreItemType } from './types';
+import { ExploreItemT } from "./types";
 
-export function ExploreItem(props: ExploreItemType) {
+export function ExploreItem(props: ExploreItemT) {
   const { link, label, IconComponent } = props;
 
   return (

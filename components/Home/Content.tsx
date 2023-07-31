@@ -1,9 +1,10 @@
-import { Balance } from './Balance';
-import { Actions } from './Actions';
+import { Balance } from "./Balance";
+import { Actions } from "./Actions";
+import { EntryCategory } from "@/types";
 
 interface ContentProps {
   entryId: number | null;
-  categories: any;
+  categories: EntryCategory[];
 }
 
 export function Content(props: ContentProps) {

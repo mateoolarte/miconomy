@@ -93,6 +93,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
+    "react-number-format": "^5.2.2",
     "styled-components": "^5.3.10",
     "universal-cookie": "^4.0.4"
   },
