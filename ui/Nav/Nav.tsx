@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import Link from "next/link";
+import NextLink from "next/link";
 import { useRouter } from "next/router";
 import {
   Icon,
@@ -9,6 +9,10 @@ import {
   PopoverContent,
   PopoverBody,
   PopoverArrow,
+  Box,
+  Flex,
+  Link,
+  List,
 } from "@chakra-ui/react";
 import {
   BiHomeAlt,
@@ -28,23 +32,6 @@ import { Modal } from "../Modal";
 import { Input } from "../Input";
 import { Select } from "../Select";
 
-import {
-  Wrapper,
-  List,
-  Item,
-  ItemPrimary,
-  LinkText,
-  LinkTextPrimary,
-  ItemPrimaryBtn,
-  ItemSecondary,
-  ItemSecondaryBtn,
-  PrimaryActionsList,
-  PrimaryActionsItem,
-  PrimaryActionsBtn,
-  PrimaryActionsText,
-  SecondaryActionsLink,
-} from "./Nav.styles";
-
 export function Nav() {
   const currentDate = new Date();
   const year = currentDate.getFullYear();
@@ -52,9 +39,6 @@ export function Nav() {
 
   const router = useRouter();
   const currentUrl = router.pathname;
-
-  const [primaryAction, setPrimaryAction] = useState(false);
-  const [secondaryAction, setSecondaryAction] = useState(false);
 
   const [expenseForm, setExpenseForm] = useState(false);
   const [incomeForm, setIncomeForm] = useState(false);
@@ -86,14 +70,12 @@ export function Nav() {
     e.preventDefault();
 
     setExpenseForm(!expenseForm);
-    setPrimaryAction(false);
   }
 
   function handleToggleIncome(e) {
     e.preventDefault();
 
     setIncomeForm(!incomeForm);
-    setPrimaryAction(false);
   }
 
   function handleExpense() {
@@ -111,47 +93,97 @@ export function Nav() {
   if (loading) return <h2>Loading...</h2>;
   if (error) return <h2>Error! {error.message}</h2>;
 
+  const itemStyles = (isActive: boolean, type: any = NextLink): any => ({
+    as: type,
+    display: "flex",
+    flexDirection: "column",
+    gap: 1,
+    alignItems: "center",
+    color: isActive ? "blue.500" : "gray.700",
+    fontSize: "xs",
+    fontWeight: 700,
+  });
+
+  const subItemStyles = (type: any = "button"): any => ({
+    as: type,
+    display: "flex",
+    gap: 2,
+    py: 2,
+    alignItems: "center",
+    color: "gray.700",
+    fontSize: "sm",
+    fontWeight: 700,
+  });
+
   return (
-    <Wrapper>
-      <List>
-        <Item isActive={currentUrl === "/"}>
-          <Link legacyBehavior href="/">
-            <a>
-              <Icon as={BiHomeAlt} fontSize="lg" />
-              <LinkText>Inicio</LinkText>
-            </a>
+    <Box
+      as="nav"
+      position="fixed"
+      zIndex="1"
+      bottom="1rem"
+      left="50%"
+      transform="translateX(-50%)"
+      width="95%"
+      boxShadow="base"
+      borderRadius="lg"
+    >
+      <Flex
+        as="ul"
+        gap={6}
+        py={2}
+        px={4}
+        justifyContent="space-between"
+        alignItems="center"
+        margin="0"
+        listStyleType="none"
+      >
+        <Box as="li">
+          <Link href="/" {...itemStyles(currentUrl === "/")}>
+            <Icon as={BiHomeAlt} fontSize="2xl" />
+            <Box as="strong">Inicio</Box>
           </Link>
-        </Item>
-        <Item isActive={currentUrl === "/entry"}>
-          <Link legacyBehavior href="/entry">
-            <a>
-              <Icon as={BiCalendar} fontSize="lg" />
-              <LinkText>Mes actual</LinkText>
-            </a>
+        </Box>
+        <Box as="li">
+          <Link href="/entry" {...itemStyles(currentUrl === "/entry")}>
+            <Icon as={BiCalendar} fontSize="2xl" />
+            <Box as="strong">Mes actual</Box>
           </Link>
-        </Item>
-        <ItemPrimary>
+        </Box>
+        <Box as="li">
           <Popover>
             <PopoverTrigger>
-              <ItemPrimaryBtn type="button" isClosed={primaryAction}>
-                <Icon as={BiPlus} rotate={primaryAction ? 45 : 0} />
-                <LinkTextPrimary isClosed={primaryAction}>
-                  {primaryAction ? "Cerrar" : "Agregar"}
-                </LinkTextPrimary>
-              </ItemPrimaryBtn>
+              <Flex
+                as="button"
+                flexDirection="column"
+                alignItems="center"
+                fontSize="sm"
+              >
+                <Icon
+                  as={BiPlus}
+                  fontSize="3xl"
+                  borderRadius="full"
+                  p={1}
+                  backgroundColor="teal.500"
+                  color="whiteAlpha.900"
+                />
+                <Box as="strong" mt={1} color="teal.500">
+                  Agregar
+                </Box>
+              </Flex>
             </PopoverTrigger>
             <PopoverContent>
               <PopoverArrow />
               <PopoverBody>
-                <PrimaryActionsList>
-                  <PrimaryActionsItem>
-                    <PrimaryActionsBtn
-                      type="button"
-                      onClick={handleToggleExpense}
-                    >
-                      <Icon as={BiFile} fontSize="lg" />
-                      <PrimaryActionsText>Gasto</PrimaryActionsText>
-                    </PrimaryActionsBtn>
+                <List>
+                  <Box
+                    as="li"
+                    borderBottom="1px solid"
+                    borderBottomColor="gray.200"
+                  >
+                    <Box {...subItemStyles()} onClick={handleToggleExpense}>
+                      <Icon as={BiFile} fontSize="2xl" />
+                      <Box as="strong">Gasto</Box>
+                    </Box>
                     <Modal
                       visible={expenseForm}
                       title="Agregar gasto"
@@ -184,15 +216,12 @@ export function Nav() {
                         required
                       />
                     </Modal>
-                  </PrimaryActionsItem>
-                  <PrimaryActionsItem>
-                    <PrimaryActionsBtn
-                      type="button"
-                      onClick={handleToggleIncome}
-                    >
-                      <Icon as={BiCreditCard} fontSize="lg" />
-                      <PrimaryActionsText>Ingreso</PrimaryActionsText>
-                    </PrimaryActionsBtn>
+                  </Box>
+                  <Box as="li">
+                    <Box {...subItemStyles()} onClick={handleToggleIncome}>
+                      <Icon as={BiCreditCard} fontSize="2xl" />
+                      <Box as="strong">Ingreso</Box>
+                    </Box>
                     <Modal
                       visible={incomeForm}
                       title="Agregar ingreso"
@@ -216,58 +245,52 @@ export function Nav() {
                         required
                       />
                     </Modal>
-                  </PrimaryActionsItem>
-                </PrimaryActionsList>
+                  </Box>
+                </List>
               </PopoverBody>
             </PopoverContent>
           </Popover>
-        </ItemPrimary>
-        <Item isActive={currentUrl === "/savings"}>
-          <Link legacyBehavior href="/savings">
-            <a>
-              <Icon as={BiDollarCircle} fontSize="lg" />
-              <LinkText>Ahorros</LinkText>
-            </a>
+        </Box>
+        <Box as="li">
+          <Link href="/savings" {...itemStyles(currentUrl === "/savings")}>
+            <Icon as={BiDollarCircle} fontSize="2xl" />
+            <Box as="strong">Ahorros</Box>
           </Link>
-        </Item>
-        <ItemSecondary>
+        </Box>
+        <Box as="li">
           <Popover>
             <PopoverTrigger>
-              <ItemSecondaryBtn type="button">
-                <Icon as={BiDotsVerticalRounded} fontSize="lg" />
-                <LinkText>Más</LinkText>
-              </ItemSecondaryBtn>
+              <Box type="button" {...itemStyles(false, "button")}>
+                <Icon as={BiDotsVerticalRounded} fontSize="2xl" />
+                <Box as="strong">Más</Box>
+              </Box>
             </PopoverTrigger>
             <PopoverContent>
               <PopoverArrow />
               <PopoverBody>
-                <PrimaryActionsList>
-                  <PrimaryActionsItem>
-                    <Link legacyBehavior href="/categories" passHref>
-                      <SecondaryActionsLink
-                        isActive={currentUrl === "/categories"}
-                      >
-                        <Icon as={BiFile} fontSize="lg" />
-                        <PrimaryActionsText>Categorías</PrimaryActionsText>
-                      </SecondaryActionsLink>
+                <List>
+                  <Box
+                    as="li"
+                    borderBottom="1px solid"
+                    borderBottomColor="gray.200"
+                  >
+                    <Link href="/categories" {...subItemStyles(NextLink)}>
+                      <Icon as={BiFile} fontSize="2xl" />
+                      <Box as="strong">Categorías</Box>
                     </Link>
-                  </PrimaryActionsItem>
-                  <PrimaryActionsItem>
-                    <Link legacyBehavior href="/budgets" passHref>
-                      <SecondaryActionsLink
-                        isActive={currentUrl === "/budgets"}
-                      >
-                        <Icon as={BiCreditCard} fontSize="lg" />
-                        <PrimaryActionsText>Presupuestos</PrimaryActionsText>
-                      </SecondaryActionsLink>
+                  </Box>
+                  <Box as="li">
+                    <Link href="/budgets" {...subItemStyles(NextLink)}>
+                      <Icon as={BiCreditCard} fontSize="2xl" />
+                      <Box as="strong">Presupuestos</Box>
                     </Link>
-                  </PrimaryActionsItem>
-                </PrimaryActionsList>
+                  </Box>
+                </List>
               </PopoverBody>
             </PopoverContent>
           </Popover>
-        </ItemSecondary>
-      </List>
-    </Wrapper>
+        </Box>
+      </Flex>
+    </Box>
   );
 }
