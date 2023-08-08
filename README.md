@@ -17,58 +17,58 @@ Personal finance tracker web app. Built with NextJS & GraphQL
 
 ## Prerequisites
 
-- [PNPM](https://pnpm.io/)
+- [Yarn](https://yarnpkg.com/)
 - Latest [NodeJS](https://nodejs.org/en) version
 
 ## Installation
 
 - Clone this repo
-- Run on terminal `pnpm install` to install dependencies
+- Run on terminal `yarn` to install dependencies
 - Create a `.env` file and ask a teammate to share the content
-- Run on terminal `pnpm dev` and start rocking
+- Run on terminal `yarn dev` and start rocking
 
 ## Available commands
 
 ### Run development server
 
 ```bash
-pnpm dev
+yarn dev
 ```
 
 ### Generate production server
 
 ```bash
-pnpm build
+yarn build
 ```
 
 ### Run a production server
 
 ```bash
-pnpm start
+yarn start
 ```
 
 ### Run tests
 
 ```bash
-pnpm test
+yarn test
 ```
 
 ### Run unit tests
 
 ```bash
-pnpm test:unit
+yarn test:unit
 ```
 
 ### Run watching tests
 
 ```bash
-pnpm test:watch
+yarn test:watch
 ```
 
 ### Run coverage tests
 
 ```bash
-pnpm test:coverage
+yarn test:coverage
 ```
 
 ### Run cypress
@@ -76,29 +76,29 @@ pnpm test:coverage
 - run it on its own window
 
 ```bash
-pnpm e2e:watch
+yarn e2e:watch
 ```
 
 - these end to end tests can also be open on the terminal directly
 
 ```bash
-pnpm e2e:run
+yarn e2e:run
 ```
 
 ### Run linter on js and ts files
 
 ```bash
-pnpm lint
+yarn lint
 ```
 
 ### Run formatter
 
 ```bash
-pnpm fmt
+yarn fmt
 ```
 
 ### Run formatter and linter
 
 ```bash
-pnpm pretty
+yarn pretty
 ```
