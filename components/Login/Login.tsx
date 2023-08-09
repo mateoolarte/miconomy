@@ -1,30 +1,30 @@
-import { useState, FormEvent, ChangeEvent, FocusEvent } from 'react';
-import { useMutation } from '@apollo/client';
-import { useRouter } from 'next/navigation';
-import { Box, Heading, VStack } from '@chakra-ui/react';
+import { useState, FormEvent, ChangeEvent, FocusEvent } from "react";
+import { useMutation } from "@apollo/client";
+import { useRouter } from "next/navigation";
+import { Box, Heading, VStack } from "@chakra-ui/react";
 
-import { validateEmail } from '@/utils/validateEmail';
-import { setCookie } from '@/utils/cookies';
-import { USER_TOKEN_KEY } from '@/constants';
+import { validateEmail } from "@/utils/validateEmail";
+import { setCookie } from "@/utils/cookies";
+import { USER_TOKEN_KEY } from "@/constants";
 
-import { LOGIN } from './graphql/login';
+import { LOGIN } from "./graphql/login";
 
-import { Input } from '@/ui/Input';
-import { Anchor } from '@/ui/Anchor';
-import { Toast } from '@/ui/Toast';
-import { Button } from '@/ui/Button';
+import { Input } from "@/ui/Input";
+import { Anchor } from "@/ui/Anchor";
+import { Toast } from "@/ui/Toast";
+import { Button } from "@/ui/Button";
 
 const initialErrorsState = {
-  email: '',
-  password: '',
-  message: '',
+  email: "",
+  password: "",
+  message: "",
 };
 
 export function Login() {
   const router = useRouter();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errors, setErrors] = useState(initialErrorsState);
 
   const [loginAction, { loading }] = useMutation(LOGIN, {
@@ -34,7 +34,7 @@ export function Login() {
       const timeToExpire = 60 * 60 * 24 * 26; // 26 days
 
       setCookie(USER_TOKEN_KEY, token, timeToExpire);
-      router.push('/');
+      router.push("/");
     },
     onError(error) {
       const { message } = error;
@@ -47,7 +47,7 @@ export function Login() {
   });
 
   function validateForm() {
-    const hasErrors = errors.email !== '' || errors.password !== '';
+    const hasErrors = errors.email !== "" || errors.password !== "";
 
     return hasErrors || !validateEmail(email) || password.length <= 7;
   }
@@ -56,12 +56,12 @@ export function Login() {
     if (!validateEmail(value)) {
       setErrors({
         ...errors,
-        email: 'El correo electrónico ingresado no es correcto',
+        email: "El correo electrónico ingresado no es correcto",
       });
     } else {
       setErrors({
         ...errors,
-        email: '',
+        email: "",
       });
     }
   }
@@ -70,12 +70,12 @@ export function Login() {
     if (value.length <= 7) {
       setErrors({
         ...errors,
-        password: 'La contraseña debe tener mínimo 8 caracteres',
+        password: "La contraseña debe tener mínimo 8 caracteres",
       });
     } else {
       setErrors({
         ...errors,
-        password: '',
+        password: "",
       });
     }
   }
@@ -86,16 +86,18 @@ export function Login() {
     const name = e.target.name;
     const value = e.target.value;
 
-    if (name == 'email') setEmail(value);
-    if (name == 'password') setPassword(value);
+    if (name == "email") {
+      setEmail(value);
+    }
+    if (name == "password") setPassword(value);
   }
 
   function handleInputFocus(e: FocusEvent<HTMLInputElement>) {
     const name = e.target.name;
     const value = e.target.value;
 
-    if (name == 'email') handleEmailValidation(value);
-    if (name == 'password') handlePasswordValidation(value);
+    if (name == "email") handleEmailValidation(value);
+    if (name == "password") handlePasswordValidation(value);
   }
 
   function handleForm(e: FormEvent<HTMLFormElement>) {
