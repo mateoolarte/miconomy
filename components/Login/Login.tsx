@@ -89,7 +89,9 @@ export function Login() {
     if (name == "email") {
       setEmail(value);
     }
-    if (name == "password") setPassword(value);
+    if (name == "password") {
+      setPassword(value);
+    }
   }
 
   function handleInputFocus(e: FocusEvent<HTMLInputElement>) {
